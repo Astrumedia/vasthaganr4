@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Västhaga Nr4 — Bostadsrättsförening</title>
+<style>
+:root{
+  --bg:#f7f9fc;
+  --card:#ffffff;
+  --accent:#f09a0f;
+  --muted:#6b7280;
+  --maxw:1200px;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
+.container{max-width:var(--maxw);margin:24px auto;padding:16px}
+
+/* Header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 22px 32px;
+  z-index: 10;
+  background: rgba(255,255,255,0);
+  box-shadow: none;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
+nav a:hover{background:var(--accent);color:#fff;}
+.dropdown{position:relative}
+
+.dropdown-content {position: absolute; top: 36px; left: 0; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 8px; border-radius: 8px; display: none; min-width: 180px; z-index: 10;}
+.dropdown:hover .dropdown-content{display:block}
+.dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
+.dropdown-content a:hover{background:var(--accent);color:#fff;}
+
+/* dropdown toggle arrow (clickable to lock open) */
+.dropdown-toggle {
+  display:inline-flex;
+  width:20px;height:20px;align-items:center;justify-content:center;
+  font-size:13px;border-radius:4px;background:transparent;border:none;cursor:pointer;
+}
+.dropdown-toggle.locked { color: var(--accent); transform: rotate(90deg); }
+
+/* Hero */
+.hero {
+  position: relative;
+  padding-top:60px;
+  background: url('bakgrundsbild1.jpg') center/cover no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  z-index: 0;
+}
+.hero::after{content:''; position:absolute; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.3); z-index:1;}
+.hero h1{font-size:3.5rem; margin:0; position:relative; z-index:2; display:flex; align-items:center; gap:8px;}
+.hero h2{font-size:2.0rem; margin:8px 0 0 0; z-index:2;}
+
+/* grid / cards */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px; margin-top:16px;}
+@media (max-width: 992px){ .grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width: 768px){ .grid{grid-template-columns:1fr;} }
+
+.card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);margin-top:16px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.card img{width:100%;border-radius:8px;margin-bottom:8px;object-fit:cover;height:160px;}
+.card h2{margin:8px 0;}
+.card p{color:var(--muted);margin:0;}
+
+/* Admin buttons */
+.card .edit-btn, .card .delete-btn{position:absolute; top:8px; right:8px; background:none; border:none; cursor:pointer; font-size:18px; padding:6px; border-radius:6px;}
+.card .delete-btn{bottom:8px; right:8px; top:auto;}
+.add-card-btn{width:48px; height:48px; background:var(--accent); color:#fff; border-radius:50%; font-size:24px; display:flex; justify-content:center; align-items:center; cursor:pointer; z-index:50; margin-top:16px;}
+
+/* Overlay editor */
+.edit-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45); display:none; justify-content:center; align-items:center; z-index:200;}
+.edit-overlay .editor{background:#fff;padding:20px;border-radius:10px; max-width:540px;width:100%; display:flex; flex-direction:column; gap:12px;}
+.edit-overlay input, .edit-overlay textarea{width:100%; padding:10px; border-radius:8px; border:1px solid #e6eef2; font-size:0.95rem;}
+.editor .row{display:flex;gap:8px;align-items:center;}
+.editor .row input[type="file"]{display:none;}
+.editor .btn { padding:10px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
+.btn-primary{ background:var(--accent); color:#fff; }
+.btn-secondary{ background:#fff; color:var(--accent); border:1px solid #eee; }
+.btn-cancel{ background:#f3f4f6; color:#111; }
+
+/* Save / publish floating */
+.save-publish{position:fixed; bottom:16px; right:16px; z-index:250; display:none; gap:8px;}
+.save-publish .btn { padding:10px 14px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
+.save-publish .btn-primary{ background:var(--accent); color:#fff; }
+.save-publish .btn-cancel{ background:#e5e7eb; color:#111; }
+
+/* mobile hamburger */
+.hamburger {display: none;font-size: 1.8rem;cursor: pointer;user-select: none;z-index: 70;color: var(--accent);position: relative;transition: transform 0.3s ease;}
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  nav ul { flex-direction: column; position: fixed; top: 0; right: 0; width: 260px; height: 100%; background: #fff; padding-top: 72px; padding-left: 12px; transform: translateX(100%); transition: transform 0.28s ease; box-shadow: -6px 0 20px rgba(0,0,0,0.08); z-index: 120; text-align: left; align-items: flex-start; }
+  nav ul.show { transform: translateX(0); }
+  nav ul li { margin-bottom: 12px; width: 100%; }
+  nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
+  .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
+  .dropdown.active .dropdown-content { display: block; }
+}
+.muted{color:var(--muted)}
+footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.9rem; padding-bottom:24px;}
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="brand">
+    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
+    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
+      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
+      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
+    </a>
+  </div>
+
+  <nav>
+    <div class="hamburger" id="hamburger">☰</div>
+    <ul id="mainNav">
+      <li><a href="index.html">Hem</a></li>
+      <li class="dropdown">
+        <a href="om.html">Om föreningen ▾</a>
+        <div class="dropdown-content">
+          <a href="om.html">Om oss</a>
+          <a href="stadgar.html">Stadgar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="styrelsen.html">Styrelsen ▾</a>
+        <div class="dropdown-content">
+          <a href="styrelsen.html">Styrelsen</a>
+          <a href="styrelseninformerar.html">Styrelsen informerar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="#">Planeringsprojekt ▾</a>
+        <div class="dropdown-content">
+          <a href="pagaendeplaner.html">Pågående planer</a>
+          <a href="utfordaplaner.html">Utförda planer</a>
+        </div>
+      </li>
+
+      <li><a href="felanmalan.html">Felanmälan</a></li>
+      <li><a href="loggain.html">Logga in</a></li>
+      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero" id="heroSection">
+  <h1 id="heroTitle">Välkommen till Västhaga Nr4
+    <button id="editHeroBtn" style="display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;margin-left:8px;">✏️</button>
+  </h1>
+  <h2 id="heroSubtitle">Bostadsrättsförening</h2>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+  <main class="grid" id="cardGrid" aria-live="polite"></main>
+  <div class="add-card-btn" id="addCardBtn" title="Lägg till kort" style="display:none">+</div>
+</div>
+
+<!-- SAVE / CANCEL -->
+<div class="save-publish" id="savePublish">
+  <button id="saveBtn" class="btn btn-primary">Spara och publicera</button>
+  <button id="cancelBtn" class="btn btn-cancel">Avbryt</button>
+</div>
+
+<!-- EDIT OVERLAY (kort) -->
+<div class="edit-overlay" id="editOverlay">
+  <div class="editor">
+    <input type="text" id="editTitle" placeholder="Rubrik">
+    <textarea id="editText" rows="6" placeholder="Text"></textarea>
+
+    <div class="row">
+      <input type="text" id="editImage" placeholder="Bild-URL (eller lämna tomt)">
+      <button id="removeImageBtn" class="btn btn-secondary" type="button">Ta bort bild</button>
+    </div>
+
+    <div class="row" style="justify-content:flex-start;">
+      <label class="btn btn-secondary" for="fileUpload" style="margin:0;">
+        <input id="fileUpload" type="file" accept="image/*" style="display:none;">
+        Ladda upp från enhet
+      </label>
+      <button id="applyEditBtn" class="btn btn-primary" type="button">Tillämpa ändring</button>
+      <button id="cancelEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT HERO -->
+<div class="edit-overlay" id="editHeroOverlay">
+  <div class="editor">
+    <input type="text" id="editHeroTitle" placeholder="Hero-titel">
+    <input type="text" id="editHeroSubtitle" placeholder="Hero-underskrift">
+    <div style="display:flex;gap:8px;">
+      <button id="applyHeroEditBtn" class="btn btn-primary">Tillämpa ändring</button>
+      <button id="cancelHeroEditBtn" class="btn btn-cancel">Avbryt</button>
+    </div>
+  </div>
+</div>
+
+<footer>&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
+
+<script>
+/* -------------------------
+   Helper / state
+   ------------------------- */
+const mainNav = document.getElementById('mainNav');
+const hamburger = document.getElementById('hamburger');
+const header = document.getElementById('siteHeader');
+const heroSection = document.getElementById('heroSection');
+const adminNav = document.getElementById('adminNav');
+
+let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+let adminMode = currentUser && currentUser.role === 'admin';
+
+/* -------------------------
+   Navbar scroll -> background white
+   ------------------------- */
+function updateHeaderOnScroll(){
+  const heroHeight = heroSection ? heroSection.offsetHeight : 300;
+  const scrollY = window.scrollY;
+  if(scrollY < heroHeight){
+    const opacity = Math.min(1, scrollY / heroHeight);
+    header.style.background = `rgba(255,255,255,${opacity})`;
+    header.style.boxShadow = opacity > 0 ? `0 4px 12px rgba(0,0,0,${opacity*0.08})` : 'none';
+  } else {
+    header.style.background = '#fff';
+    header.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
+  }
+}
+window.addEventListener('scroll', updateHeaderOnScroll);
+window.addEventListener('load', updateHeaderOnScroll);
+
+/* -------------------------
+   Dropdown hover + click-to-lock logic
+   - visible for a short delay after mouseleave (0.5s)
+   - clicking the small arrow locks it open until toggled
+   ------------------------- */
+const DROPDOWN_HIDE_DELAY = 500; // ms
+const dropdowns = document.querySelectorAll('.dropdown');
+dropdowns.forEach(drop => {
+  const toggleBtn = drop.querySelector('.dropdown-toggle');
+  const menu = drop.querySelector('.dropdown-content');
+  let hideTimeout = null;
+
+  function showMenu(){
+    // close others unless they are locked
+    dropdowns.forEach(d => {
+      if(d !== drop){
+        const tb = d.querySelector('.dropdown-toggle');
+        const locked = tb && tb.classList.contains('locked');
+        if(!locked) {
+          const m = d.querySelector('.dropdown-content');
+          if(m) m.style.display = 'none';
+        }
+      }
+    });
+    menu.style.display = 'block';
+    clearTimeout(hideTimeout);
+  }
+  function hideMenu(){
+    menu.style.display = 'none';
+    clearTimeout(hideTimeout);
+  }
+
+  // Hover
+  drop.addEventListener('mouseenter', () => {
+    showMenu();
+  });
+  drop.addEventListener('mouseleave', () => {
+    // only hide after delay, unless locked
+    const locked = toggleBtn && toggleBtn.classList.contains('locked');
+    if(locked) return;
+    hideTimeout = setTimeout(() => { menu.style.display = 'none'; }, DROPDOWN_HIDE_DELAY);
+  });
+
+  // If hovering another dropdown, it should hide this (registered above in showMenu)
+
+  // Toggle button click - locks/unlocks menu
+  if(toggleBtn){
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isLocked = toggleBtn.classList.toggle('locked');
+      if(isLocked){
+        // open and keep open
+        menu.style.display = 'block';
+      } else {
+        // unlock -> hide after delay
+        setTimeout(()=>{ menu.style.display = 'none'; }, DROPDOWN_HIDE_DELAY);
+      }
+    });
+  }
+
+  // allow clicking anchor to open menu on small screens (handled elsewhere)
+  const link = drop.querySelector('a');
+  if(link){
+    link.addEventListener('click', (e) => {
+      // if it's a real link (has href pointing to page), let default if not same-page anchor
+      // But when the link's href is '#', prevent default to toggle menu for mobile-like behaviour
+      if(link.getAttribute('href') === '#' || window.innerWidth <= 768){
+        e.preventDefault();
+        // toggle immediate
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+      }
+    });
+  }
+});
+
+/* Close any unlocked dropdown if clicking outside */
+document.addEventListener('click', (e) => {
+  dropdowns.forEach(drop => {
+    const toggleBtn = drop.querySelector('.dropdown-toggle');
+    const menu = drop.querySelector('.dropdown-content');
+    const locked = toggleBtn && toggleBtn.classList.contains('locked');
+    if(!locked && !drop.contains(e.target)){
+      if(menu) menu.style.display = 'none';
+    }
+  });
+});
+
+/* When hovering other dropdown, hide the unlocked ones — handled in showMenu above */
+
+/* -------------------------
+   Hamburger (mobile)
+   ------------------------- */
+hamburger.addEventListener('click', () => {
+  mainNav.classList.toggle('show');
+  hamburger.textContent = mainNav.classList.contains('show') ? '➤' : '☰';
+});
+
+/* -------------------------
+   Admin visibility
+   ------------------------- */
+function updateAdminVisibility(){
+  const cur = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  if(cur && cur.role === 'admin'){
+    adminNav.style.display = 'block';
+  } else {
+    adminNav.style.display = 'none';
+  }
+}
+updateAdminVisibility();
+
+/* -------------------------
+   CARD + HERO EDITING (Admin)
+   - from prior versions: add/edit/delete cards, upload images (file -> dataURL) or paste URLs
+   - Save/Publish persists to localStorage
+   ------------------------- */
+
+let cards = JSON.parse(localStorage.getItem('cards') || 'null') || [
+  {title:"Exempelrubrik 1", text:"Detta är exempeltext.", image:""},
+  {title:"Exempelrubrik 2", text:"Fler exempeltexter.", image:""},
+  {title:"Exempelrubrik 3", text:"Test av kort 3.", image:""}
+];
+let hero = JSON.parse(localStorage.getItem('hero') || 'null') || {title: "Välkommen till Västhaga Nr4", subtitle: "Bostadsrättsförening"};
+
+/* DOM elements */
+const cardGrid = document.getElementById('cardGrid');
+const addCardBtn = document.getElementById('addCardBtn');
+const savePublish = document.getElementById('savePublish');
+const saveBtn = document.getElementById('saveBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+
+const editOverlay = document.getElementById('editOverlay');
+const editTitle = document.getElementById('editTitle');
+const editText = document.getElementById('editText');
+const editImage = document.getElementById('editImage');
+const fileUpload = document.getElementById('fileUpload');
+const removeImageBtn = document.getElementById('removeImageBtn');
+const applyEditBtn = document.getElementById('applyEditBtn');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+const editHeroBtn = document.getElementById('editHeroBtn');
+const editHeroOverlay = document.getElementById('editHeroOverlay');
+const editHeroTitle = document.getElementById('editHeroTitle');
+const editHeroSubtitle = document.getElementById('editHeroSubtitle');
+const applyHeroEditBtn = document.getElementById('applyHeroEditBtn');
+const cancelHeroEditBtn = document.getElementById('cancelHeroEditBtn');
+
+let editingIndex = null;
+
+/* render hero */
+function renderHero(){
+  document.getElementById('heroTitle').childNodes[0].nodeValue = hero.title;
+  document.getElementById('heroSubtitle').textContent = hero.subtitle;
+}
+renderHero();
+
+/* render cards */
+function renderCards(){
+  cardGrid.innerHTML = '';
+  cards.forEach((c, i) => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    // image
+    if(c.image){
+      const img = document.createElement('img');
+      img.src = c.image;
+      img.alt = c.title || 'Bild';
+      card.appendChild(img);
+    }
+    // content
+    const h = document.createElement('h2');
+    h.textContent = c.title;
+    const p = document.createElement('p');
+    p.textContent = c.text;
+    card.appendChild(h);
+    card.appendChild(p);
+
+    if(adminMode){
+      const editBtn = document.createElement('button');
+      editBtn.className = 'edit-btn';
+      editBtn.title = 'Redigera';
+      editBtn.innerText = '✏️';
+      editBtn.addEventListener('click', (e) => { e.stopPropagation(); openEdit(i); });
+      card.appendChild(editBtn);
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'delete-btn';
+      delBtn.title = 'Ta bort';
+      delBtn.innerText = '🗑️';
+      delBtn.addEventListener('click', (e) => { e.stopPropagation(); cards.splice(i,1); showSave(); renderCards(); });
+      card.appendChild(delBtn);
+    }
+
+    cardGrid.appendChild(card);
+  });
+
+  // ensure add button is positioned after last card on wide screens visually: we simply show/hide it
+  if(adminMode){
+    addCardBtn.style.display = 'flex';
+  } else {
+    addCardBtn.style.display = 'none';
+  }
+}
+renderCards();
+
+function showSave(){
+  savePublish.style.display = 'flex';
+}
+function hideSave(){
+  savePublish.style.display = 'none';
+}
+
+/* add card */
+addCardBtn.addEventListener('click', () => {
+  cards.push({title:"Ny rubrik", text:"Ny text", image:""});
+  editingIndex = cards.length - 1;
+  renderCards();
+  openEdit(editingIndex);
+  showSave();
+});
+
+/* open edit overlay for a card */
+function openEdit(index){
+  editingIndex = index;
+  const card = cards[index];
+  editTitle.value = card.title || '';
+  editText.value = card.text || '';
+  editImage.value = card.image || '';
+  editOverlay.style.display = 'flex';
+}
+
+/* file upload -> dataURL */
+fileUpload.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    editImage.value = ev.target.result; // dataURL
+  };
+  reader.readAsDataURL(file);
+});
+
+/* remove image */
+removeImageBtn.addEventListener('click', () => {
+  editImage.value = '';
+});
+
+/* apply card changes */
+applyEditBtn.addEventListener('click', () => {
+  if(editingIndex === null) return;
+  cards[editingIndex].title = editTitle.value.trim();
+  cards[editingIndex].text = editText.value.trim();
+  cards[editingIndex].image = editImage.value.trim();
+  editingIndex = null;
+  editOverlay.style.display = 'none';
+  showSave();
+  renderCards();
+});
+
+/* cancel edit */
+cancelEditBtn.addEventListener('click', () => {
+  editingIndex = null;
+  editOverlay.style.display = 'none';
+});
+
+/* Save & publish */
+saveBtn.addEventListener('click', () => {
+  localStorage.setItem('cards', JSON.stringify(cards));
+  localStorage.setItem('hero', JSON.stringify(hero));
+  hideSave();
+  alert('Ändringar sparade och publicerade!');
+});
+
+/* Cancel (revert unsaved changes) */
+cancelBtn.addEventListener('click', () => {
+  cards = JSON.parse(localStorage.getItem('cards') || 'null') || cards;
+  hero = JSON.parse(localStorage.getItem('hero') || 'null') || hero;
+  renderCards();
+  renderHero();
+  hideSave();
+  editOverlay.style.display = 'none';
+  editHeroOverlay.style.display = 'none';
+});
+
+/* Hero edit */
+if(adminMode){
+  editHeroBtn.style.display = 'inline';
+  editHeroBtn.addEventListener('click', () => {
+    editHeroTitle.value = hero.title;
+    editHeroSubtitle.value = hero.subtitle;
+    editHeroOverlay.style.display = 'flex';
+  });
+
+  applyHeroEditBtn.addEventListener('click', () => {
+    hero.title = editHeroTitle.value.trim();
+    hero.subtitle = editHeroSubtitle.value.trim();
+    renderHero();
+    editHeroOverlay.style.display = 'none';
+    showSave();
+  });
+
+  cancelHeroEditBtn.addEventListener('click', () => {
+    editHeroOverlay.style.display = 'none';
+  });
+}
+
+/* Make Admin visibility dynamic in case user logs in/out on this page */
+window.addEventListener('storage', () => {
+  currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  adminMode = currentUser && currentUser.role === 'admin';
+  updateAdminVisibility();
+  renderCards();
+});
+
+/* Accessibility: hide overlays when clicking outside editor area */
+document.querySelectorAll('.edit-overlay').forEach(ov => {
+  ov.addEventListener('click', (e) => {
+    if(e.target === ov){
+      // clicking backdrop cancels overlay
+      ov.style.display = 'none';
+      editingIndex = null;
+    }
+  });
+});
+
+/* ensure dropdowns hide properly on resize and header updates */
+window.addEventListener('resize', () => {
+  // hide mobile nav if resizing to desktop
+  if(window.innerWidth > 768){
+    mainNav.classList.remove('show');
+    hamburger.textContent = '☰';
+  }
+});
+
+/* initial admin visibility set */
+updateAdminVisibility();
+</script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Västhaga Nr4</title>
+<style>
+  :root{
+    --bg:#f7f9fc; 
+    --card:#ffffff; 
+    --accent:#f09a0f; 
+    --muted:#6b7280; 
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220;}
+  .container{max-width:var(--maxw);margin:120px auto;padding:16px;}
+  
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 22px 32px;
+  z-index: 10;
+  background: rgba(255,255,255,0);
+  box-shadow: none;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
+nav a:hover{background:var(--accent);color:#fff;}
+.dropdown{position:relative}
+
+.dropdown-content {position: absolute; top: 36px; left: 0; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 8px; border-radius: 8px; display: none; min-width: 180px; z-index: 10;}
+.dropdown:hover .dropdown-content{display:block}
+.dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
+.dropdown-content a:hover{background:var(--accent);color:#fff;}
+
+  h1{text-align:center;margin-top:0;color:var(--accent);}
+  h2.subheader{text-align:center;color:var(--muted);font-weight:400;margin-top:8px;}
+
+  .grid-2 { display:grid; grid-template-columns: 1fr 380px; gap:18px; align-items:start; margin-top:20px; }
+  @media (max-width:980px){ .grid-2{grid-template-columns:1fr;} }
+
+  .panel{background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);padding:18px;}
+  .form-card{max-width:100%;display:flex;flex-direction:column;gap:8px;}
+  input[type="email"], input[type="text"], textarea, select{padding:10px;border-radius:6px;border:1px solid #e6eef2;font-size:1rem;width:100%;}
+  button{padding:10px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;}
+  button:hover{background-color: #c58113;}
+  .linkish{background:none;border:none;color:var(--accent);cursor:pointer;text-decoration:underline;font-size:0.9rem;text-align:left;}
+  .error{color:red;font-size:0.9rem;}
+
+  .admin-panel{margin-top:12px;}
+  .user-list{margin-top:10px;max-height:240px;overflow:auto;border-radius:8px;border:1px solid #f1f5f9;}
+  .user-item{padding:10px;border-bottom:1px solid #eef2f6;display:flex;justify-content:space-between;align-items:center;}
+  .user-item:last-child{border-bottom:none;}
+  .current-user{margin-top:10px;text-align:center;color:var(--accent);font-weight:600;}
+
+  /* Change log */
+  .changelog { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace; font-size:0.95rem; color:#0b1220; }
+  .log-list{max-height:360px;overflow:auto;padding:8px;border-radius:8px;border:1px solid #eef2f6;background:#fafafa;}
+  .log-item{padding:8px;border-bottom:1px solid #eef2f6;}
+  .log-item:last-child{border-bottom:none;}
+  .log-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+
+  .small{font-size:0.9rem;color:var(--muted);}
+
+  .hamburger {display: none;font-size: 1.8rem;cursor: pointer;user-select: none;color: var(--accent);z-index: 30;}
+  @media (max-width: 768px) {
+    .hamburger { display: block; }
+    nav ul {flex-direction: column;position: fixed;top: 0;right: 0;width: 220px;height: 100%;background: #fff;padding-top: 80px;padding-left: 20px;transform: translateX(100%);transition: transform 0.3s ease;box-shadow: -4px 0 12px rgba(0,0,0,0.08);z-index: 20;text-align: left;align-items: flex-start;}
+    nav ul.show { transform: translateX(0); }
+    nav ul li { margin-bottom: 12px; width: 100%; }
+    nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
+    .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
+    .dropdown.active .dropdown-content { display: block; }
+  }
+
+  .meta { font-size:0.85rem; color:var(--muted); margin-top:6px; }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="brand">
+    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
+    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
+      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
+      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
+    </a>
+  </div>
+
+  <nav>
+    <div class="hamburger" id="hamburger">☰</div>
+    <ul id="mainNav">
+      <li><a href="index.html">Hem</a></li>
+      <li class="dropdown">
+        <a href="om.html">Om föreningen ▾</a>
+        <div class="dropdown-content">
+          <a href="om.html">Om oss</a>
+          <a href="stadgar.html">Stadgar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="styrelsen.html">Styrelsen ▾</a>
+        <div class="dropdown-content">
+          <a href="styrelsen.html">Styrelsen</a>
+          <a href="styrelseninformerar.html">Styrelsen informerar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="#">Planeringsprojekt ▾</a>
+        <div class="dropdown-content">
+          <a href="pagaendeplaner.html">Pågående planer</a>
+          <a href="utfordaplaner.html">Utförda planer</a>
+        </div>
+      </li>
+
+      <li><a href="felanmalan.html">Felanmälan</a></li>
+      <li><a href="loggain.html">Logga in</a></li>
+      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container">
+  <h1>Admin-panel</h1>
+  <div id="currentUserDiv" class="current-user"></div>
+
+  <div class="grid-2">
+    <div>
+      <div class="panel form-card admin-panel">
+        <h2>Hantera admins</h2>
+        <div style="display:flex;gap:8px;">
+          <input type="email" id="newAdminEmail" placeholder="E-post för ny admin (ex: user@domain.se)">
+          <button id="addAdminBtn">Lägg till admin</button>
+        </div>
+        <div class="meta small">Notera: användaren måste redan finnas registrerad i systemet (test-data används här).</div>
+
+        <div style="margin-top:12px;">
+          <h3 style="margin:0 0 8px 0;">Admins / användare</h3>
+          <div id="userList" class="user-list"></div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button id="btnShowSaved">Visa sparade snapshots</button>
+          <button id="btnClearLocal" style="background:#ef4444">Rensa localStorage (test)</button>
+        </div>
+        <div class="meta small">Knapparna ovan hjälper admin att snabbt inspektera eller rensa lokal testdata.</div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="panel">
+        <h2>Senaste ändringar</h2>
+
+        <div class="log-controls">
+          <input id="logFilter" type="text" placeholder="Filtrera logg (sök text)..." style="flex:1;padding:8px;border-radius:6px;border:1px solid #e6eef2;">
+          <button id="btnExportLog">Exportera (.txt)</button>
+          <button id="btnClearLog" style="background:#ef4444;display:none;">Rensa logg</button>
+        </div>
+
+        <div id="logList" class="log-list changelog" aria-live="polite"></div>
+
+        <div style="margin-top:12px;">
+          <button id="btnAddTestLog">Lägg till test-logg</button>
+          <div class="meta small">Loggar skapas automatiskt från andra sidor när admin klickar på "Spara och publicera". Detta avsnitt visar loggen och låter Ur-admin rensa eller exportera den.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+/* ========== INIT / TEST DATA ========== */
+
+// enkla testanvändare — i verkligt system hämtas från server
+let users = JSON.parse(localStorage.getItem('siteUsers') || 'null') || [
+  { name: "Ur-admin", email: "uradmin@vasthaganr4.se", role: "admin" },
+  { name: "Ur-klient", email: "user1@example.com", role: "user" },
+  { name: "Anna Admin", email: "anna@exempel.se", role: "admin" }
+];
+localStorage.setItem('siteUsers', JSON.stringify(users));
+
+/* ---------- Helper: currentUser ---------- */
+const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+/* If not logged in or not admin -> redirect */
+if (!currentUser || currentUser.role !== 'admin') {
+  alert('Du måste vara inloggad som admin för att komma åt denna sida.');
+  window.location.href = 'loggain.html';
+}
+
+/* ---------- UI references ---------- */
+const currentUserDiv = document.getElementById('currentUserDiv');
+const userListDiv = document.getElementById('userList');
+const addAdminBtn = document.getElementById('addAdminBtn');
+const newAdminEmail = document.getElementById('newAdminEmail');
+
+const logListEl = document.getElementById('logList');
+const btnClearLog = document.getElementById('btnClearLog');
+const btnExportLog = document.getElementById('btnExportLog');
+const logFilter = document.getElementById('logFilter');
+const btnAddTestLog = document.getElementById('btnAddTestLog');
+
+const btnClearLocal = document.getElementById('btnClearLocal');
+const btnShowSaved = document.getElementById('btnShowSaved');
+
+/* ---------- Display current user ---------- */
+function showCurrentUser(user) {
+  currentUserDiv.textContent = `Inloggad som: ${user.name} (${user.role})`;
+}
+showCurrentUser(currentUser);
+
+/* ---------- User list rendering & management ---------- */
+function renderUserList() {
+  users = JSON.parse(localStorage.getItem('siteUsers') || '[]');
+  userListDiv.innerHTML = '';
+  users.forEach(u => {
+    const div = document.createElement('div');
+    div.className = 'user-item';
+    const left = document.createElement('div');
+    left.innerHTML = `<strong>${u.name}</strong><br><span class="small">${u.email} — ${u.role}</span>`;
+    const right = document.createElement('div');
+
+    // If admin and not uradmin, show remove-admin button
+    if (u.role === 'admin' && u.email !== 'uradmin@vasthaganr4.se') {
+      const btnRemove = document.createElement('button');
+      btnRemove.textContent = 'Ta bort admin';
+      btnRemove.style.background = '#fff';
+      btnRemove.style.color = 'var(--accent)';
+      btnRemove.style.border = '1px solid #eee';
+      btnRemove.onclick = () => {
+        if (!confirm(`Vill du ta bort admin-rättigheter för ${u.email}?`)) return;
+        u.role = 'user';
+        saveUsers();
+        addLog('Admin-panel', `admin rights removed for ${u.email}`, currentUser.name);
+        renderUserList();
+      };
+      right.appendChild(btnRemove);
+    } else if (u.role !== 'admin') {
+      // show add admin button (beskrivning: adding via main input is preferred)
+      const small = document.createElement('button');
+      small.textContent = 'Gör admin';
+      small.style.background = '#fff';
+      small.style.color = 'var(--accent)';
+      small.style.border = '1px solid #eee';
+      small.onclick = () => {
+        if (!confirm(`Vill du göra ${u.email} till admin?`)) return;
+        u.role = 'admin';
+        saveUsers();
+        addLog('Admin-panel', `granted admin to ${u.email}`, currentUser.name);
+        renderUserList();
+      };
+      right.appendChild(small);
+    }
+
+    div.appendChild(left);
+    div.appendChild(right);
+    userListDiv.appendChild(div);
+  });
+}
+
+/* ---------- Save users back to localStorage ---------- */
+function saveUsers() {
+  localStorage.setItem('siteUsers', JSON.stringify(users));
+}
+
+/* Add admin by email (from input) */
+addAdminBtn.addEventListener('click', () => {
+  const email = (newAdminEmail.value || '').trim().toLowerCase();
+  if (!email) { alert('Ange en e-postadress.'); return; }
+  users = JSON.parse(localStorage.getItem('siteUsers') || '[]');
+  const u = users.find(x => x.email.toLowerCase() === email);
+  if (!u) {
+    alert('Användaren finns inte i systemet (test-data). Registrera först.');
+    return;
+  }
+  if (u.role === 'admin') { alert('Användaren är redan admin.'); return; }
+  u.role = 'admin';
+  saveUsers();
+  renderUserList();
+  addLog('Admin-panel', `added admin ${email}`, currentUser.name);
+  newAdminEmail.value = '';
+  alert(`${email} är nu admin.`);
+});
+
+/* ---------- Change log (auto / manual) ---------- */
+function loadLog() {
+  return JSON.parse(localStorage.getItem('changeLog') || '[]');
+}
+function saveLog(arr) {
+  localStorage.setItem('changeLog', JSON.stringify(arr));
+}
+
+/* Add log entry — used by other pages too (they should call similar function) */
+function addLog(section, actionText, actorName) {
+  const now = new Date();
+  // Format timestamp "YYYY-MM-DD HH:mm" in user's local timezone
+  const ts = now.toLocaleString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit',
+                                           hour: '2-digit', minute: '2-digit', hour12: false });
+  const line = `${ts} — ${section} — ${actionText} av ${actorName}`;
+  const arr = loadLog();
+  arr.unshift(line);
+  saveLog(arr);
+  renderLogList(); // live update
+}
+
+/* Render log to DOM (with filter) */
+function renderLogList() {
+  const arr = loadLog();
+  const filter = (logFilter.value || '').trim().toLowerCase();
+  logListEl.innerHTML = '';
+  if (arr.length === 0) {
+    logListEl.innerHTML = '<div class="small">Inga loggposter.</div>';
+    return;
+  }
+  arr.forEach((ln, idx) => {
+    if (filter && !ln.toLowerCase().includes(filter)) return;
+    const div = document.createElement('div');
+    div.className = 'log-item';
+    div.textContent = ln;
+    logListEl.appendChild(div);
+  });
+}
+
+/* Clear log (only Ur-admin) */
+btnClearLog.addEventListener('click', () => {
+  if (!confirm('Rensa hela loggen? Detta går inte att ångra.')) return;
+  saveLog([]);
+  renderLogList();
+  addLog('Admin-panel', 'log cleared', currentUser.name);
+});
+
+/* Export log as text file */
+btnExportLog.addEventListener('click', () => {
+  const arr = loadLog();
+  if (!arr.length) { alert('Ingen logg att exportera.'); return; }
+  const blob = new Blob([arr.join('\n')], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `change-log-${(new Date()).toISOString().slice(0,19).replace(/[:T]/g,'-')}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+/* Filter behavior */
+logFilter.addEventListener('input', () => renderLogList());
+
+/* Manual test log add */
+btnAddTestLog.addEventListener('click', () => {
+  const pageNames = ['Styrelsen','Pågående planer','Utförda planer','Felanmälan','Index'];
+  const p = pageNames[Math.floor(Math.random() * pageNames.length)];
+  addLog(p, 'ändringar sparade', currentUser.name);
+});
+
+/* ---------- Show / hide clear button for Ur-admin ---------- */
+function updateLogControlsVisibility() {
+  if (currentUser && currentUser.email && currentUser.email.toLowerCase() === 'uradmin@vasthaganr4.se') {
+    btnClearLog.style.display = 'inline-block';
+  } else {
+    btnClearLog.style.display = 'none';
+  }
+}
+updateLogControlsVisibility();
+
+/* ---------- Utility: show saved "snapshots" (test) ---------- */
+btnShowSaved.addEventListener('click', () => {
+  const sample = {
+    styrelse: localStorage.getItem('styrelseCards') || 'Ingen sparad styrelsedata',
+    onPlans: localStorage.getItem('pagaendePlans') || 'Ingen sparad pågående-plan-data',
+    donePlans: localStorage.getItem('utfordaPlans') || 'Ingen sparad utförda-plan-data'
+  };
+  alert('Sparade snapshots (kort):\n\n' +
+        `Styrelse: ${sample.styrelse ? (sample.styrelse.length>200 ? sample.styrelse.slice(0,200)+'...' : sample.styrelse) : 'ingen'}\n\n` +
+        `Pågående planer: ${sample.onPlans ? (sample.onPlans.length>200 ? sample.onPlans.slice(0,200)+'...' : sample.onPlans) : 'ingen'}\n\n` +
+        `Utförda planer: ${sample.donePlans ? (sample.donePlans.length>200 ? sample.donePlans.slice(0,200)+'...' : sample.donePlans) : 'ingen'}`);
+});
+
+/* ---------- Rensa localStorage (test) ---------- */
+btnClearLocal.addEventListener('click', () => {
+  if (!confirm('Rensa all localStorage (test-data)? Detta påverkar test-innehåll lokalt i din webbläsare.')) return;
+  localStorage.removeItem('styrelseCards');
+  localStorage.removeItem('omCards');
+  localStorage.removeItem('pagaendePlans');
+  localStorage.removeItem('utfordaPlans');
+  localStorage.removeItem('changeLog');
+  localStorage.removeItem('siteUsers');
+  alert('Tester rensade. Ladda om sidan.');
+  location.reload();
+});
+
+/* ---------- Initial render ---------- */
+renderUserList();
+renderLogList();
+
+/* ---------- Make sure admin can sign out ---------- */
+function logout() {
+  localStorage.removeItem('currentUser');
+  window.location.href = 'loggain.html';
+}
+
+/* ---------- Expose addLog to global so other pages can call it (optional) ---------- */
+window.siteAdminLog = addLog;
+
+/* ---------- Hamburger UI ---------- */
+const mainNav = document.getElementById('mainNav');
+const hamburger = document.getElementById('hamburger');
+hamburger.addEventListener('click', () => {
+  mainNav.classList.toggle('show');
+  hamburger.textContent = mainNav.classList.contains('show') ? '➤' : '☰';
+});
+
+/* ---------- Safety: ensure user array saved at exit ---------- */
+window.addEventListener('beforeunload', () => {
+  saveUsers();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stadgar | Bostadsrättsföreningen Västhaga Nr4</title>
+  <style>
+    :root{
+      --bg:#f7f9fc; 
+      --card:#ffffff; 
+      --accent:#f09a0f; 
+      --muted:#6b7280; 
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
+    .container{max-width:var(--maxw);margin:24px auto;padding:16px}
+
+    /* ---- Header ---- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 22px 32px;
+      background: rgba(255,255,255,0);
+      transition: background 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+      box-shadow: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+    }
+    header.scrolled {
+      background: rgba(255,255,255,1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:44px;
+      height:44px;
+      border-radius:8px;
+      background:var(--accent);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+
+    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+    nav a{
+      padding:8px 12px;
+      border-radius:8px;
+      text-decoration:none;
+      color:inherit;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    nav a:hover{background:var(--accent);color:#fff;}
+    .dropdown{position:relative}
+    .dropdown-content {
+      position: absolute;
+      top: 36px;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 8px;
+      border-radius: 8px;
+      display: none;
+      min-width: 180px;
+      z-index: 10;
+    }
+    .dropdown.show .dropdown-content{display:block}
+    .dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
+    .dropdown-content a:hover{background:var(--accent);color:#fff;}
+
+    h1{text-align:center;margin-top:100px;}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:32px}
+    .card{background:var(--card);padding:24px;border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);}
+    .card h3{margin-top:0;color:var(--accent);}
+    footer{margin-top:32px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:32px}
+
+    /* ---- Hamburger ---- */
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      user-select: none;
+      color: var(--accent);
+      position: relative;
+      z-index: 30;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      nav ul {
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 220px;
+        height: 100%;
+        background: #fff;
+        padding-top: 80px;
+        padding-left: 20px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        box-shadow: -4px 0 12px rgba(0,0,0,0.08);
+        z-index: 20;
+        text-align: left;
+        align-items: flex-start;
+      }
+      nav ul.show { transform: translateX(0); }
+      nav ul li { margin-bottom: 12px; width: 100%; }
+      nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
+      .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
+      .dropdown.active .dropdown-content { display: block; }
+    }
+  </style>
+</head>
+<body>
+<header id="mainHeader">
+  <div class="brand">
+    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
+    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
+      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
+      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
+    </a>
+  </div>
+
+  <nav>
+    <div class="hamburger" id="hamburger">☰</div>
+    <ul id="mainNav">
+      <li><a href="index.html">Hem</a></li>
+      <li class="dropdown">
+        <a href="om.html">Om föreningen ▾</a>
+        <div class="dropdown-content">
+          <a href="om.html">Om oss</a>
+          <a href="stadgar.html">Stadgar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="styrelsen.html">Styrelsen ▾</a>
+        <div class="dropdown-content">
+          <a href="styrelsen.html">Styrelsen</a>
+          <a href="styrelseninformerar.html">Styrelsen informerar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="#">Planeringsprojekt ▾</a>
+        <div class="dropdown-content">
+          <a href="pagaendeplaner.html">Pågående planer</a>
+          <a href="utfordaplaner.html">Utförda planer</a>
+        </div>
+      </li>
+
+      <li><a href="felanmalan.html">Felanmälan</a></li>
+      <li><a href="loggain.html">Logga in</a></li>
+      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+</header>
+
+  <div class="container">
+    <h1>Stadgar för Bostadsrättsföreningen Västhaga Nr4</h1>
+    <div class="grid">
+      <div class="card">
+        <h3>§1 Föreningens namn och ändamål</h3>
+        <p>Bostadsrättsföreningen Västhaga Nr4 har till ändamål att förvalta fastigheten och tillvarata medlemmarnas gemensamma intressen.</p>
+      </div>
+      <div class="card">
+        <h3>§2 Medlemskap</h3>
+        <p>Medlemskap kan erhållas av den som godkänns av styrelsen och som betalar insats och årsavgift.</p>
+      </div>
+      <div class="card">
+        <h3>§3 Styrelse</h3>
+        <p>Föreningen ska ha en styrelse enligt stadgarna som ansvarar för förvaltning och ekonomi.</p>
+      </div>
+      <div class="card">
+        <h3>§4 Årsstämma</h3>
+        <p>Årsstämman är föreningens högsta beslutande organ och hålls enligt stadgarna.</p>
+      </div>
+      <div class="card">
+        <h3>§5 Ekonomi</h3>
+        <p>Styrelsen ansvarar för föreningens ekonomi och budget.</p>
+      </div>
+      <div class="card">
+        <h3>§6 Övriga bestämmelser</h3>
+        <p>Övriga frågor regleras enligt föreningens stadgar.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; Västhaga Nr4 — Bostadsrättsförening
+  </footer>
+
+  <script>
+    const mainHeader = document.getElementById("mainHeader");
+    const mainNav = document.getElementById("mainNav");
+    const hamburger = document.getElementById("hamburger");
+    const dropdowns = document.querySelectorAll(".dropdown");
+    let hideTimer = null;
+
+    // Hamburger
+    hamburger.addEventListener("click", () => {
+      mainNav.classList.toggle("show");
+      hamburger.textContent = mainNav.classList.contains("show") ? "➤" : "☰";
+    });
+
+    // Dropdown interaktion
+    dropdowns.forEach((dropdown) => {
+      dropdown.addEventListener("mouseenter", () => {
+        dropdowns.forEach((d) => {
+          if (d !== dropdown) d.classList.remove("show");
+        });
+        clearTimeout(hideTimer);
+        dropdown.classList.add("show");
+      });
+      dropdown.addEventListener("mouseleave", () => {
+        hideTimer = setTimeout(() => dropdown.classList.remove("show"), 200);
+      });
+    });
+
+    // Klick utanför stänger dropdowns
+    document.addEventListener("click", (e) => {
+      if (![...dropdowns].some((d) => d.contains(e.target))) {
+        dropdowns.forEach((d) => d.classList.remove("show"));
+      }
+    });
+
+    // Header fade vid scroll
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 30) {
+        mainHeader.classList.add("scrolled");
+      } else {
+        mainHeader.classList.remove("scrolled");
+      }
+    });
+
+    // Admin visibility
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser && currentUser.role === "admin") {
+      document.getElementById("adminNav").style.display = "block";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Logga in — Västhaga Nr4</title>
+<style>
+  :root{
+    --bg:#f7f9fc; 
+    --card:#ffffff; 
+    --accent:#f09a0f; 
+    --muted:#6b7280; 
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220;}
+  .container{max-width:var(--maxw);margin:120px auto;padding:16px;}
+  
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 22px 32px;
+    z-index: 10;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo-container {display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}
+  .logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+  .brand-text{display:flex;flex-direction: column;}
+  .brand-text div:first-child{font-weight:700;font-size:1.5rem;}
+  .brand-text div:last-child{font-size:1rem;color:var(--muted);}
+  nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center;}
+  nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
+  nav a:hover{background:var(--accent);color:#fff;}
+  .dropdown{position:relative;}
+  .dropdown-content {position: absolute;top: 36px;left: 0;background: #fff;box-shadow: 0 6px 18px rgba(0,0,0,0.08);padding: 8px;border-radius: 8px;display: none;min-width: 180px;z-index: 10;}
+  .dropdown:hover .dropdown-content{display:block;}
+  .dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
+  .dropdown-content a:hover{background:var(--accent);color:#fff;}
+
+  h1{text-align:center;margin-top:0;color:var(--accent);}
+  h2.subheader{text-align:center;color:var(--muted);font-weight:400;margin-top:8px;}
+
+  .form-card{background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);padding:24px;max-width:500px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+  input{padding:10px;border-radius:6px;border:1px solid #e6eef2;font-size:1rem;width:100%;}
+  button{padding:10px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;}
+  button:hover{opacity:0.9;}
+  .linkish{background:none;border:none;color:var(--accent);cursor:pointer;text-decoration:underline;font-size:0.9rem;text-align:left;}
+  .error{color:red;font-size:0.9rem;}
+
+  .admin-panel{display:none;margin-top:20px;background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);}
+  .user-list{margin-top:10px;}
+  .user-item{padding:8px;border-bottom:1px solid #e6eef2;}
+
+  .current-user{margin-top:10px;text-align:center;color:var(--accent);font-weight:600;}
+
+  .hamburger {display: none;font-size: 1.8rem;cursor: pointer;user-select: none;color: var(--accent);z-index: 30;}
+  @media (max-width: 768px) {
+    .hamburger { display: block; }
+    nav ul {flex-direction: column;position: fixed;top: 0;right: 0;width: 220px;height: 100%;background: #fff;padding-top: 80px;padding-left: 20px;transform: translateX(100%);transition: transform 0.3s ease;box-shadow: -4px 0 12px rgba(0,0,0,0.08);z-index: 20;text-align: left;align-items: flex-start;}
+    nav ul.show { transform: translateX(0); }
+    nav ul li { margin-bottom: 12px; width: 100%; }
+    nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
+    .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
+    .dropdown.active .dropdown-content { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-container">
+    <div class="logo"><img src="logga.png" alt="Logga"></div>
+    <div class="brand-text">
+      <div>Västhaga Nr4</div>
+      <div>Bostadsrättsförening</div>
+    </div>
+  </a>
+  <nav>
+    <div class="hamburger" id="hamburger">☰</div>
+    <ul id="mainNav">
+      <li><a href="index.html">Hem</a></li>
+      <li class="dropdown">
+        <a href="om.html">Om föreningen ▾</a>
+        <div class="dropdown-content">
+          <a href="om.html">Om oss</a>
+          <a href="stadgar.html">Stadgar</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="styrelsen.html">Styrelsen ▾</a>
+        <div class="dropdown-content">
+          <a href="styrelsen.html">Styrelsen</a>
+          <a href="styrelseninformerar.html">Styrelsen informerar</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="#">Planeringsprojekt ▾</a>
+        <div class="dropdown-content">
+          <a href="pagaendeplaner.html">Pågående planer</a>
+          <a href="utforda-planer.html">Utförda planer</a>
+        </div>
+      </li>
+      <li><a href="felanmalan.html">Felanmälan</a></li>
+      <li><a href="loggain.html">Logga in</a></li>
+      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container">
+  <h1>Logga in / Registrera</h1>
+  <h2 class="subheader">Endast boende kan registrera konto. Admins har utökade rättigheter.</h2>
+
+  <div id="currentUserDiv" class="current-user" style="display:none;"></div>
+
+  <div id="loginDiv" class="form-card">
+    <input type="email" id="loginEmail" placeholder="E-post" required>
+    <input type="password" id="loginPassword" placeholder="Lösenord" required>
+    <button onclick="login()">Logga in</button>
+    <button class="linkish" onclick="showRegister()">Registrera nytt konto</button>
+    <button class="linkish" onclick="resetPassword()">Återställ lösenord</button>
+    <div id="loginError" class="error"></div>
+  </div>
+
+  <div id="registerDiv" class="form-card" style="display:none;">
+    <input type="text" id="registerName" placeholder="Namn" required>
+    <input type="email" id="registerEmail" placeholder="E-post" required>
+    <input type="password" id="registerPassword" placeholder="Lösenord" required>
+    <input type="password" id="registerConfirm" placeholder="Bekräfta lösenord" required>
+    <button onclick="register()">Registrera</button>
+    <button class="linkish" onclick="showLogin()">Tillbaka till login</button>
+    <div id="registerError" class="error"></div>
+  </div>
+
+  <div id="adminPanel" class="admin-panel">
+    <h2>Admin-panel</h2>
+    <p>Här kan du se användare och lägga till andra admins.</p>
+    <input type="email" id="newAdminEmail" placeholder="E-post för ny admin">
+    <button onclick="addAdmin()">Lägg till admin</button>
+    <div id="userList" class="user-list"></div>
+    <button style="margin-top:10px;" onclick="logout()">Logga ut</button>
+  </div>
+</div>
+
+<script>
+let users = [
+  {name:"Ur-admin", email:"uradmin@vasthaganr4.se", password:"Admin123!", role:"admin"}
+];
+
+function showRegister(){
+  document.getElementById('loginDiv').style.display='none';
+  document.getElementById('registerDiv').style.display='flex';
+}
+function showLogin(){
+  document.getElementById('loginDiv').style.display='flex';
+  document.getElementById('registerDiv').style.display='none';
+}
+
+function register(){
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value.toLowerCase();
+  const password = document.getElementById('registerPassword').value;
+  const confirm = document.getElementById('registerConfirm').value;
+  const errorDiv = document.getElementById('registerError');
+
+  if(password !== confirm){ errorDiv.textContent="Lösenorden matchar inte!"; return; }
+  if(users.some(u=>u.email===email)){ errorDiv.textContent="E-post redan registrerad!"; return; }
+
+  users.push({name,email,password,role:"user"});
+  errorDiv.textContent="Registrering lyckades! Du kan nu logga in.";
+  showLogin();
+}
+
+function login(){
+  const email = document.getElementById('loginEmail').value.toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const errorDiv = document.getElementById('loginError');
+
+  const user = users.find(u=>u.email===email && u.password===password);
+  if(user){
+    errorDiv.textContent="";
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    showCurrentUser(user);
+    if(user.role==="admin") {
+        showAdminPanel();
+        document.getElementById('adminNav').style.display = 'block';
+    }
+  } else {
+    errorDiv.textContent="Fel e-post eller lösenord!";
+  }
+}
+
+function resetPassword(){
+  const email = prompt("Ange din registrerade e-postadress:");
+  if(!email) return;
+  const user = users.find(u=>u.email===email.toLowerCase());
+  if(user){
+    const tempPassword="Temp1234";
+    user.password=tempPassword;
+    alert(`Tillfälligt lösenord: ${tempPassword}`);
+  } else {
+    alert("E-postadressen finns inte registrerad. Ange en giltig e-postadress.");
+  }
+}
+
+function showAdminPanel(){
+  document.getElementById('loginDiv').style.display='none';
+  document.getElementById('registerDiv').style.display='none';
+  const panel = document.getElementById('adminPanel');
+  panel.style.display='block';
+  updateUserList();
+}
+
+function updateUserList(){
+  const listDiv=document.getElementById('userList');
+  listDiv.innerHTML="";
+  users.forEach(u=>{
+    const div=document.createElement('div');
+    div.className="user-item";
+    div.textContent=`${u.name} - ${u.email} - ${u.role}`;
+    listDiv.appendChild(div);
+  });
+}
+
+function addAdmin(){
+  const email=document.getElementById('newAdminEmail').value.toLowerCase();
+  const user=users.find(u=>u.email===email);
+  if(user){ user.role="admin"; alert(`${email} är nu admin!`); updateUserList();}
+  else{ alert("Användaren finns inte. Registrera först som medlem."); }
+}
+
+function logout(){
+  localStorage.removeItem('currentUser');
+  document.getElementById('currentUserDiv').style.display='none';
+  document.getElementById('adminNav').style.display='none';
+  document.getElementById('loginDiv').style.display='flex';
+  document.getElementById('adminPanel').style.display='none';
+}
+
+function showCurrentUser(user){
+  const div = document.getElementById('currentUserDiv');
+  div.style.display='block';
+  div.textContent = `Inloggad som: ${user.name} (${user.role})`;
+}
+
+// Kolla om användare redan är inloggad
+const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+if(currentUser){
+  showCurrentUser(currentUser);
+  if(currentUser.role==="admin"){
+    document.getElementById('adminNav').style.display='block';
+    showAdminPanel();
+  }
+}
+
+const mainNav = document.getElementById('mainNav');
+const hamburger = document.getElementById('hamburger');
+hamburger.addEventListener('click',()=>{ mainNav.classList.toggle('show'); hamburger.textContent=mainNav.classList.contains('show')?'➤':'☰'; });
+</script>
+</body>
+</html>

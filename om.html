@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Om Bostadsrättsföreningen Västhaga Nr4</title>
+<style>
+:root{
+  --bg:#f7f9fc;
+  --card:#ffffff;
+  --accent:#f09a0f;
+  --muted:#6b7280;
+  --maxw:1200px;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
+.container{max-width:var(--maxw);margin:24px auto;padding:16px}
+
+/* ----- Header ----- */
+header {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  padding: 22px 32px;
+  z-index: 60;
+  background: rgba(255,255,255,0);
+  box-shadow: none;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition:all .2s;white-space:nowrap;}
+nav a:hover{background:var(--accent);color:#fff;}
+.dropdown{position:relative;}
+.dropdown-content{
+  position:absolute;top:36px;left:0;
+  background:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  padding:8px;border-radius:8px;display:none;min-width:180px;z-index:80;
+}
+.dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
+.dropdown-content a:hover{background:var(--accent);color:#fff;}
+.dropdown-toggle{display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;font-size:13px;border-radius:4px;background:transparent;border:none;cursor:pointer;}
+.dropdown-toggle.locked{color:var(--accent);transform:rotate(90deg);}
+
+/* ----- Kortlayout ----- */
+h1{text-align:center;margin-top:120px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:32px}
+@media (min-width:1024px){.grid{grid-template-columns:repeat(3,1fr);}}
+.card{background:var(--card);padding:24px;border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);text-align:center;position:relative;cursor:grab;}
+.card h3{margin-top:0;color:var(--accent);}
+.card .edit-btn,.card .delete-btn{position:absolute;top:8px;right:8px;border:none;cursor:pointer;border-radius:6px;padding:6px;font-weight:bold;transition:0.2s;background:none;color:var(--accent);font-size:1.2rem;}
+.card .edit-btn:hover,.card .delete-btn:hover{color:#d27c0c;}
+.card .delete-btn{bottom:8px;right:8px;top:auto;}
+.card-img-wrapper{width:100%;height:180px;overflow:hidden;border-radius:8px;margin-bottom:12px;}
+.card-img-wrapper img{width:100%;height:100%;object-fit:cover;object-position:center;}
+
+.add-card-btn{width:48px;height:48px;background:var(--accent);color:#fff;border-radius:50%;font-size:24px;display:flex;justify-content:center;align-items:center;cursor:pointer;z-index:50;margin:16px auto;transition:0.2s;}
+.add-card-btn:hover{background:#d27c0c;}
+
+/* ----- Editor och knappar ----- */
+.edit-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);display:none;justify-content:center;align-items:center;z-index:100;}
+.edit-overlay .editor{background:#fff;padding:24px;border-radius:10px;max-width:500px;width:100%;display:flex;flex-direction:column;gap:12px;}
+.edit-overlay input,.edit-overlay textarea{padding:10px;border-radius:8px;border:1px solid #e6eef2;width:100%;font-size:0.95rem;font-family:inherit;}
+.editor .btn{padding:10px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:600;font-family:inherit;transition:background 0.2s ease;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#d27c0c;}
+.btn-secondary{background:#fff;color:var(--accent);border:1px solid #eee;}
+.btn-secondary:hover{background:#f3f4f6;}
+.btn-cancel{background:#f3f4f6;color:#111;}
+.btn-cancel:hover{background:#e5e7eb;}
+
+/* ----- Save / publish ----- */
+.save-publish{position:fixed;bottom:16px;right:16px;z-index:60;display:none;gap:8px;}
+.save-publish .btn{padding:10px 14px;border-radius:8px;border:0;cursor:pointer;font-weight:600;font-family:inherit;}
+.save-publish .btn-primary{background:var(--accent);color:#fff;}
+.save-publish .btn-primary:hover{background:#d27c0c;}
+.save-publish .btn-cancel{background:#e5e7eb;color:#111;}
+.save-publish .btn-cancel:hover{background:#d1d5db;}
+
+footer{margin-top:32px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:32px}
+
+/* ----- Hamburger ----- */
+.hamburger{display:none;font-size:1.8rem;cursor:pointer;user-select:none;z-index:70;color:var(--accent);position:relative;transition:transform .3s;}
+@media(max-width:768px){
+  .hamburger{display:block;}
+  nav ul{flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;background:#fff;padding-top:72px;padding-left:12px;transform:translateX(100%);transition:transform .28s;box-shadow:-6px 0 20px rgba(0,0,0,0.08);z-index:120;text-align:left;align-items:flex-start;}
+  nav ul.show{transform:translateX(0);}
+  nav ul li{margin-bottom:12px;width:100%;}
+  nav ul li a{width:100%;text-align:left;padding-left:16px;}
+  .dropdown-content{position:static;box-shadow:none;padding-left:12px;display:none;}
+  .dropdown.active .dropdown-content{display:block;}
+}
+</style>
+</head>
+<body>
+<header id="siteHeader">
+  <div class="brand">
+    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
+    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
+      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
+      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
+    </a>
+  </div>
+
+  <nav>
+    <div class="hamburger" id="hamburger">☰</div>
+    <ul id="mainNav">
+      <li><a href="index.html">Hem</a></li>
+      <li class="dropdown">
+        <a href="om.html">Om föreningen ▾</a>
+        <div class="dropdown-content">
+          <a href="om.html">Om oss</a>
+          <a href="stadgar.html">Stadgar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="styrelsen.html">Styrelsen ▾</a>
+        <div class="dropdown-content">
+          <a href="styrelsen.html">Styrelsen</a>
+          <a href="styrelseninformerar.html">Styrelsen informerar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="#">Planeringsprojekt ▾</a>
+        <div class="dropdown-content">
+          <a href="pagaendeplaner.html">Pågående planer</a>
+          <a href="utfordaplaner.html">Utförda planer</a>
+        </div>
+      </li>
+
+      <li><a href="felanmalan.html">Felanmälan</a></li>
+      <li><a href="loggain.html">Logga in</a></li>
+      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container">
+  <h1>Om Bostadsrättsföreningen Västhaga Nr4</h1>
+  <main class="grid" id="cardGrid"></main>
+  <div class="add-card-btn" id="addCardBtn" style="display:none;">+</div>
+</div>
+
+<div class="save-publish" id="savePublish">
+  <button id="saveBtn" class="btn btn-primary">Spara och publicera</button>
+  <button id="cancelBtn" class="btn btn-cancel">Avbryt</button>
+</div>
+
+<div class="edit-overlay" id="editOverlay" style="display:none;">
+  <div class="editor">
+    <input type="text" id="editTitle" placeholder="Rubrik">
+    <textarea id="editText" rows="4" placeholder="Text"></textarea>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <input type="text" id="editImage" placeholder="Bild-URL" style="flex:1;">
+      <button id="removeImageBtn" class="btn btn-secondary">Ta bort bild</button>
+    </div>
+    <button id="addImageBtn" class="btn btn-secondary">Lägg till bild</button>
+    <div id="imageOptions" style="display:none;flex-direction:column;gap:8px;">
+      <input type="file" id="uploadFile" accept="image/*">
+      <input type="text" id="imageURL" placeholder="Klistra in URL">
+      <button id="applyImageBtn" class="btn btn-primary">Använd bild</button>
+    </div>
+    <button id="applyEditBtn" class="btn btn-primary">Tillämpa ändring</button>
+    <button id="cancelEditBtn" class="btn btn-cancel">Avbryt</button>
+  </div>
+</div>
+
+<footer>&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
+
+<script>
+/* ----- Header scroll & dropdown (samma som index) ----- */
+const mainNav=document.getElementById('mainNav');
+const hamburger=document.getElementById('hamburger');
+const header=document.getElementById('siteHeader');
+const heroSection=document.querySelector('.hero');
+const adminNav=document.getElementById('adminNav');
+let currentUser=JSON.parse(localStorage.getItem('currentUser')||'null');
+let adminMode=currentUser&&currentUser.role==='admin';
+function updateHeaderOnScroll(){
+  const heroHeight=heroSection?heroSection.offsetHeight:300;
+  const scrollY=window.scrollY;
+  if(scrollY<heroHeight){
+    const opacity=Math.min(1,scrollY/heroHeight);
+    header.style.background=`rgba(255,255,255,${opacity})`;
+    header.style.boxShadow=opacity>0?`0 4px 12px rgba(0,0,0,${opacity*0.08})`:'none';
+  }else{
+    header.style.background='#fff';
+    header.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)';
+  }
+}
+window.addEventListener('scroll',updateHeaderOnScroll);
+window.addEventListener('load',updateHeaderOnScroll);
+
+/* Dropdowns: hover delay + toggle lock */
+const DROPDOWN_HIDE_DELAY=500;
+const dropdowns=document.querySelectorAll('.dropdown');
+dropdowns.forEach(drop=>{
+  const toggleBtn=drop.querySelector('.dropdown-toggle');
+  const menu=drop.querySelector('.dropdown-content');
+  let hideTimeout=null;
+  function showMenu(){
+    dropdowns.forEach(d=>{
+      if(d!==drop){
+        const tb=d.querySelector('.dropdown-toggle');
+        const locked=tb&&tb.classList.contains('locked');
+        if(!locked){const m=d.querySelector('.dropdown-content');if(m)m.style.display='none';}
+      }
+    });
+    if(menu)menu.style.display='block';clearTimeout(hideTimeout);
+  }
+  function hideMenu(){
+    if(menu)menu.style.display='none';clearTimeout(hideTimeout);
+  }
+  drop.addEventListener('mouseenter',()=>showMenu());
+  drop.addEventListener('mouseleave',()=>{
+    const locked=toggleBtn&&toggleBtn.classList.contains('locked');
+    if(locked)return;
+    hideTimeout=setTimeout(()=>{if(menu)menu.style.display='none';},DROPDOWN_HIDE_DELAY);
+  });
+  if(toggleBtn){
+    toggleBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const isLocked=toggleBtn.classList.toggle('locked');
+      if(isLocked){if(menu)menu.style.display='block';}
+      else{setTimeout(()=>{if(menu)menu.style.display='none';},DROPDOWN_HIDE_DELAY);}
+    });
+  }
+  const link=drop.querySelector('a');
+  if(link){
+    link.addEventListener('click',e=>{
+      if(link.getAttribute('href')==='#'||window.innerWidth<=768){
+        e.preventDefault();
+        if(menu)menu.style.display=(menu.style.display==='block')?'none':'block';
+      }
+    });
+  }
+});
+document.addEventListener('click',e=>{
+  dropdowns.forEach(drop=>{
+    const toggleBtn=drop.querySelector('.dropdown-toggle');
+    const menu=drop.querySelector('.dropdown-content');
+    const locked=toggleBtn&&toggleBtn.classList.contains('locked');
+    if(!locked&&!drop.contains(e.target)){if(menu)menu.style.display='none';}
+  });
+});
+hamburger.addEventListener('click',()=>{
+  mainNav.classList.toggle('show');
+  hamburger.textContent=mainNav.classList.contains('show')?'➤':'☰';
+});
+function updateAdminVisibility(){
+  const cur=JSON.parse(localStorage.getItem('currentUser')||'null');
+  if(cur&&cur.role==='admin'){adminNav.style.display='block';}
+  else{adminNav.style.display='none';}
+}
+updateAdminVisibility();
+
+/* ----- Kort och redigering ----- */
+let cards=JSON.parse(localStorage.getItem('omCards'))||[
+  {title:"Trapphus & Lägenheter",text:"78 lägenheter fördelade på 7A, 7B, 9A, 9B, 9C och 9D.",image:"om_bild_1.jpg"},
+  {title:"Historia",text:"Skjutbanegatan har en lång historia kopplad till ASEA och området har stark lokal förankring.",image:"om_bild_2.jpg"},
+  {title:"Läge",text:"Nära centrum, Finnslätten och Mälardalens Universitet – ett attraktivt område att bo i.",image:"om_bild_3.jpg"}
+];
+let editingIndex=null;
+function renderCards(){
+  const grid=document.getElementById('cardGrid');
+  grid.innerHTML="";
+  cards.forEach((c,i)=>{
+    const card=document.createElement('div');
+    card.className="card";card.draggable=adminMode;card.dataset.index=i;
+    if(c.image)card.innerHTML=`<div class="card-img-wrapper"><img src="${c.image}"></div>`;
+    card.innerHTML+=`<h3>${c.title}</h3><p>${c.text}</p>`;
+    if(adminMode){
+      const editBtn=document.createElement('button');
+      editBtn.className="edit-btn";editBtn.textContent="✏️";editBtn.onclick=()=>editCard(i);
+      const deleteBtn=document.createElement('button');
+      deleteBtn.className="delete-btn";deleteBtn.textContent="🗑️";deleteBtn.onclick=()=>{cards.splice(i,1);showSave();renderCards();};
+      card.appendChild(editBtn);card.appendChild(deleteBtn);
+    }
+    grid.appendChild(card);
+  });
+  if(adminMode)document.getElementById('addCardBtn').style.display="flex";
+}
+renderCards();
+function showSave(){document.getElementById('savePublish').style.display="flex";}
+function hideSave(){document.getElementById('savePublish').style.display="none";}
+document.getElementById('addCardBtn').addEventListener('click',()=>{
+  cards.push({title:"Ny rubrik",text:"Ny text",image:""});
+  showSave();renderCards();
+});
+function editCard(i){
+  editingIndex=i;
+  const card=cards[i];
+  document.getElementById('editTitle').value=card.title;
+  document.getElementById('editText').value=card.text;
+  document.getElementById('editImage').value=card.image;
+  document.getElementById('editOverlay').style.display="flex";
+}
+document.getElementById('applyEditBtn').addEventListener('click',()=>{
+  if(editingIndex===null)return;
+  cards[editingIndex].title=document.getElementById('editTitle').value;
+  cards[editingIndex].text=document.getElementById('editText').value;
+  cards[editingIndex].image=document.getElementById('editImage').value;
+  editingIndex=null;
+  document.getElementById('editOverlay').style.display="none";
+  showSave();renderCards();
+});
+document.getElementById('removeImageBtn').addEventListener('click',()=>{document.getElementById('editImage').value="";});
+document.getElementById('addImageBtn').addEventListener('click',()=>{document.getElementById('imageOptions').style.display='flex';});
+document.getElementById('applyImageBtn').addEventListener('click',()=>{
+  const fileInput=document.getElementById('uploadFile');
+  const urlInput=document.getElementById('imageURL');
+  if(fileInput.files&&fileInput.files[0]){
+    const reader=new FileReader();
+    reader.onload=e=>{document.getElementById('editImage').value=e.target.result;}
+    reader.readAsDataURL(fileInput.files[0]);
+  }else if(urlInput.value){document.getElementById('editImage').value=urlInput.value;}
+  document.getElementById('imageOptions').style.display='none';
+});
+document.getElementById('cancelEditBtn').addEventListener('click',()=>{editingIndex=null;document.getElementById('editOverlay').style.display="none";});
+document.getElementById('cancelBtn').addEventListener('click',()=>{cards=JSON.parse(localStorage.getItem('omCards'))||cards;editingIndex=null;document.getElementById('editOverlay').style.display="none";hideSave();});
+document.getElementById('saveBtn').addEventListener('click',()=>{localStorage.setItem('omCards',JSON.stringify(cards));hideSave();alert("Ändringar sparade!");});
+</script>
+</body>
+</html>

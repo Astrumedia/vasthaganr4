@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Felanmälan — Västhaga Nr4</title>
+<style>
+:root{
+  --bg:#f7f9fc;
+  --card:#ffffff;
+  --accent:#f09a0f;
+  --muted:#6b7280;
+  --maxw:1200px;
+  --button-bg:#f09a0f;
+  --button-hover:#d27c0c;
+  --button-text:#fff;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
+.container{max-width:var(--maxw);margin:24px auto;padding:16px}
+
+/* Header (standard på alla sidor) */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 22px 32px;
+  background: rgba(255,255,255,0);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+header.scrolled {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
+nav a:hover{background:var(--accent);color:#fff;}
+.dropdown{position:relative;}
+.dropdown-content {position: absolute; top: 36px; left: 0; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 8px; border-radius: 8px; display: none; min-width: 180px; z-index: 10;}
+.dropdown:hover .dropdown-content{display:block}
+.dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
+.dropdown-content a:hover{background:var(--accent);color:#fff;}
+
+/* Page layout */
+.page-title { margin-top: 120px; text-align: center; font-weight:700; font-size:1.8rem; color:var(--accent); }
+
+/* Form card */
+.form-card{
+  background:var(--card);
+  padding:28px;
+  border-radius:12px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.06);
+  max-width:900px;
+  margin:24px auto;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:768px){ .form-grid{grid-template-columns:1fr;} }
+.input, textarea { width:100%; padding:12px; border-radius:8px; border:1px solid #e6eef2; font-size:1rem; }
+label{display:block;font-weight:600;margin-bottom:6px;color:#333}
+.small-muted{font-size:0.95rem;color:#374151; margin-bottom:12px;}
+.alert-box {
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* attachments preview */
+.attachments { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.att { width:80px; height:80px; background:#f3f4f6; border-radius:8px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; }
+.att img{width:100%;height:100%;object-fit:cover}
+.att .remove { position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.5); color:#fff; border-radius:6px; padding:2px 6px; cursor:pointer; font-size:12px; }
+
+/* Buttons */
+.row { display:flex; gap:12px; align-items:center; }
+.btn { padding:10px 14px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
+.btn-primary{ background:var(--accent); color:#fff; }
+.btn-secondary{ background:#fff; color:var(--accent); border:1px solid #eee; }
+.btn-cancel{ background:#e5e7eb; color:#111; }
+
+/* popup */
+.popup-backdrop{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:300; background:rgba(0,0,0,0.35); opacity:0; transition:opacity .18s ease; }
+.popup{ background:#fff; padding:18px 20px; border-radius:10px; box-shadow:0 12px 40px rgba(0,0,0,0.18); max-width:420px; text-align:center; }
+.popup.show{ transform:translateY(0); opacity:1; }
+
+/* footer */
+footer{margin-top:32px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:32px}
+
+/* hamburger mobile */
+.hamburger {display:none;font-size:1.8rem;cursor:pointer;user-select:none;z-index:70;color:var(--accent);position:relative;transition:transform 0.3s;}
+@media (max-width:768px){ .hamburger{display:block;} nav ul{flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;background:#fff;padding-top:72px;padding-left:12px;transform:translateX(100%);transition:transform .28s;box-shadow:-6px 0 20px rgba(0,0,0,0.08);z-index:120;text-align:left;align-items:flex-start;} nav ul.show{transform:translateX(0);} nav ul li{margin-bottom:12px;width:100%;} nav ul li a{width:100%;text-align:left;padding-left:16px;} .dropdown-content{position:static;box-shadow:none;padding-left:12px;display:none;} .dropdown.active .dropdown-content{display:block;} }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="brand">
+    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
+    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
+      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
+      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
+    </a>
+  </div>
+
+  <nav>
+    <div class="hamburger" id="hamburger">☰</div>
+    <ul id="mainNav">
+      <li><a href="index.html">Hem</a></li>
+      <li class="dropdown">
+        <a href="om.html">Om föreningen ▾</a>
+        <div class="dropdown-content">
+          <a href="om.html">Om oss</a>
+          <a href="stadgar.html">Stadgar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="styrelsen.html">Styrelsen ▾</a>
+        <div class="dropdown-content">
+          <a href="styrelsen.html">Styrelsen</a>
+          <a href="styrelseninformerar.html">Styrelsen informerar</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <a href="#">Planeringsprojekt ▾</a>
+        <div class="dropdown-content">
+          <a href="pagaendeplaner.html">Pågående planer</a>
+          <a href="utfordaplaner.html">Utförda planer</a>
+        </div>
+      </li>
+
+      <li><a href="felanmalan.html">Felanmälan</a></li>
+      <li><a href="loggain.html">Logga in</a></li>
+      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="page-title">Felanmälan</div>
+
+  <div class="form-card">
+    <div class="alert-box">
+      <strong>⚠ Vid akuta ärenden (t.ex. vattenläckor, elfel, värmeproblem nattetid):</strong><br>
+      Kontakta <strong>HSB Jouren</strong> direkt på telefonnummer <strong>010-303 27 00</strong>.
+    </div>
+
+    <p class="small-muted">Vid övriga ärenden kan ni fylla i formuläret nedan. Beskriv tydligt vad som behöver åtgärdas, så återkopplar vi så snart som möjligt.</p>
+
+    <form id="felForm" novalidate>
+      <div class="form-grid">
+        <div>
+          <label for="fullName">Namn &amp; Efternamn*</label>
+          <input id="fullName" class="input" type="text" placeholder="Förnamn Efternamn" required>
+        </div>
+        <div>
+          <label for="apt">Lägenhetsnummer &amp; trapphus*</label>
+          <input id="apt" class="input" type="text" placeholder="Ex: 9A, Trapphus 1" required>
+        </div>
+
+        <div>
+          <label for="email">E-postadress*</label>
+          <input id="email" class="input" type="email" placeholder="din@epost.se" required>
+        </div>
+        <div>
+          <label for="phone">Telefonnummer (valfritt)</label>
+          <input id="phone" class="input" type="tel" placeholder="070-xxx xx xx">
+        </div>
+
+        <div style="grid-column:1 / -1;">
+          <label for="description">Beskrivning av ärendet*</label>
+          <textarea id="description" class="input" rows="6" placeholder="Beskriv problemet så tydligt som möjligt" required></textarea>
+        </div>
+
+        <div style="grid-column:1 / -1;">
+          <label>Bifoga bilder (valfritt)</label>
+          <label class="btn btn-secondary" for="attachmentsInput" style="margin:0;">
+            <input id="attachmentsInput" type="file" accept="image/*" multiple style="display:none;">
+            Ladda upp från enhet
+          </label>
+          <div class="attachments" id="attachmentsPreview" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; justify-content:flex-end; gap:12px;">
+        <button type="button" id="previewBtn" class="btn btn-secondary">Förhandsgranska</button>
+        <button type="submit" id="sendBtn" class="btn btn-primary">Skicka felanmälan</button>
+      </div>
+      <div id="formError" style="color:#b91c1c;margin-top:10px;display:none;"></div>
+    </form>
+  </div>
+</main>
+
+<!-- Popup -->
+<div class="popup-backdrop" id="popupBackdrop" aria-hidden="true">
+  <div class="popup" role="dialog" aria-modal="true">
+    <p id="popupMessage" style="margin:0 0 12px;">Tack! Ditt ärende har skickats.</p>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button id="popupOk" class="btn btn-primary">OK</button>
+    </div>
+  </div>
+</div>
+
+<footer>&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
+
+<script>
+// === Header scroll ===
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>100){ header.classList.add('scrolled'); }
+  else{ header.classList.remove('scrolled'); }
+});
+
+// === Hamburger ===
+const hamburger=document.getElementById('hamburger');
+const mainNav=document.getElementById('mainNav');
+hamburger.addEventListener('click',()=>{
+  mainNav.classList.toggle('show');
+  hamburger.textContent = mainNav.classList.contains('show')?'➤':'☰';
+});
+
+// === Admin visibility ===
+const currentUser = JSON.parse(localStorage.getItem('currentUser')||'null');
+if(currentUser && currentUser.role==='admin'){
+  document.getElementById('adminNav').style.display='block';
+}
+
+// === Form logic ===
+const felForm=document.getElementById('felForm');
+const fullName=document.getElementById('fullName');
+const apt=document.getElementById('apt');
+const emailIn=document.getElementById('email');
+const phone=document.getElementById('phone');
+const description=document.getElementById('description');
+const attachmentsInput=document.getElementById('attachmentsInput');
+const attachmentsPreview=document.getElementById('attachmentsPreview');
+const formError=document.getElementById('formError');
+const popupBackdrop=document.getElementById('popupBackdrop');
+const popupMessage=document.getElementById('popupMessage');
+const popupOk=document.getElementById('popupOk');
+
+let attachments=[];
+
+function uid(){return Math.random().toString(36).slice(2,9);}
+function renderAttachments(){
+  attachmentsPreview.innerHTML='';
+  attachments.forEach(att=>{
+    const el=document.createElement('div');
+    el.className='att';
+    const img=document.createElement('img');
+    img.src=att.data;
+    el.appendChild(img);
+    const rem=document.createElement('div');
+    rem.className='remove';
+    rem.textContent='✕';
+    rem.onclick=()=>{attachments=attachments.filter(a=>a.id!==att.id);renderAttachments();};
+    el.appendChild(rem);
+    attachmentsPreview.appendChild(el);
+  });
+}
+attachmentsInput.addEventListener('change',(e)=>{
+  const files=Array.from(e.target.files||[]);
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=function(ev){
+      attachments.push({id:uid(),data:ev.target.result,name:file.name});
+      renderAttachments();
+    };
+    reader.readAsDataURL(file);
+  });
+  attachmentsInput.value='';
+});
+function validateForm(){
+  formError.style.display='none';
+  if(!fullName.value.trim()){formError.textContent='Ange namn och efternamn.';formError.style.display='block';return false;}
+  if(!apt.value.trim()){formError.textContent='Ange lägenhetsnummer och trapphus.';formError.style.display='block';return false;}
+  if(!emailIn.value.trim()||!/^\S+@\S+\.\S+$/.test(emailIn.value.trim())){formError.textContent='Ange en giltig e-postadress.';formError.style.display='block';return false;}
+  if(!description.value.trim()){formError.textContent='Beskriv ärendet.';formError.style.display='block';return false;}
+  return true;
+}
+function showPopup(msg){
+  popupMessage.textContent=msg;
+  popupBackdrop.style.display='flex';
+  setTimeout(()=>{popupBackdrop.style.opacity='1';},10);
+}
+function hidePopup(){
+  popupBackdrop.style.opacity='0';
+  setTimeout(()=>{popupBackdrop.style.display='none';},200);
+}
+popupOk.addEventListener('click',hidePopup);
+document.getElementById('previewBtn').addEventListener('click',()=>{
+  if(!validateForm())return;
+  const summary=`Namn: ${fullName.value}\nLgh: ${apt.value}\nEpost: ${emailIn.value}\nTel: ${phone.value}\n\n${description.value}`;
+  showPopup(summary);
+});
+felForm.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  if(!validateForm())return;
+  const payload={
+    name:fullName.value.trim(),
+    apartment:apt.value.trim(),
+    email:emailIn.value.trim(),
+    phone:phone.value.trim(),
+    description:description.value.trim(),
+    attachments:attachments.map(a=>a.data),
+    timestamp:new Date().toISOString()
+  };
+  const existing=JSON.parse(localStorage.getItem('felanmalanCases')||'[]');
+  existing.unshift(payload);
+  localStorage.setItem('felanmalanCases',JSON.stringify(existing));
+  showPopup('Tack! Ditt ärende har skickats.');
+  felForm.reset();
+  attachments=[];
+  renderAttachments();
+});
+popupBackdrop.addEventListener('click',(e)=>{if(e.target===popupBackdrop)hidePopup();});
+renderAttachments();
+</script>
+</body>
+</html>
