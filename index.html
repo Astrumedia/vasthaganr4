@@ -1,590 +1,1573 @@
 <!doctype html>
 <html lang="sv">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Västhaga Nr4 — Bostadsrättsförening</title>
-<style>
-:root{
-  --bg:#f7f9fc;
-  --card:#ffffff;
-  --accent:#f09a0f;
-  --muted:#6b7280;
-  --maxw:1200px;
-}
-*{box-sizing:border-box}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Västhaga Nr4 — Bostadsrättsförening</title>
+
+  <style>
+    :root{
+      --bg:#f7f9fc;
+      --card:#ffffff;
+      --accent:#f09a0f;
+      --muted:#6b7280;
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
 body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
-.container{max-width:var(--maxw);margin:24px auto;padding:16px}
 
-/* Header */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 22px 32px;
-  z-index: 10;
-  background: rgba(255,255,255,0);
-  box-shadow: none;
-  transition: background 0.35s ease, box-shadow 0.35s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    .container{max-width:var(--maxw);margin:24px auto;padding:16px}
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      padding: 22px 32px;
+      z-index: 10;
+      background: rgba(255,255,255,0);
+      box-shadow: none;
+      transition: background 0.35s ease, box-shadow 0.35s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .logo{width:44px;height:44px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;overflow:hidden}
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .brand-title{display:flex;flex-direction:column;min-width:0}
+    .brand-title strong{font-weight:700;font-size:1.5rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand-title span{color:var(--muted);font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+    nav a{padding:8px 12px;border-radius:12px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;font: weight 0;;}
+    nav a:hover{background:var(--accent);color:#fff;}
+    .dropdown{position:relative}
+
+    .dropdown-content {
+      position: absolute; top: 28px; left: 0;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+      padding: 4px;
+      border-radius: 12px;
+      display: none;
+      min-width: 210px;
+      z-index: 10;
+    }
+    .dropdown:hover .dropdown-content{display:block}
+    .dropdown-content a{
+      color: var(--accent);
+      background:#fff;
+      margin:2px 0;
+      padding:10px 10px;
+      display:block;
+      border-radius:12px;
+    }
+    .dropdown-content a:hover{background:var(--accent);color:#fff;}
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding-top:60px;
+      background: url('bakgrundsbild1.jpg') center/cover no-repeat;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      z-index: 0;
+      padding-left: 14px;
+      padding-right: 14px; 
+    }
+    .hero::after{content:''; position:absolute; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.34); z-index:1;}
+    .hero h1{font-size:3.5rem; margin:0; position:relative; z-index:2; display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center}
+    .hero h2{font-size:2.0rem; margin:10px 0 0 0; z-index:2; font-weight:800; opacity:0.95}
+
+    /* Section headers */
+    .section-head{margin-top:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .section-head-left{min-width:0}
+    .section-title{margin:0;font-size:1.55rem;letter-spacing:-0.01em;font-weight:950}
+    .section-desc{margin:8px 0 0 0;color:var(--muted);font-size:1.05rem;line-height:1.35;font-weight:700}
+
+    /* Admin small edit */
+    .mini-edit{
+      display:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,0.08);
+      background:#fff;
+      cursor:pointer;
+      font-weight:950;
+      box-shadow:0 10px 24px rgba(11,18,32,0.06);
+      white-space:nowrap;
+    }
+    .mini-edit:hover{border-color: rgba(240,154,15,0.45)}
+    .mini-edit span{color:var(--accent)}
+    .is-admin .mini-edit{display:inline-flex;align-items:center;gap:8px}
+
+    /* Quick actions — större, mobil först */
+    .actions{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top:16px;
+    }
+    @media (min-width: 640px){
+      .actions{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (min-width: 1024px){
+      .actions{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+    }
+
+    .action-btn{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+
+      padding:16px 16px;
+      border-radius:18px;
+      background:#fff;
+      border:1px solid #eef2f6;
+      text-decoration:none;
+      color:inherit;
+
+      font-weight:950;
+      font-size:1.10rem;
+      line-height:1.25;
+      min-height:70px;
+      box-shadow:0 12px 26px rgba(11,18,32,0.07);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .action-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(240,154,15,0.45);
+      box-shadow:0 16px 32px rgba(11,18,32,0.09);
+    }
+
+    .action-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .action-icon{
+      width:50px;
+      height:50px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(240,154,15,0.14);
+      color:#a86405;
+      font-size:24px;
+      flex:0 0 auto;
+    }
+    .action-text{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width:0;
+    }
+    .action-title{
+      font-weight:950;
+      font-size:1.10rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .action-sub{
+      font-size:0.98rem;
+      color:var(--muted);
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .action-pill{
+      font-size:12px;
+      font-weight:950;
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(240,154,15,0.14);
+      color:#a86405;
+      flex:0 0 auto;
+    }
+
+    /* grid / cards */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:16px;
+      grid-auto-flow:dense;
+    }
+    @media (max-width: 992px){ .grid{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width: 768px){ .grid{grid-template-columns:1fr;} }
+
+    .card{
+      background:var(--card);
+      padding:16px;
+      border-radius:16px;
+      box-shadow:0 10px 24px rgba(11,18,32,0.06);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    @media (max-width:768px){
+      .card{padding:18px}
+      .card h2{font-size:1.20rem}
+      .card p{font-size:1.04rem}
+    }
+    .card img{width:100%;border-radius:14px;object-fit:cover;height:180px;}
+    .card h2{margin:4px 0 0 0;font-size:1.15rem;font-weight:950}
+    .card p{color:var(--muted);margin:0;white-space:pre-line;line-height:1.35;font-weight:700}
+
+    .card.full-width{grid-column:1 / -1}
+
+    /* Admin buttons on cards */
+    .card .edit-btn, .card .delete-btn{
+      position:absolute; top:10px; right:10px;
+      background: rgba(255,255,255,0.94);
+      border:1px solid rgba(0,0,0,0.07);
+      cursor:pointer; font-size:18px; padding:8px; border-radius:12px;
+      box-shadow:0 10px 22px rgba(11,18,32,0.08);
+    }
+    .card .delete-btn{bottom:10px; right:10px; top:auto;}
+
+    /* Overlays */
+    .edit-overlay{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.45);
+      display:none; justify-content:center; align-items:center;
+      z-index:200; padding:12px;
+    }
+    .editor{
+      background:#fff;
+      padding:18px;
+      border-radius:18px;
+      max-width:720px;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      box-shadow:0 18px 46px rgba(0,0,0,0.25);
+    }
+    .editor input, .editor textarea, .editor select{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid #e6eef2;
+      font-size:1rem;
+      outline:none;
+      font-weight:750;
+    }
+    .editor textarea{min-height:160px;resize:vertical;font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .row > *{flex:1 1 auto}
+    .btn{
+      padding:12px 14px;
+      border-radius:14px;
+      border:0;
+      cursor:pointer;
+      font-weight:950;
+      font-size:1rem;
+      box-shadow:0 10px 22px rgba(11,18,32,0.06);
+    }
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-secondary{background:#fff;color:var(--accent);border:1px solid rgba(0,0,0,0.10);box-shadow:none}
+    .btn-cancel{background:#eef2f6;color:#111;box-shadow:none}
+
+    /* Preview + progress */
+    .preview-wrap{display:none; margin-top:6px;}
+    .preview-label{font-size:12px; opacity:.75; margin-bottom:6px;font-weight:850}
+    .preview-img{
+      width:100%; max-height:260px; object-fit:cover;
+      border-radius:16px; border:1px solid rgba(0,0,0,.08);
+      background:#fafafa;
+    }
+
+    .progress-wrap{display:none; margin-top:6px;}
+    .progress-head{display:flex; justify-content:space-between; font-size:12px; opacity:.75;font-weight:850}
+    .progress-track{height:10px; background:rgba(0,0,0,.10); border-radius:999px; overflow:hidden; margin-top:8px;}
+    .progress-bar{height:100%; width:0%; background:rgba(0,0,0,.35);}
+
+    /* Save / publish floating */
+    .save-publish{
+      position:fixed; bottom:16px; right:16px;
+      z-index:250; display:none; gap:10px; flex-wrap:wrap;
+    }
+    .save-publish .btn-primary{box-shadow:0 14px 32px rgba(240,154,15,0.35)}
+    .save-publish .btn-cancel{border:1px solid rgba(0,0,0,0.08)}
+
+    /* hamburger */
+    .hamburger{
+      display:none;
+      font-size: 1.9rem;
+      cursor:pointer;
+      user-select:none;
+      z-index:70;
+      color: var(--accent);
+      position: relative;
+      font-weight:900;
+    }
+
+/* Mobile hamburger: nicer close arrow when menu is open */
+.hamburger.is-open{
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  box-shadow: 0 10px 22px rgba(11,18,32,0.10);
+  transform: translateX(-2px);
 }
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
-nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
-nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
-nav a:hover{background:var(--accent);color:#fff;}
-.dropdown{position:relative}
 
-.dropdown-content {position: absolute; top: 36px; left: 0; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 8px; border-radius: 8px; display: none; min-width: 180px; z-index: 10;}
-.dropdown:hover .dropdown-content{display:block}
-.dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
-.dropdown-content a:hover{background:var(--accent);color:#fff;}
-
-/* dropdown toggle arrow (clickable to lock open) */
-.dropdown-toggle {
-  display:inline-flex;
-  width:20px;height:20px;align-items:center;justify-content:center;
-  font-size:13px;border-radius:4px;background:transparent;border:none;cursor:pointer;
-}
-.dropdown-toggle.locked { color: var(--accent); transform: rotate(90deg); }
-
-/* Hero */
-.hero {
-  position: relative;
-  padding-top:60px;
-  background: url('bakgrundsbild1.jpg') center/cover no-repeat;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: #fff;
-  z-index: 0;
-}
-.hero::after{content:''; position:absolute; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.3); z-index:1;}
-.hero h1{font-size:3.5rem; margin:0; position:relative; z-index:2; display:flex; align-items:center; gap:8px;}
-.hero h2{font-size:2.0rem; margin:8px 0 0 0; z-index:2;}
-
-/* grid / cards */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px; margin-top:16px;}
-@media (max-width: 992px){ .grid{grid-template-columns:repeat(2,1fr);} }
-@media (max-width: 768px){ .grid{grid-template-columns:1fr;} }
-
-.card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);margin-top:16px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
-.card img{width:100%;border-radius:8px;margin-bottom:8px;object-fit:cover;height:160px;}
-.card h2{margin:8px 0;}
-.card p{color:var(--muted);margin:0;}
-
-/* Admin buttons */
-.card .edit-btn, .card .delete-btn{position:absolute; top:8px; right:8px; background:none; border:none; cursor:pointer; font-size:18px; padding:6px; border-radius:6px;}
-.card .delete-btn{bottom:8px; right:8px; top:auto;}
-.add-card-btn{width:48px; height:48px; background:var(--accent); color:#fff; border-radius:50%; font-size:24px; display:flex; justify-content:center; align-items:center; cursor:pointer; z-index:50; margin-top:16px;}
-
-/* Overlay editor */
-.edit-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45); display:none; justify-content:center; align-items:center; z-index:200;}
-.edit-overlay .editor{background:#fff;padding:20px;border-radius:10px; max-width:540px;width:100%; display:flex; flex-direction:column; gap:12px;}
-.edit-overlay input, .edit-overlay textarea{width:100%; padding:10px; border-radius:8px; border:1px solid #e6eef2; font-size:0.95rem;}
-.editor .row{display:flex;gap:8px;align-items:center;}
-.editor .row input[type="file"]{display:none;}
-.editor .btn { padding:10px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
-.btn-primary{ background:var(--accent); color:#fff; }
-.btn-secondary{ background:#fff; color:var(--accent); border:1px solid #eee; }
-.btn-cancel{ background:#f3f4f6; color:#111; }
-
-/* Save / publish floating */
-.save-publish{position:fixed; bottom:16px; right:16px; z-index:250; display:none; gap:8px;}
-.save-publish .btn { padding:10px 14px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
-.save-publish .btn-primary{ background:var(--accent); color:#fff; }
-.save-publish .btn-cancel{ background:#e5e7eb; color:#111; }
-
-/* mobile hamburger */
-.hamburger {display: none;font-size: 1.8rem;cursor: pointer;user-select: none;z-index: 70;color: var(--accent);position: relative;transition: transform 0.3s ease;}
+/* make sure it's always above the drawer */
 @media (max-width: 768px) {
-  .hamburger { display: block; }
-  nav ul { flex-direction: column; position: fixed; top: 0; right: 0; width: 260px; height: 100%; background: #fff; padding-top: 72px; padding-left: 12px; transform: translateX(100%); transition: transform 0.28s ease; box-shadow: -6px 0 20px rgba(0,0,0,0.08); z-index: 120; text-align: left; align-items: flex-start; }
-  nav ul.show { transform: translateX(0); }
-  nav ul li { margin-bottom: 12px; width: 100%; }
-  nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
-  .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
-  .dropdown.active .dropdown-content { display: block; }
+  .hamburger{
+    position: fixed;
+    top: 18px;
+    right: 16px;
+    z-index: 130; /* above nav drawer (120) */
+  }
 }
-.muted{color:var(--muted)}
-footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.9rem; padding-bottom:24px;}
-</style>
+
+    @media (max-width: 768px) {
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+      .hamburger{display:block}
+      nav ul{
+        flex-direction: column;
+        position: fixed;
+        top: 0; right: 0;
+        width: 290px;
+        height: 100%;
+        background: #fff;
+        padding-top: 78px;
+        padding-left: 12px;
+        transform: translateX(100%);
+        transition: transform 0.28s ease;
+        box-shadow: -10px 0 26px rgba(0,0,0,0.10);
+        z-index: 120;
+        text-align: left;
+        align-items: flex-start;
+        overflow-y:auto;
+      }
+      nav ul.show { transform: translateX(0); }
+      nav ul li { margin-bottom: 10px; width: 100%; }
+      nav ul li a { width: 100%; text-align: left; padding:12px 14px; font-size:1.06rem; font-weight:900; }
+      .dropdown-content { position: static; box-shadow: none; padding-left: 10px; display: none; }
+      .dropdown.active .dropdown-content { display: block; }
+      .dropdown:hover .dropdown-content{display:none}
+    }
+
+    /* === Make desktop menu visible over hero === */
+/* When header is transparent at top, force nav links to white so they don't "disappear" */
+header.is-hero nav a { color: #fff; }
+header.is-hero nav a:hover { background: rgba(240,154,15,0.95); color:#fff; }
+
+/* When header is solid (after scroll), use normal dark text */
+header.is-solid nav a { color: inherit; }
+
+/* === Mobile: nicer close arrow look when menu is open === */
+@media (max-width: 768px) {
+  .hamburger.is-open{
+    background:#fff;
+    border-radius:999px;
+    padding:6px 10px;
+    box-shadow:0 10px 22px rgba(11,18,32,0.12);
+  }
+}
+
+/* === Mobile: "Stäng meny" button at bottom of drawer === */
+@media (max-width: 768px) {
+  .mobile-close-wrap{
+    margin-top: auto;            /* push to bottom */
+    padding: 12px 12px 18px 12px;
+    width: 100%;
+  }
+  .mobile-close-btn{
+    width: 100%;
+    padding: 14px 14px;
+    border-radius: 12px;
+    border: 0;
+    background: rgba(240,154,15,0.16);
+    color: #a86405;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .mobile-close-btn:active{ transform: translateY(1px); }
+}
+
+/* Hide the close button row on desktop */
+@media (min-width: 769px){
+  .mobile-close-wrap{ display:none; }
+}
+
+    footer{
+      margin-top:18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.98rem;
+      padding: 20px 14px 28px 14px;
+      font-weight:800;
+    }
+
+    .muted{color:var(--muted)}
+    .helptext{color:var(--muted);font-size:0.95rem;line-height:1.35;font-weight:750}
+    .hidden{display:none !important;}
+
+/* ===== Header text is visible over hero ===== */
+header.is-hero,
+header.is-hero a,
+header.is-hero .brand-title strong,
+header.is-hero .brand-title span {
+  color: #fff !important;
+}
+
+header.is-hero nav a:hover{
+  background: rgba(240,154,15,0.95);
+  color:#fff !important;
+}
+
+/* when scrolled: normal dark */
+header.is-solid,
+header.is-solid a,
+header.is-solid .brand-title strong,
+header.is-solid .brand-title span {
+  color: inherit !important;
+}
+
+  </style>
 </head>
+
 <body>
-
-<header id="siteHeader">
-  <div class="brand">
-    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
-    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
-      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
-      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
-    </a>
-  </div>
-
-  <nav>
-    <div class="hamburger" id="hamburger">☰</div>
-    <ul id="mainNav">
-      <li><a href="index.html">Hem</a></li>
-      <li class="dropdown">
-        <a href="om.html">Om föreningen ▾</a>
-        <div class="dropdown-content">
-          <a href="om.html">Om oss</a>
-          <a href="stadgar.html">Stadgar</a>
+  <header id="siteHeader">
+    <div class="brand">
+      <a href="index.html" class="logo" aria-label="Hem">
+        <img id="brandLogo" src="logga.png" alt="Logga">
+      </a>
+      <a href="index.html" style="text-decoration:none;color:inherit;min-width:0;">
+        <div class="brand-title">
+          <strong id="brandName">Västhaga Nr4</strong>
+          <span id="brandTagline">Bostadsrättsförening</span>
         </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="styrelsen.html">Styrelsen ▾</a>
-        <div class="dropdown-content">
-          <a href="styrelsen.html">Styrelsen</a>
-          <a href="styrelseninformerar.html">Styrelsen informerar</a>
-        </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="#">Planeringsprojekt ▾</a>
-        <div class="dropdown-content">
-          <a href="pagaendeplaner.html">Pågående planer</a>
-          <a href="utfordaplaner.html">Utförda planer</a>
-        </div>
-      </li>
-
-      <li><a href="felanmalan.html">Felanmälan</a></li>
-      <li><a href="loggain.html">Logga in</a></li>
-      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
-    </ul>
-  </nav>
-</header>
-
-<!-- HERO -->
-<div class="hero" id="heroSection">
-  <h1 id="heroTitle">Välkommen till Västhaga Nr4
-    <button id="editHeroBtn" style="display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;margin-left:8px;">✏️</button>
-  </h1>
-  <h2 id="heroSubtitle">Bostadsrättsförening</h2>
-</div>
-
-<!-- MAIN -->
-<div class="container">
-  <main class="grid" id="cardGrid" aria-live="polite"></main>
-  <div class="add-card-btn" id="addCardBtn" title="Lägg till kort" style="display:none">+</div>
-</div>
-
-<!-- SAVE / CANCEL -->
-<div class="save-publish" id="savePublish">
-  <button id="saveBtn" class="btn btn-primary">Spara och publicera</button>
-  <button id="cancelBtn" class="btn btn-cancel">Avbryt</button>
-</div>
-
-<!-- EDIT OVERLAY (kort) -->
-<div class="edit-overlay" id="editOverlay">
-  <div class="editor">
-    <input type="text" id="editTitle" placeholder="Rubrik">
-    <textarea id="editText" rows="6" placeholder="Text"></textarea>
-
-    <div class="row">
-      <input type="text" id="editImage" placeholder="Bild-URL (eller lämna tomt)">
-      <button id="removeImageBtn" class="btn btn-secondary" type="button">Ta bort bild</button>
+      </a>
     </div>
 
-    <div class="row" style="justify-content:flex-start;">
-      <label class="btn btn-secondary" for="fileUpload" style="margin:0;">
-        <input id="fileUpload" type="file" accept="image/*" style="display:none;">
-        Ladda upp från enhet
-      </label>
-      <button id="applyEditBtn" class="btn btn-primary" type="button">Tillämpa ändring</button>
-      <button id="cancelEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
+    <nav>
+      <div class="hamburger" id="hamburger">☰</div>
+      <ul id="mainNav"></ul>
+    </nav>
+    
+  </header>
+
+  <div class="hero" id="heroSection">
+    <h1 id="heroTitle">
+      Välkommen till Västhaga Nr4
+      <button id="editHeroBtn" style="display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;font-weight:900;" title="Redigera hero">✏️</button>
+    </h1>
+    <h2 id="heroSubtitle">Bostadsrättsförening</h2>
+  </div>
+
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head-left">
+        <h3 class="section-title" id="quickTitle">Snabbt & viktigt</h3>
+        <p class="section-desc" id="quickDesc">Hitta rätt direkt: felanmälan, kontakt, dokument och vanliga ärenden.</p>
+      </div>
+      <button class="mini-edit" id="editPageBtn" type="button" title="Redigera startsidans texter (Firestore)"><span>✏️</span> Startsida</button>
+    </div>
+
+    <div class="actions" id="quickActions" aria-label="Snabblänkar"></div>
+
+    <main class="grid" id="infoGrid" aria-live="polite" style="margin-top:18px;"></main>
+
+    <div class="section-head" style="margin-top:24px;">
+      <div class="section-head-left">
+        <h3 class="section-title" id="newsTitle">Aktuellt</h3>
+        <p class="section-desc" id="newsDesc">Driftinfo, påminnelser och nyheter från föreningen.</p>
+      </div>
+      <button class="mini-edit" id="editNavBtn" type="button" title="Redigera meny (Firestore)"><span>🧭</span> Meny</button>
+    </div>
+
+    <main class="grid" id="cardGrid" aria-live="polite"></main>
+  </div>
+
+  <div class="save-publish" id="savePublish">
+    <button id="saveBtn" class="btn btn-primary">Spara och publicera</button>
+    <button id="cancelBtn" class="btn btn-cancel">Avbryt</button>
+  </div>
+
+  <!-- Generic editor (admin) -->
+  <div class="edit-overlay" id="editOverlay" role="dialog" aria-modal="true" aria-label="Redigera innehåll">
+    <div class="editor">
+      <div class="row">
+        <select id="editKind" aria-label="Typ">
+          <option value="card">Kort (cards/info)</option>
+          <option value="quickAction">Snabbknapp</option>
+          <option value="pageJson">Startsida (JSON)</option>
+          <option value="navJson">Meny (JSON)</option>
+        </select>
+        <button id="removeImageBtn" class="btn btn-secondary" type="button">Ta bort bild</button>
+      </div>
+
+      <!-- Fields for card + quickAction -->
+      <input type="text" id="editTitle" placeholder="Titel / Rubrik">
+      <input type="text" id="editSubtitle" placeholder="Underrad (för Snabbknapp)">
+      <input type="text" id="editImage" placeholder="Bild-URL (valfritt)">
+      <textarea id="editText" rows="7" placeholder="Text / JSON (beroende på typ)"></textarea>
+
+      <div class="row" id="rowLinkStuff">
+        <input type="text" id="editUrl" placeholder="Länk-URL (för Snabbknapp)">
+        <input type="text" id="editIcon" placeholder="Ikon (emoji) (för Snabbknapp)">
+      </div>
+
+      <div class="row" id="rowPillOrder">
+        <input type="text" id="editPill" placeholder="Badge (t.ex. NU) (för Snabbknapp)">
+        <input type="number" id="editOrder" placeholder="Order" min="0" step="1">
+      </div>
+
+      <div id="imagePreviewWrap" class="preview-wrap">
+        <div class="preview-label">Förhandsvisning</div>
+        <img id="imagePreview" class="preview-img" alt="Bildförhandsvisning">
+      </div>
+
+      <div id="uploadProgressWrap" class="progress-wrap" aria-live="polite">
+        <div class="progress-head">
+          <span>Uppladdning</span>
+          <span id="uploadProgressText">0%</span>
+        </div>
+        <div class="progress-track">
+          <div id="uploadProgressBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="row" style="justify-content:flex-start;">
+        <label class="btn btn-secondary" for="fileUpload" style="margin:0;flex:0 0 auto;">
+          <input id="fileUpload" type="file" accept="image/*" style="display:none;">
+          Ladda upp bild
+        </label>
+
+        <button id="applyEditBtn" class="btn btn-primary" type="button">Spara</button>
+        <button id="cancelEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
+      </div>
+
+      <div class="helptext" id="editorHelp"></div>
     </div>
   </div>
-</div>
 
-<!-- EDIT HERO -->
-<div class="edit-overlay" id="editHeroOverlay">
-  <div class="editor">
-    <input type="text" id="editHeroTitle" placeholder="Hero-titel">
-    <input type="text" id="editHeroSubtitle" placeholder="Hero-underskrift">
-    <div style="display:flex;gap:8px;">
-      <button id="applyHeroEditBtn" class="btn btn-primary">Tillämpa ändring</button>
-      <button id="cancelHeroEditBtn" class="btn btn-cancel">Avbryt</button>
+  <!-- Hero editor (admin) -->
+  <div class="edit-overlay" id="editHeroOverlay" role="dialog" aria-modal="true" aria-label="Redigera hero">
+    <div class="editor">
+      <input type="text" id="editHeroTitle" placeholder="Hero-titel">
+      <input type="text" id="editHeroSubtitle" placeholder="Hero-underskrift">
+      <input type="text" id="editHeroBgUrl" placeholder="Bakgrundsbild URL (bgUrl)">
+
+      <div id="heroBgPreviewWrap" class="preview-wrap">
+        <div class="preview-label">Förhandsvisning</div>
+        <img id="heroBgPreview" class="preview-img" alt="Bakgrundsförhandsvisning">
+      </div>
+
+      <div id="heroBgProgressWrap" class="progress-wrap" aria-live="polite">
+        <div class="progress-head">
+          <span>Uppladdning</span>
+          <span id="heroBgProgressText">0%</span>
+        </div>
+        <div class="progress-track">
+          <div id="heroBgProgressBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="btn btn-secondary" for="heroBgUpload" style="margin:0;flex:0 0 auto;">
+          <input id="heroBgUpload" type="file" accept="image/*" style="display:none;">
+          Ladda upp bakgrund
+        </label>
+
+        <button id="applyHeroEditBtn" class="btn btn-primary" type="button">Spara</button>
+        <button id="cancelHeroEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
+      </div>
+
+      <div class="helptext">
+        Tips: bgUrl kan vara en vanlig URL eller en Firebase Storage downloadURL.
+      </div>
     </div>
   </div>
-</div>
 
-<footer>&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
+  <footer id="footerText">© Västhaga Nr4 — Bostadsrättsförening</footer>
 
-<script>
-/* -------------------------
-   Helper / state
-   ------------------------- */
-const mainNav = document.getElementById('mainNav');
-const hamburger = document.getElementById('hamburger');
-const header = document.getElementById('siteHeader');
-const heroSection = document.getElementById('heroSection');
-const adminNav = document.getElementById('adminNav');
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getFirestore, collection, doc, setDoc, updateDoc, deleteDoc,
+      onSnapshot, query, orderBy, getDoc
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import {
+      getStorage,
+      ref as storageRef,
+      uploadBytesResumable,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
-let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-let adminMode = currentUser && currentUser.role === 'admin';
-
-/* -------------------------
-   Navbar scroll -> background white
-   ------------------------- */
-function updateHeaderOnScroll(){
-  const heroHeight = heroSection ? heroSection.offsetHeight : 300;
-  const scrollY = window.scrollY;
-  if(scrollY < heroHeight){
-    const opacity = Math.min(1, scrollY / heroHeight);
-    header.style.background = `rgba(255,255,255,${opacity})`;
-    header.style.boxShadow = opacity > 0 ? `0 4px 12px rgba(0,0,0,${opacity*0.08})` : 'none';
-  } else {
-    header.style.background = '#fff';
-    header.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-  }
-}
-window.addEventListener('scroll', updateHeaderOnScroll);
-window.addEventListener('load', updateHeaderOnScroll);
-
-/* -------------------------
-   Dropdown hover + click-to-lock logic
-   - visible for a short delay after mouseleave (0.5s)
-   - clicking the small arrow locks it open until toggled
-   ------------------------- */
-const DROPDOWN_HIDE_DELAY = 500; // ms
-const dropdowns = document.querySelectorAll('.dropdown');
-dropdowns.forEach(drop => {
-  const toggleBtn = drop.querySelector('.dropdown-toggle');
-  const menu = drop.querySelector('.dropdown-content');
-  let hideTimeout = null;
-
-  function showMenu(){
-    // close others unless they are locked
-    dropdowns.forEach(d => {
-      if(d !== drop){
-        const tb = d.querySelector('.dropdown-toggle');
-        const locked = tb && tb.classList.contains('locked');
-        if(!locked) {
-          const m = d.querySelector('.dropdown-content');
-          if(m) m.style.display = 'none';
-        }
-      }
+    const app = initializeApp({
+      apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
+      authDomain:"vasthaganr4.firebaseapp.com",
+      projectId:"vasthaganr4",
+      storageBucket:"vasthaganr4.firebasestorage.app",
+      messagingSenderId:"547846391741",
+      appId:"1:547846391741:web:048eb47b28d1027539f4d4"
     });
-    menu.style.display = 'block';
-    clearTimeout(hideTimeout);
-  }
-  function hideMenu(){
-    menu.style.display = 'none';
-    clearTimeout(hideTimeout);
-  }
 
-  // Hover
-  drop.addEventListener('mouseenter', () => {
-    showMenu();
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    /* DOM */
+    const body = document.body;
+
+    const mainNav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburger');
+    const header = document.getElementById('siteHeader');
+    const heroSection = document.getElementById('heroSection');
+
+    const brandLogo = document.getElementById('brandLogo');
+    const brandName = document.getElementById('brandName');
+    const brandTagline = document.getElementById('brandTagline');
+
+    const quickTitleEl = document.getElementById('quickTitle');
+    const quickDescEl = document.getElementById('quickDesc');
+    const quickActionsEl = document.getElementById('quickActions');
+
+    const newsTitleEl = document.getElementById('newsTitle');
+    const newsDescEl = document.getElementById('newsDesc');
+
+    const footerTextEl = document.getElementById('footerText');
+
+    const cardGrid = document.getElementById('cardGrid');
+    const infoGrid = document.getElementById('infoGrid');
+
+    /* Generic editor */
+    const editOverlay = document.getElementById('editOverlay');
+    const editKind = document.getElementById('editKind');
+    const editTitle = document.getElementById('editTitle');
+    const editSubtitle = document.getElementById('editSubtitle');
+    const editImage = document.getElementById('editImage');
+    const editText = document.getElementById('editText');
+    const editUrl = document.getElementById('editUrl');
+    const editIcon = document.getElementById('editIcon');
+    const editPill = document.getElementById('editPill');
+    const editOrder = document.getElementById('editOrder');
+    const rowLinkStuff = document.getElementById('rowLinkStuff');
+    const rowPillOrder = document.getElementById('rowPillOrder');
+    const editorHelp = document.getElementById('editorHelp');
+
+    const applyEditBtn = document.getElementById('applyEditBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const removeImageBtn = document.getElementById('removeImageBtn');
+    const fileUpload = document.getElementById('fileUpload');
+
+    const imagePreviewWrap = document.getElementById('imagePreviewWrap');
+    const imagePreview = document.getElementById('imagePreview');
+    const uploadProgressWrap = document.getElementById('uploadProgressWrap');
+    const uploadProgressText = document.getElementById('uploadProgressText');
+    const uploadProgressBar = document.getElementById('uploadProgressBar');
+
+    /* Page/menu edit buttons */
+    const editPageBtn = document.getElementById('editPageBtn');
+    const editNavBtn = document.getElementById('editNavBtn');
+
+    /* Hero editor */
+    const editHeroBtn = document.getElementById('editHeroBtn');
+    const editHeroOverlay = document.getElementById('editHeroOverlay');
+    const editHeroTitle = document.getElementById('editHeroTitle');
+    const editHeroSubtitle = document.getElementById('editHeroSubtitle');
+    const editHeroBgUrl = document.getElementById('editHeroBgUrl');
+    const heroBgUpload = document.getElementById('heroBgUpload');
+    const applyHeroEditBtn = document.getElementById('applyHeroEditBtn');
+    const cancelHeroEditBtn = document.getElementById('cancelHeroEditBtn');
+
+    const heroBgPreviewWrap = document.getElementById('heroBgPreviewWrap');
+    const heroBgPreview = document.getElementById('heroBgPreview');
+    const heroBgProgressWrap = document.getElementById('heroBgProgressWrap');
+    const heroBgProgressText = document.getElementById('heroBgProgressText');
+    const heroBgProgressBar = document.getElementById('heroBgProgressBar');
+
+    /* Draft publish */
+    const savePublishPanel = document.getElementById('savePublish');
+    const publishBtn = document.getElementById('saveBtn');
+    const cancelPublishBtn = document.getElementById('cancelBtn');
+
+    /* Firestore refs */
+    const heroRef = doc(db,'hero','main');
+    const pageHomeRef = doc(db,'pages','home');
+    const navRef = doc(db,'site','navigation');
+
+    const cardsCol = collection(db,'cards');
+    const infoCol = collection(db,'info');
+    const quickCol = collection(db,'quickActions');
+
+    /* State */
+    let currentUser = null;
+    let isAdmin = false;
+
+    let heroData = { title:'Välkommen till BRF Västhaga Nr4', subtitle:'Information för boende, mäklare och besökare', bgUrl:'bakgrundsbild1.jpg' };
+    let pageData = {
+      brandName: 'Västhaga Nr4',
+      brandTagline: 'Bostadsrättsförening',
+      logoUrl: 'logga.png',
+      footerText: '© Västhaga Nr4 — Bostadsrättsförening',
+      quickTitle: 'Snabbt & viktigt',
+      quickDesc: 'Hitta rätt direkt: felanmälan, kontakt, dokument och vanliga ärenden.',
+      newsTitle: 'Aktuellt',
+      newsDesc: 'Driftinfo, påminnelser och nyheter från föreningen.'
+    };
+
+    let navData = null;
+
+    let infoDocs = [];
+    let drafts = JSON.parse(localStorage.getItem('infoDrafts')||'{}');
+
+    let editingContext = null;
+
+    /* Helpers */
+    function escapeHtml(str){
+      return String(str ?? '')
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+    }
+
+    function requireAdmin(){
+      if(!isAdmin) throw new Error('Inte behörig (admin krävs).');
+    }
+
+    function updateHeaderOnScroll(){
+      const heroH = heroSection ? heroSection.offsetHeight : 300;
+      const y = window.scrollY;
+      const op = Math.min(1, y/heroH);
+      if (!header) return;
+      header.style.background = `rgba(255,255,255,${op})`;
+      header.style.boxShadow = op>0 ? `0 4px 12px rgba(0,0,0,${op*0.08})` : 'none';
+    }
+    window.addEventListener('scroll', updateHeaderOnScroll);
+    window.addEventListener('load', updateHeaderOnScroll);
+
+const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+function setNavOpen(open){
+  if(!hamburger || !mainNav) return;
+
+  mainNav.classList.toggle('show', open);
+
+  // closed = ☰, open = orange arrow
+  hamburger.textContent = open ? '➤' : '☰';
+  hamburger.classList.toggle('is-open', open);
+
+  hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+if (hamburger && mainNav){
+  hamburger.setAttribute('aria-expanded', 'false');
+
+  hamburger.addEventListener('click', ()=>{
+    const open = !mainNav.classList.contains('show');
+    setNavOpen(open);
   });
-  drop.addEventListener('mouseleave', () => {
-    // only hide after delay, unless locked
-    const locked = toggleBtn && toggleBtn.classList.contains('locked');
-    if(locked) return;
-    hideTimeout = setTimeout(() => { menu.style.display = 'none'; }, DROPDOWN_HIDE_DELAY);
+
+  // "Stäng meny" button (thumb-friendly)
+  if (closeMenuBtn){
+    closeMenuBtn.addEventListener('click', () => setNavOpen(false));
+  }
+
+  // Optional: close after tapping a link (mobile)
+  mainNav.addEventListener('click', (e) => {
+    const a = e.target?.closest?.('a');
+    if(a) setNavOpen(false);
   });
 
-  // If hovering another dropdown, it should hide this (registered above in showMenu)
+  // ESC closes
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') setNavOpen(false);
+  });
+}
 
-  // Toggle button click - locks/unlocks menu
-  if(toggleBtn){
-    toggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isLocked = toggleBtn.classList.toggle('locked');
-      if(isLocked){
-        // open and keep open
-        menu.style.display = 'block';
+    function wireMobileDropdowns(){
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
+      if (!isMobile) return;
+
+      document.querySelectorAll('nav .dropdown > a').forEach(a => {
+        a.addEventListener('click', (e) => {
+          const li = a.closest('.dropdown');
+          if (!li) return;
+          e.preventDefault();
+          li.classList.toggle('active');
+        });
+      });
+    }
+    window.addEventListener('load', wireMobileDropdowns);
+    window.addEventListener('resize', wireMobileDropdowns);
+
+    function setPreview(url){
+      const clean = (url || '').trim();
+      if(!imagePreviewWrap || !imagePreview) return;
+
+      if(!clean){
+        imagePreviewWrap.style.display = 'none';
+        imagePreview.removeAttribute('src');
+        return;
+      }
+      imagePreview.src = clean;
+      imagePreviewWrap.style.display = 'block';
+    }
+
+    function setProgress(percent){
+      if(!uploadProgressWrap || !uploadProgressBar || !uploadProgressText) return;
+
+      if(percent == null){
+        uploadProgressWrap.style.display = 'none';
+        uploadProgressBar.style.width = '0%';
+        uploadProgressText.textContent = '0%';
+        return;
+      }
+      uploadProgressWrap.style.display = 'block';
+      const p = Math.max(0, Math.min(100, Math.round(percent)));
+      uploadProgressBar.style.width = `${p}%`;
+      uploadProgressText.textContent = `${p}%`;
+    }
+
+    function setHeroBgPreview(url){
+      const clean = (url || '').trim();
+      if(!heroBgPreviewWrap || !heroBgPreview) return;
+
+      if(!clean){
+        heroBgPreviewWrap.style.display = 'none';
+        heroBgPreview.removeAttribute('src');
+        return;
+      }
+      heroBgPreview.src = clean;
+      heroBgPreviewWrap.style.display = 'block';
+    }
+
+    function setHeroBgProgress(percent){
+      if(!heroBgProgressWrap || !heroBgProgressBar || !heroBgProgressText) return;
+
+      if(percent == null){
+        heroBgProgressWrap.style.display = 'none';
+        heroBgProgressBar.style.width = '0%';
+        heroBgProgressText.textContent = '0%';
+        return;
+      }
+      heroBgProgressWrap.style.display = 'block';
+      const p = Math.max(0, Math.min(100, Math.round(percent)));
+      heroBgProgressBar.style.width = `${p}%`;
+      heroBgProgressText.textContent = `${p}%`;
+    }
+
+    function setUploadUiState({busy, label}){
+      if(fileUpload) fileUpload.disabled = !!busy;
+      if(applyEditBtn) applyEditBtn.disabled = !!busy;
+      if(removeImageBtn) removeImageBtn.disabled = !!busy;
+      applyEditBtn.textContent = label || (busy ? 'Laddar upp…' : 'Spara');
+    }
+
+    function getStoragePathForUpload(file){
+      const safeName = (file.name || 'image').trim().replace(/[^\w.\-]+/g, '_').slice(0, 80);
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const rand = Math.random().toString(16).slice(2, 10);
+      return `uploads/${stamp}_${rand}_${safeName}`;
+    }
+
+    async function uploadImageFileToStorageWithProgress(file, onProgress){
+      requireAdmin();
+
+      if(!file) throw new Error('Ingen fil vald.');
+      if(!file.type?.startsWith('image/')) throw new Error('Endast bildfiler är tillåtna.');
+      const maxBytes = 6 * 1024 * 1024;
+      if(file.size > maxBytes) throw new Error('Filen är för stor (max 6 MB).');
+
+      const path = getStoragePathForUpload(file);
+      const objRef = storageRef(storage, path);
+
+      return await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(objRef, file, {
+          contentType: file.type,
+          cacheControl: 'public, max-age=31536000'
+        });
+
+        task.on('state_changed',
+          (snap) => {
+            const pct = snap.totalBytes > 0 ? (snap.bytesTransferred / snap.totalBytes) * 100 : 0;
+            onProgress?.(pct);
+          },
+          (err) => reject(err),
+          async () => resolve(await getDownloadURL(task.snapshot.ref))
+        );
+      });
+    }
+
+    function updateAdminVisibility(){
+      if (editHeroBtn) editHeroBtn.style.display = isAdmin ? 'inline' : 'none';
+      if (savePublishPanel) savePublishPanel.style.display = Object.keys(drafts).length ? 'flex' : 'none';
+    }
+
+    function applyEditorMode(kind){
+      const isJson = kind === 'pageJson' || kind === 'navJson';
+      const isQuick = kind === 'quickAction';
+      const isCard = kind === 'card';
+
+      editTitle.classList.toggle('hidden', isJson);
+      editSubtitle.classList.toggle('hidden', isJson || isCard);
+      editImage.classList.toggle('hidden', isJson);
+      rowLinkStuff.classList.toggle('hidden', !isQuick);
+      rowPillOrder.classList.toggle('hidden', !isQuick);
+
+      removeImageBtn.classList.toggle('hidden', isJson || isQuick);
+      imagePreviewWrap.classList.toggle('hidden', isJson);
+      uploadProgressWrap.classList.toggle('hidden', isJson);
+
+      if (isJson){
+        editorHelp.textContent =
+          kind === 'pageJson'
+            ? 'Klistra in JSON för pages/home. Exempel finns i instruktionerna.'
+            : 'Klistra in JSON för site/navigation. Exempel finns i instruktionerna.';
+        editText.placeholder = 'JSON...';
+      } else if (isQuick){
+        editorHelp.textContent = 'Snabbknapp sparas i collection quickActions.';
+        editText.placeholder = 'Ej använd för Snabbknapp';
       } else {
-        // unlock -> hide after delay
-        setTimeout(()=>{ menu.style.display = 'none'; }, DROPDOWN_HIDE_DELAY);
+        editorHelp.textContent = 'Kort sparas i cards eller info. För info används draft + publicera.';
+        editText.placeholder = 'Text';
       }
-    });
-  }
+    }
 
-  // allow clicking anchor to open menu on small screens (handled elsewhere)
-  const link = drop.querySelector('a');
-  if(link){
-    link.addEventListener('click', (e) => {
-      // if it's a real link (has href pointing to page), let default if not same-page anchor
-      // But when the link's href is '#', prevent default to toggle menu for mobile-like behaviour
-      if(link.getAttribute('href') === '#' || window.innerWidth <= 768){
-        e.preventDefault();
-        // toggle immediate
-        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    function openEditor(ctx){
+      editingContext = ctx;
+
+      editKind.value = ctx.kind;
+      applyEditorMode(ctx.kind);
+
+      editTitle.value = ctx.title ?? '';
+      editSubtitle.value = ctx.subtitle ?? '';
+      editImage.value = ctx.image ?? '';
+      editText.value = ctx.text ?? '';
+      editUrl.value = ctx.url ?? '';
+      editIcon.value = ctx.icon ?? '';
+      editPill.value = ctx.pill ?? '';
+      editOrder.value = (ctx.order ?? 0);
+
+      setPreview(editImage.value);
+      setProgress(null);
+
+      applyEditBtn.textContent = 'Spara';
+      editOverlay.style.display = 'flex';
+      applyEditBtn.focus();
+    }
+
+    function closeEditor(){
+      editingContext = null;
+      editOverlay.style.display = 'none';
+      setProgress(null);
+    }
+
+    cancelEditBtn.onclick = closeEditor;
+
+    editKind.addEventListener('change', () => {
+      applyEditorMode(editKind.value);
+    });
+
+    /* Wire generic image upload */
+    if(editImage){
+      editImage.addEventListener('input', () => setPreview(editImage.value));
+    }
+
+    if(fileUpload){
+      fileUpload.addEventListener('change', async () => {
+        try{
+          requireAdmin();
+          const file = fileUpload.files?.[0];
+          if(!file) return;
+
+          setUploadUiState({busy:true, label:'Laddar upp…'});
+          setProgress(0);
+
+          const url = await uploadImageFileToStorageWithProgress(file, (pct) => setProgress(pct));
+          editImage.value = url;
+          setPreview(url);
+          setProgress(null);
+        }catch(err){
+          setProgress(null);
+          alert(err?.message || 'Uppladdning misslyckades.');
+        }finally{
+          setUploadUiState({busy:false});
+          fileUpload.value = '';
+        }
+      });
+    }
+
+    removeImageBtn.addEventListener('click', () => {
+      editImage.value = '';
+      if(fileUpload) fileUpload.value = '';
+      setPreview('');
+    });
+
+    applyEditBtn.onclick = async () => {
+      if(!editingContext) return;
+      requireAdmin();
+
+      const kind = editKind.value;
+
+      try{
+        if(kind === 'card'){
+          const payload = {
+            title: editTitle.value.trim(),
+            text: editText.value.trim(),
+            image: editImage.value.trim()
+          };
+
+          if(editingContext.scope === 'info'){
+            drafts[editingContext.id] = payload;
+            localStorage.setItem('infoDrafts', JSON.stringify(drafts));
+            savePublishPanel.style.display = 'flex';
+          }else{
+            await updateDoc(doc(db, 'cards', editingContext.id), payload);
+          }
+
+          closeEditor();
+          return;
+        }
+
+        if(kind === 'quickAction'){
+          const payload = {
+            title: editTitle.value.trim(),
+            subtitle: editSubtitle.value.trim(),
+            icon: (editIcon.value.trim() || '🔗'),
+            pill: editPill.value.trim(),
+            url: editUrl.value.trim(),
+            order: Number.isFinite(Number(editOrder.value)) ? Number(editOrder.value) : 0
+          };
+
+          await setDoc(doc(db, 'quickActions', editingContext.id), payload, { merge:true });
+          closeEditor();
+          return;
+        }
+
+        if(kind === 'pageJson'){
+          let parsed;
+          try{
+            parsed = JSON.parse(editText.value);
+          }catch{
+            throw new Error('JSON för startsidan är ogiltig.');
+          }
+          await setDoc(pageHomeRef, parsed, { merge:false });
+          closeEditor();
+          return;
+        }
+
+        if(kind === 'navJson'){
+          let parsed;
+          try{
+            parsed = JSON.parse(editText.value);
+          }catch{
+            throw new Error('JSON för menyn är ogiltig.');
+          }
+          await setDoc(navRef, parsed, { merge:false });
+          closeEditor();
+          return;
+        }
+      }catch(err){
+        alert(err?.message || 'Kunde inte spara.');
       }
+    };
+
+    /* Publish drafts for info */
+    publishBtn.onclick = async () => {
+      requireAdmin();
+      for(const id in drafts){
+        await setDoc(doc(db,'info',id), drafts[id], { merge:true });
+      }
+      drafts = {};
+      localStorage.removeItem('infoDrafts');
+      savePublishPanel.style.display = 'none';
+      alert('Ändringar publicerade!');
+    };
+
+    cancelPublishBtn.onclick = () => {
+      drafts = {};
+      localStorage.removeItem('infoDrafts');
+      savePublishPanel.style.display = 'none';
+      renderInfo(infoDocs);
+    };
+
+    /* Auth => admin */
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+
+      if (!user) {
+        isAdmin = false;
+        body.classList.remove('is-admin');
+        updateAdminVisibility();
+        renderNav(); /* will hide restricted/admin */
+        return;
+      }
+
+      const snap = await getDoc(doc(db, "users", user.uid));
+      const role = snap.exists() ? snap.data().role : null;
+      isAdmin = role === "admin" || role === "ordforande";
+
+      if (isAdmin) body.classList.add('is-admin');
+      else body.classList.remove('is-admin');
+
+      updateAdminVisibility();
+      renderNav();
     });
-  }
-});
 
-/* Close any unlocked dropdown if clicking outside */
-document.addEventListener('click', (e) => {
-  dropdowns.forEach(drop => {
-    const toggleBtn = drop.querySelector('.dropdown-toggle');
-    const menu = drop.querySelector('.dropdown-content');
-    const locked = toggleBtn && toggleBtn.classList.contains('locked');
-    if(!locked && !drop.contains(e.target)){
-      if(menu) menu.style.display = 'none';
+    /* HERO realtime + edit + bg */
+    onSnapshot(heroRef, snap => {
+      if(snap.exists()) heroData = { ...heroData, ...snap.data() };
+      renderHero();
+    });
+
+    function renderHero(){
+      const h = document.getElementById('heroTitle');
+      if(h) h.childNodes[0].nodeValue = heroData.title || '';
+
+      const sub = document.getElementById('heroSubtitle');
+      if(sub) sub.textContent = heroData.subtitle || '';
+
+      const bg = (heroData.bgUrl || '').trim();
+      if (heroSection && bg) {
+        const safe = bg.replaceAll("'", "\\'");
+        heroSection.style.backgroundImage = `url('${safe}')`;
+      }
     }
-  });
-});
-
-/* When hovering other dropdown, hide the unlocked ones — handled in showMenu above */
-
-/* -------------------------
-   Hamburger (mobile)
-   ------------------------- */
-hamburger.addEventListener('click', () => {
-  mainNav.classList.toggle('show');
-  hamburger.textContent = mainNav.classList.contains('show') ? '➤' : '☰';
-});
-
-/* -------------------------
-   Admin visibility
-   ------------------------- */
-function updateAdminVisibility(){
-  const cur = JSON.parse(localStorage.getItem('currentUser') || 'null');
-  if(cur && cur.role === 'admin'){
-    adminNav.style.display = 'block';
-  } else {
-    adminNav.style.display = 'none';
-  }
-}
-updateAdminVisibility();
-
-/* -------------------------
-   CARD + HERO EDITING (Admin)
-   - from prior versions: add/edit/delete cards, upload images (file -> dataURL) or paste URLs
-   - Save/Publish persists to localStorage
-   ------------------------- */
-
-let cards = JSON.parse(localStorage.getItem('cards') || 'null') || [
-  {title:"Exempelrubrik 1", text:"Detta är exempeltext.", image:""},
-  {title:"Exempelrubrik 2", text:"Fler exempeltexter.", image:""},
-  {title:"Exempelrubrik 3", text:"Test av kort 3.", image:""}
-];
-let hero = JSON.parse(localStorage.getItem('hero') || 'null') || {title: "Välkommen till Västhaga Nr4", subtitle: "Bostadsrättsförening"};
-
-/* DOM elements */
-const cardGrid = document.getElementById('cardGrid');
-const addCardBtn = document.getElementById('addCardBtn');
-const savePublish = document.getElementById('savePublish');
-const saveBtn = document.getElementById('saveBtn');
-const cancelBtn = document.getElementById('cancelBtn');
-
-const editOverlay = document.getElementById('editOverlay');
-const editTitle = document.getElementById('editTitle');
-const editText = document.getElementById('editText');
-const editImage = document.getElementById('editImage');
-const fileUpload = document.getElementById('fileUpload');
-const removeImageBtn = document.getElementById('removeImageBtn');
-const applyEditBtn = document.getElementById('applyEditBtn');
-const cancelEditBtn = document.getElementById('cancelEditBtn');
-
-const editHeroBtn = document.getElementById('editHeroBtn');
-const editHeroOverlay = document.getElementById('editHeroOverlay');
-const editHeroTitle = document.getElementById('editHeroTitle');
-const editHeroSubtitle = document.getElementById('editHeroSubtitle');
-const applyHeroEditBtn = document.getElementById('applyHeroEditBtn');
-const cancelHeroEditBtn = document.getElementById('cancelHeroEditBtn');
-
-let editingIndex = null;
-
-/* render hero */
-function renderHero(){
-  document.getElementById('heroTitle').childNodes[0].nodeValue = hero.title;
-  document.getElementById('heroSubtitle').textContent = hero.subtitle;
-}
-renderHero();
-
-/* render cards */
-function renderCards(){
-  cardGrid.innerHTML = '';
-  cards.forEach((c, i) => {
-    const card = document.createElement('article');
-    card.className = 'card';
-    // image
-    if(c.image){
-      const img = document.createElement('img');
-      img.src = c.image;
-      img.alt = c.title || 'Bild';
-      card.appendChild(img);
-    }
-    // content
-    const h = document.createElement('h2');
-    h.textContent = c.title;
-    const p = document.createElement('p');
-    p.textContent = c.text;
-    card.appendChild(h);
-    card.appendChild(p);
-
-    if(adminMode){
-      const editBtn = document.createElement('button');
-      editBtn.className = 'edit-btn';
-      editBtn.title = 'Redigera';
-      editBtn.innerText = '✏️';
-      editBtn.addEventListener('click', (e) => { e.stopPropagation(); openEdit(i); });
-      card.appendChild(editBtn);
-
-      const delBtn = document.createElement('button');
-      delBtn.className = 'delete-btn';
-      delBtn.title = 'Ta bort';
-      delBtn.innerText = '🗑️';
-      delBtn.addEventListener('click', (e) => { e.stopPropagation(); cards.splice(i,1); showSave(); renderCards(); });
-      card.appendChild(delBtn);
-    }
-
-    cardGrid.appendChild(card);
-  });
-
-  // ensure add button is positioned after last card on wide screens visually: we simply show/hide it
-  if(adminMode){
-    addCardBtn.style.display = 'flex';
-  } else {
-    addCardBtn.style.display = 'none';
-  }
-}
-renderCards();
-
-function showSave(){
-  savePublish.style.display = 'flex';
-}
-function hideSave(){
-  savePublish.style.display = 'none';
-}
-
-/* add card */
-addCardBtn.addEventListener('click', () => {
-  cards.push({title:"Ny rubrik", text:"Ny text", image:""});
-  editingIndex = cards.length - 1;
-  renderCards();
-  openEdit(editingIndex);
-  showSave();
-});
-
-/* open edit overlay for a card */
-function openEdit(index){
-  editingIndex = index;
-  const card = cards[index];
-  editTitle.value = card.title || '';
-  editText.value = card.text || '';
-  editImage.value = card.image || '';
-  editOverlay.style.display = 'flex';
-}
-
-/* file upload -> dataURL */
-fileUpload.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    editImage.value = ev.target.result; // dataURL
-  };
-  reader.readAsDataURL(file);
-});
-
-/* remove image */
-removeImageBtn.addEventListener('click', () => {
-  editImage.value = '';
-});
-
-/* apply card changes */
-applyEditBtn.addEventListener('click', () => {
-  if(editingIndex === null) return;
-  cards[editingIndex].title = editTitle.value.trim();
-  cards[editingIndex].text = editText.value.trim();
-  cards[editingIndex].image = editImage.value.trim();
-  editingIndex = null;
-  editOverlay.style.display = 'none';
-  showSave();
-  renderCards();
-});
-
-/* cancel edit */
-cancelEditBtn.addEventListener('click', () => {
-  editingIndex = null;
-  editOverlay.style.display = 'none';
-});
-
-/* Save & publish */
-saveBtn.addEventListener('click', () => {
-  localStorage.setItem('cards', JSON.stringify(cards));
-  localStorage.setItem('hero', JSON.stringify(hero));
-  hideSave();
-  alert('Ändringar sparade och publicerade!');
-});
-
-/* Cancel (revert unsaved changes) */
-cancelBtn.addEventListener('click', () => {
-  cards = JSON.parse(localStorage.getItem('cards') || 'null') || cards;
-  hero = JSON.parse(localStorage.getItem('hero') || 'null') || hero;
-  renderCards();
-  renderHero();
-  hideSave();
-  editOverlay.style.display = 'none';
-  editHeroOverlay.style.display = 'none';
-});
-
-/* Hero edit */
-if(adminMode){
-  editHeroBtn.style.display = 'inline';
-  editHeroBtn.addEventListener('click', () => {
-    editHeroTitle.value = hero.title;
-    editHeroSubtitle.value = hero.subtitle;
-    editHeroOverlay.style.display = 'flex';
-  });
-
-  applyHeroEditBtn.addEventListener('click', () => {
-    hero.title = editHeroTitle.value.trim();
-    hero.subtitle = editHeroSubtitle.value.trim();
     renderHero();
-    editHeroOverlay.style.display = 'none';
-    showSave();
-  });
 
-  cancelHeroEditBtn.addEventListener('click', () => {
-    editHeroOverlay.style.display = 'none';
-  });
+    editHeroBtn.onclick = () => {
+      if(!isAdmin) return;
+      editHeroTitle.value = heroData.title || '';
+      editHeroSubtitle.value = heroData.subtitle || '';
+      editHeroBgUrl.value = heroData.bgUrl || '';
+      setHeroBgPreview(editHeroBgUrl.value);
+      setHeroBgProgress(null);
+      editHeroOverlay.style.display = 'flex';
+    };
+
+    if (editHeroBgUrl){
+      editHeroBgUrl.addEventListener('input', () => setHeroBgPreview(editHeroBgUrl.value));
+    }
+
+    if (heroBgUpload){
+      heroBgUpload.addEventListener('change', async () => {
+        try{
+          requireAdmin();
+          const file = heroBgUpload.files?.[0];
+          if(!file) return;
+
+          setHeroBgProgress(0);
+          const url = await uploadImageFileToStorageWithProgress(file, (pct) => setHeroBgProgress(pct));
+          editHeroBgUrl.value = url;
+          setHeroBgPreview(url);
+          setHeroBgProgress(null);
+        }catch(err){
+          setHeroBgProgress(null);
+          alert(err?.message || 'Uppladdning misslyckades.');
+        }finally{
+          heroBgUpload.value = '';
+        }
+      });
+    }
+
+    applyHeroEditBtn.onclick = async () => {
+      requireAdmin();
+      await setDoc(heroRef,{
+        title: editHeroTitle.value.trim(),
+        subtitle: editHeroSubtitle.value.trim(),
+        bgUrl: (editHeroBgUrl.value || '').trim()
+      }, { merge:true });
+
+      editHeroOverlay.style.display='none';
+    };
+
+    cancelHeroEditBtn.onclick = () => {
+      editHeroOverlay.style.display='none';
+    };
+
+    /* PAGES/HOME realtime */
+    onSnapshot(pageHomeRef, snap => {
+      if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+      renderPage();
+    });
+
+    function renderPage(){
+      brandName.textContent = pageData.brandName || 'Västhaga Nr4';
+      brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
+      footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+
+      if (brandLogo && (pageData.logoUrl || '').trim()) {
+        brandLogo.src = pageData.logoUrl.trim();
+      }
+
+      quickTitleEl.textContent = pageData.quickTitle || 'Snabbt & viktigt';
+      quickDescEl.textContent = pageData.quickDesc || '';
+      newsTitleEl.textContent = pageData.newsTitle || 'Aktuellt';
+      newsDescEl.textContent = pageData.newsDesc || '';
+    }
+    renderPage();
+
+    /* Page edit opens JSON editor */
+    editPageBtn.onclick = () => {
+      if(!isAdmin) return;
+      openEditor({
+        kind:'pageJson',
+        text: JSON.stringify(pageData, null, 2)
+      });
+    };
+
+    /* QUICK ACTIONS realtime */
+    onSnapshot(query(quickCol, orderBy('order','asc')), snap => {
+      const arr = [];
+      snap.forEach(d => arr.push({ id:d.id, ...d.data() }));
+      renderQuickActions(arr);
+    });
+
+    function renderQuickActions(arr){
+      quickActionsEl.innerHTML = '';
+      arr.forEach(a => {
+        const btn = document.createElement('a');
+        btn.className = 'action-btn';
+        btn.href = a.url || '#';
+        btn.rel = 'noopener';
+
+        btn.innerHTML = `
+          <span class="action-left">
+            <span class="action-icon">${escapeHtml(a.icon || '🔗')}</span>
+            <span class="action-text">
+              <span class="action-title">${escapeHtml(a.title || '')}</span>
+              <span class="action-sub">${escapeHtml(a.subtitle || '')}</span>
+            </span>
+          </span>
+          ${a.pill ? `<span class="action-pill">${escapeHtml(a.pill)}</span>` : ``}
+        `;
+
+        if(isAdmin){
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openEditor({
+              kind: 'quickAction',
+              id: a.id,
+              title: a.title || '',
+              subtitle: a.subtitle || '',
+              url: a.url || '',
+              icon: a.icon || '🔗',
+              pill: a.pill || '',
+              order: a.order ?? 0
+            });
+          });
+        }
+
+        quickActionsEl.appendChild(btn);
+      });
+    }
+
+    /* NAV realtime */
+    const fallbackNav = {
+      items: [
+        { type:'link', label:'Hem', url:'index.html', order:0 },
+        {
+          type:'dropdown', label:'Om föreningen', order:1, children:[
+            { label:'Om oss', url:'om.html', order:0 },
+            { label:'Stadgar', url:'stadgar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Styrelsen', order:2, children:[
+            { label:'Styrelsen', url:'styrelsen.html', order:0 },
+            { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Planeringsprojekt', order:3, children:[
+            { label:'Pågående planer', url:'pagaendeplaner.html', order:0 },
+            { label:'Utförda planer', url:'utfordaplaner.html', order:1 }
+          ]
+        },
+        { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
+        { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
+        { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
+        { type:'link', label:'Admin', url:'admin.html', order:92, id:'adminNav', adminOnly:true }
+      ]
+    };
+
+    onSnapshot(navRef, snap => {
+      navData = snap.exists() ? snap.data() : fallbackNav;
+      renderNav();
+    });
+
+function appendMobileCloseRow(){
+  const li = document.createElement('li');
+  li.className = 'mobile-close-wrap';
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'mobile-close-btn';
+  btn.id = 'closeMenuBtn';
+  btn.textContent = 'Stäng meny';
+
+  btn.addEventListener('click', () => setNavOpen(false));
+
+  li.appendChild(btn);
+  mainNav.appendChild(li);
 }
 
-/* Make Admin visibility dynamic in case user logs in/out on this page */
-window.addEventListener('storage', () => {
-  currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-  adminMode = currentUser && currentUser.role === 'admin';
-  updateAdminVisibility();
-  renderCards();
-});
+function renderNav(){
+  const data = navData || fallbackNav;
 
-/* Accessibility: hide overlays when clicking outside editor area */
-document.querySelectorAll('.edit-overlay').forEach(ov => {
-  ov.addEventListener('click', (e) => {
-    if(e.target === ov){
-      // clicking backdrop cancels overlay
-      ov.style.display = 'none';
-      editingIndex = null;
+  // ✅ If Firestore doc exists but items missing/empty, fall back
+  const itemsRaw = Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items;
+  const items = itemsRaw.slice().sort((a,b) => (a.order ?? 0) - (b.order ?? 0));
+
+  mainNav.innerHTML = '';
+
+  items.forEach(item => {
+    if(item.adminOnly && !isAdmin) return;
+    if(item.restricted && !currentUser) return;
+
+    if(item.type === 'dropdown'){
+      const li = document.createElement('li');
+      li.className = 'dropdown';
+
+      const a = document.createElement('a');
+      a.href = item.url || '#';
+      a.textContent = (item.label || '') + ' ▾';
+
+      const dd = document.createElement('div');
+      dd.className = 'dropdown-content';
+
+      const children = Array.isArray(item.children) ? item.children.slice() : [];
+      children.sort((x,y) => (x.order ?? 0) - (y.order ?? 0));
+
+      children.forEach(ch => {
+        const ca = document.createElement('a');
+        ca.href = ch.url || '#';
+        ca.textContent = ch.label || '';
+        dd.appendChild(ca);
+      });
+
+      li.appendChild(a);
+      li.appendChild(dd);
+      mainNav.appendChild(li);
+      return;
     }
+
+    const li = document.createElement('li');
+    if(item.id) li.id = item.id;
+
+    const a = document.createElement('a');
+    a.href = item.url || '#';
+    a.textContent = item.label || '';
+    li.appendChild(a);
+    mainNav.appendChild(li);
   });
-});
 
-/* ensure dropdowns hide properly on resize and header updates */
-window.addEventListener('resize', () => {
-  // hide mobile nav if resizing to desktop
-  if(window.innerWidth > 768){
-    mainNav.classList.remove('show');
-    hamburger.textContent = '☰';
-  }
-});
+  // ✅ Always add thumb-friendly close row at bottom (mobile only via CSS)
+  appendMobileCloseRow();
 
-/* initial admin visibility set */
-updateAdminVisibility();
-</script>
+  wireMobileDropdowns();
+  updateAdminVisibility();
+}
+
+    editNavBtn.onclick = () => {
+      if(!isAdmin) return;
+      const current = navData || fallbackNav;
+      openEditor({
+        kind:'navJson',
+        text: JSON.stringify(current, null, 2)
+      });
+    };
+
+    /* NEWS cards realtime */
+    onSnapshot(query(cardsCol, orderBy('order','asc')), snap => {
+      const arr=[];
+      snap.forEach(d => arr.push({...d.data(), id:d.id}));
+      renderNews(arr);
+    });
+
+    function renderNews(arr){
+      cardGrid.innerHTML = '';
+      arr.forEach(c=>{
+        const el = document.createElement('article');
+        el.className='card';
+
+        if(c.image){
+          const img = document.createElement('img');
+          img.src = c.image;
+          el.appendChild(img);
+        }
+
+        const h = document.createElement('h2');
+        h.textContent = c.title || '';
+        const p = document.createElement('p');
+        p.textContent = c.text || '';
+        el.appendChild(h);
+        el.appendChild(p);
+
+        if(isAdmin){
+          const eBtn = document.createElement('button');
+          eBtn.className='edit-btn';
+          eBtn.textContent='✏️';
+          eBtn.onclick = (ev)=>{ ev.stopPropagation(); openEditorForCard(c, 'cards'); };
+
+          const dBtn = document.createElement('button');
+          dBtn.className='delete-btn';
+          dBtn.textContent='🗑️';
+          dBtn.onclick = async(ev)=>{ ev.stopPropagation(); await deleteDoc(doc(db,'cards',c.id)); };
+
+          el.appendChild(eBtn);
+          el.appendChild(dBtn);
+        }
+
+        cardGrid.appendChild(el);
+      });
+    }
+
+    /* INFO realtime */
+    onSnapshot(query(infoCol, orderBy('order','asc')), snap=>{
+      const arr=[];
+      snap.forEach(d=>arr.push({...d.data(), id:d.id}));
+      infoDocs = arr;
+      renderInfo(arr);
+    });
+
+    function renderInfo(arr){
+      infoGrid.innerHTML = '';
+      arr.forEach(c=>{
+        const el = document.createElement('article');
+        el.className='card';
+        el.dataset.id = c.id;
+
+        if(c.image){
+          const img = document.createElement('img');
+          img.src = c.image;
+          el.appendChild(img);
+        }
+
+        const h = document.createElement('h2');
+        h.textContent = c.title || '';
+        const p = document.createElement('p');
+        p.textContent = c.text || '';
+        el.appendChild(h);
+        el.appendChild(p);
+
+        if(isAdmin){
+          const eBtn = document.createElement('button');
+          eBtn.className='edit-btn';
+          eBtn.textContent='✏️';
+          eBtn.onclick = (ev)=>{ ev.stopPropagation(); openEditorForCard(c, 'info'); };
+
+          const dBtn = document.createElement('button');
+          dBtn.className='delete-btn';
+          dBtn.textContent='🗑️';
+          dBtn.onclick = async(ev)=>{ ev.stopPropagation(); await deleteDoc(doc(db,'info',c.id)); };
+
+          el.appendChild(eBtn);
+          el.appendChild(dBtn);
+        }
+
+        infoGrid.appendChild(el);
+      });
+
+      adjustInfoCardWidths();
+      if(isAdmin) enableDrag(infoGrid, infoCol);
+    }
+
+    function adjustInfoCardWidths(){
+      const cards = [...infoGrid.querySelectorAll('.card')];
+      cards.forEach(card=>{
+        const p = card.querySelector('p');
+        if(!p) return;
+
+        const style = window.getComputedStyle(p);
+        const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.4;
+        const lines = Math.round(p.clientHeight / lineHeight);
+
+        if(lines >= 6) card.classList.add('full-width');
+        else card.classList.remove('full-width');
+      });
+    }
+    window.addEventListener('resize', adjustInfoCardWidths);
+
+    function enableDrag(container, colRef){
+      let dragEl=null;
+
+      function onDragStart(e){
+        dragEl=e.currentTarget;
+        dragEl.classList.add('dragging');
+        e.dataTransfer?.setData?.('text/plain','drag');
+      }
+      function onDragEnd(){
+        dragEl.classList.remove('dragging');
+        const orderArr=[...container.children].map((el,i)=>({id:el.dataset.id,order:i}));
+        (async()=>{
+          for(const o of orderArr){
+            await updateDoc(doc(db,colRef.path,o.id),{order:o.order});
+          }
+        })();
+      }
+      function onDragOver(e){
+        e.preventDefault();
+        const after=getDragAfterElement(container,e.clientY);
+        if(after==null) container.appendChild(dragEl);
+        else container.insertBefore(dragEl,after);
+      }
+      function getDragAfterElement(container,y){
+        const els=[...container.querySelectorAll('.card:not(.dragging)')];
+        return els.reduce((c,child)=>{
+          const box=child.getBoundingClientRect();
+          const offset=y-box.top-box.height/2;
+          if(offset<0&&offset>c.offset) return {offset,element:child};
+          return c;
+        },{offset:-Infinity}).element;
+      }
+
+      [...container.children].forEach(c=>{
+        c.draggable=true;
+        c.addEventListener('dragstart',onDragStart);
+        c.addEventListener('dragend',onDragEnd);
+      });
+      container.addEventListener('dragover',onDragOver);
+    }
+
+    function openEditorForCard(docData, scope){
+      openEditor({
+        kind:'card',
+        scope,
+        id: docData.id,
+        title: docData.title || '',
+        image: docData.image || '',
+        text: docData.text || ''
+      });
+    }
+
+    /* Overlays close */
+    document.querySelectorAll('.edit-overlay').forEach(ov=>{
+      ov.addEventListener('click',e=>{
+        if(e.target===ov) ov.style.display='none';
+      });
+    });
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){
+        document.querySelectorAll('.edit-overlay').forEach(ov=>ov.style.display='none');
+      }
+    });
+  </script>
 </body>
 </html>
