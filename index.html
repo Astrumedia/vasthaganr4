@@ -113,7 +113,7 @@ body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;backg
       display:grid;
       grid-template-columns: 1fr;
       gap:12px;
-      margin-top:16px;
+      margin-top:24px;
     }
     @media (min-width: 640px){
       .actions{ grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -427,6 +427,14 @@ header.is-solid nav a { color: inherit; }
     .admin-head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .admin-link-fix{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
     .editor-wide{max-width:980px}
+    .editor.editor-compact{max-width:760px;max-height:min(88vh,900px);overflow:auto}
+    .editor-section{padding:14px;border:1px solid #e9eef5;border-radius:16px;background:#fbfcfe;display:flex;flex-direction:column;gap:12px}
+    .editor-section h4{margin:0;font-size:1.02rem;font-weight:950}
+    .editor-section .helptext{margin-top:-4px}
+    .thumb-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .thumb-preview{width:74px;height:74px;border-radius:16px;object-fit:cover;border:1px solid rgba(0,0,0,.08);background:#fff}
+    .section-head.news-head{margin-top:36px}
+    .section-head.news-head .section-head-left{max-width:780px}
 
     .news-carousel{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-top:16px}
     .news-viewport{overflow:hidden}
@@ -534,15 +542,11 @@ header.is-solid .brand-title span {
 
     <div class="actions" id="quickActions" aria-label="Snabblänkar"></div>
 
-    <div class="section-head" style="margin-top:24px;align-items:center;">
+    <div class="section-head news-head" style="align-items:center;">
       <div class="section-head-left">
-        <h3 class="section-title" id="newsTitle">Senaste nytt från styrelsen</h3>
-        <p class="section-desc" id="newsDesc">Här visas de senaste nyheterna. För att se alla inlägg går du vidare till Styrelsen informerar.</p>
-      </div>
-      <div class="admin-head-actions">
-        <button class="mini-edit" id="editNavBtn" type="button" title="Redigera menyn"><span>🧭</span> Meny</button>
-        <a class="btn btn-secondary all-news-link admin-link-fix" id="allNewsTopBtn" href="styrelseninformerar.html">Se alla nyheter</a>
-      </div>
+        <h3 class="section-title" id="newsTitle">Aktuellt</h3>
+        <p class="section-desc" id="newsDesc">Här visas de senaste informationskorten från hemsidan.</p>
+      </div>      <div class="admin-head-actions"></div>
     </div>
 
     <section class="news-carousel" aria-label="Senaste nyheter från styrelsen">
@@ -552,10 +556,6 @@ header.is-solid .brand-title span {
       </div>
       <button class="news-arrow" id="newsNextBtn" type="button" aria-label="Visa fler nyheter">›</button>
     </section>
-
-    <div class="news-footer-row">
-      <a class="btn btn-primary all-news-link" id="allNewsBtn" href="styrelseninformerar.html">Till Styrelsen informerar</a>
-    </div>
   </div>
 
   <div class="save-publish" id="savePublish" aria-live="polite"></div>
@@ -603,43 +603,79 @@ header.is-solid .brand-title span {
 
   <!-- Startsideeditor -->
   <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera startsidan">
-    <div class="editor">
+    <div class="editor editor-compact">
       <h3 style="margin:0;">Redigera startsidan</h3>
-      <p class="helptext">Här kan styrelsen uppdatera texterna på startsidan. Ändringarna sparas först lokalt och blir publika när ni trycker på "Spara och publicera" längst ner.</p>
-      <div class="form-grid two-cols">
-        <div>
-          <label class="field-label" for="pageBrandName">Föreningens namn</label>
-          <input type="text" id="pageBrandName" placeholder="Västhaga Nr4">
+      <p class="helptext">Här kan styrelsen uppdatera startsidan i tydliga delar. Ändringarna sparas först lokalt och blir publika när ni trycker på "Spara och publicera" längst ner.</p>
+
+      <div class="editor-section">
+        <h4>1. Namn och logga</h4>
+        <p class="helptext">Det här syns högst upp på sidan.</p>
+        <div class="form-grid two-cols">
+          <div>
+            <label class="field-label" for="pageBrandName">Föreningens namn</label>
+            <input type="text" id="pageBrandName" placeholder="Västhaga Nr4">
+          </div>
+          <div>
+            <label class="field-label" for="pageBrandTagline">Underrubrik i toppen</label>
+            <input type="text" id="pageBrandTagline" placeholder="Bostadsrättsförening">
+          </div>
         </div>
         <div>
-          <label class="field-label" for="pageBrandTagline">Underrubrik i toppen</label>
-          <input type="text" id="pageBrandTagline" placeholder="Bostadsrättsförening">
+          <label class="field-label" for="pageLogoUrl">Logga</label>
+          <input type="text" id="pageLogoUrl" placeholder="logga.png eller fullständig bildlänk">
+        </div>
+        <div class="thumb-row">
+          <img id="pageLogoPreview" class="thumb-preview" src="logga.png" alt="Förhandsvisning av logga">
+          <label class="btn btn-secondary" for="pageLogoUpload" style="margin:0;">
+            <input id="pageLogoUpload" type="file" accept="image/*" style="display:none;">
+            Ladda upp logga
+          </label>
+        </div>
+        <div id="pageLogoProgressWrap" class="progress-wrap" aria-live="polite">
+          <div class="progress-head">
+            <span>Uppladdning av logga</span>
+            <span id="pageLogoProgressText">0%</span>
+          </div>
+          <div class="progress-track">
+            <div id="pageLogoProgressBar" class="progress-bar"></div>
+          </div>
         </div>
       </div>
-      <div>
-        <label class="field-label" for="pageLogoUrl">Länk till logga</label>
-        <input type="text" id="pageLogoUrl" placeholder="logga.png eller fullständig bildlänk">
+
+      <div class="editor-section">
+        <h4>2. Snabbknappar</h4>
+        <p class="helptext">Rubrik och kort text ovanför knapparna.</p>
+        <div>
+          <label class="field-label" for="pageQuickTitle">Rubrik över snabbknappar</label>
+          <input type="text" id="pageQuickTitle" placeholder="Snabbt & viktigt">
+        </div>
+        <div>
+          <label class="field-label" for="pageQuickDesc">Text under rubriken</label>
+          <textarea id="pageQuickDesc" rows="3" placeholder="Kort beskrivning"></textarea>
+        </div>
       </div>
-      <div>
-        <label class="field-label" for="pageQuickTitle">Rubrik över snabblänkar</label>
-        <input type="text" id="pageQuickTitle" placeholder="Snabbt & viktigt">
+
+      <div class="editor-section">
+        <h4>3. Aktuellt</h4>
+        <p class="helptext">Rubrik och kort text ovanför de senaste informationskorten.</p>
+        <div>
+          <label class="field-label" for="pageNewsTitle">Rubrik över aktuellt</label>
+          <input type="text" id="pageNewsTitle" placeholder="Aktuellt">
+        </div>
+        <div>
+          <label class="field-label" for="pageNewsDesc">Text under rubriken</label>
+          <textarea id="pageNewsDesc" rows="3" placeholder="Kort beskrivning"></textarea>
+        </div>
       </div>
-      <div>
-        <label class="field-label" for="pageQuickDesc">Text under snabblänkar</label>
-        <textarea id="pageQuickDesc" rows="3" placeholder="Kort beskrivning"></textarea>
+
+      <div class="editor-section">
+        <h4>4. Sidfot</h4>
+        <div>
+          <label class="field-label" for="pageFooterText">Text längst ner på sidan</label>
+          <input type="text" id="pageFooterText" placeholder="© Västhaga Nr4 — Bostadsrättsförening">
+        </div>
       </div>
-      <div>
-        <label class="field-label" for="pageNewsTitle">Rubrik över nyheterna</label>
-        <input type="text" id="pageNewsTitle" placeholder="Senaste nytt från styrelsen">
-      </div>
-      <div>
-        <label class="field-label" for="pageNewsDesc">Text under nyhetsrubriken</label>
-        <textarea id="pageNewsDesc" rows="3" placeholder="Kort beskrivning"></textarea>
-      </div>
-      <div>
-        <label class="field-label" for="pageFooterText">Text längst ner på sidan</label>
-        <input type="text" id="pageFooterText" placeholder="© Västhaga Nr4 — Bostadsrättsförening">
-      </div>
+
       <div class="row">
         <button id="savePageBtn" class="btn btn-primary" type="button">Spara lokalt</button>
         <button id="cancelPageBtn" class="btn btn-cancel" type="button">Avbryt</button>
@@ -647,20 +683,7 @@ header.is-solid .brand-title span {
     </div>
   </div>
 
-  <!-- Menyeditor -->
-  <div class="edit-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Redigera menyn">
-    <div class="editor editor-wide">
-      <h3 style="margin:0;">Redigera menyn</h3>
-      <p class="helptext">Ändra namn och länkar i menyn genom att fylla i fälten. Ändringarna sparas först lokalt och publiceras när ni trycker på "Spara och publicera" längst ner.</p>
-      <div id="navEditorList" class="nav-editor-list"></div>
-      <div class="row">
-        <button id="addNavItemBtn" class="btn btn-secondary" type="button">+ Lägg till menyval</button>
-        <button id="saveNavBtn" class="btn btn-primary" type="button">Spara lokalt</button>
-        <button id="cancelNavBtn" class="btn btn-cancel" type="button">Avbryt</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- Hero editor (admin) -->
   <!-- Hero editor (admin) -->
   <div class="edit-overlay" id="editHeroOverlay" role="dialog" aria-modal="true" aria-label="Redigera hero">
     <div class="editor">
@@ -746,9 +769,7 @@ header.is-solid .brand-title span {
     const newsViewport = document.getElementById('newsViewport');
     const newsPrevBtn = document.getElementById('newsPrevBtn');
     const newsNextBtn = document.getElementById('newsNextBtn');
-    const allNewsTopBtn = document.getElementById('allNewsTopBtn');
-    const allNewsBtn = document.getElementById('allNewsBtn');
-    const savePublish = document.getElementById('savePublish');
+        const savePublish = document.getElementById('savePublish');
 
     const editOverlay = document.getElementById('editOverlay');
     const editorHeading = document.getElementById('editorHeading');
@@ -774,14 +795,12 @@ header.is-solid .brand-title span {
     const savePageBtn = document.getElementById('savePageBtn');
     const cancelPageBtn = document.getElementById('cancelPageBtn');
 
-    const navOverlay = document.getElementById('navOverlay');
-    const navEditorList = document.getElementById('navEditorList');
-    const addNavItemBtn = document.getElementById('addNavItemBtn');
-    const saveNavBtn = document.getElementById('saveNavBtn');
-    const cancelNavBtn = document.getElementById('cancelNavBtn');
-
     const editPageBtn = document.getElementById('editPageBtn');
-    const editNavBtn = document.getElementById('editNavBtn');
+    const pageLogoUpload = document.getElementById('pageLogoUpload');
+    const pageLogoPreview = document.getElementById('pageLogoPreview');
+    const pageLogoProgressWrap = document.getElementById('pageLogoProgressWrap');
+    const pageLogoProgressText = document.getElementById('pageLogoProgressText');
+    const pageLogoProgressBar = document.getElementById('pageLogoProgressBar');
 
     const editHeroBtn = document.getElementById('editHeroBtn');
     const editHeroOverlay = document.getElementById('editHeroOverlay');
@@ -829,8 +848,8 @@ header.is-solid .brand-title span {
       footerText: '© Västhaga Nr4 — Bostadsrättsförening',
       quickTitle: 'Snabbt & viktigt',
       quickDesc: 'Hitta rätt direkt: felanmälan, kontakt, dokument och vanliga ärenden.',
-      newsTitle: 'Senaste nytt från styrelsen',
-      newsDesc: 'Här visas de senaste nyheterna. För att se alla inlägg går du vidare till Styrelsen informerar.'
+      newsTitle: 'Aktuellt',
+      newsDesc: 'Här visas de senaste informationskorten från hemsidan.'
     };
 
     const fallbackNav = {
@@ -1028,9 +1047,10 @@ header.is-solid .brand-title span {
       footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
       quickTitleEl.textContent = pageData.quickTitle || 'Snabbt & viktigt';
       quickDescEl.textContent = pageData.quickDesc || '';
-      newsTitleEl.textContent = pageData.newsTitle || 'Senaste nytt från styrelsen';
+      newsTitleEl.textContent = pageData.newsTitle || 'Aktuellt';
       newsDescEl.textContent = pageData.newsDesc || '';
       if((pageData.logoUrl || '').trim()) brandLogo.src = pageData.logoUrl.trim();
+      if(pageLogoPreview) setPageLogoPreview(pageData.logoUrl || 'logga.png');
     }
 
     function updateAdminVisibility(){
@@ -1062,7 +1082,6 @@ header.is-solid .brand-title span {
         setNavOpen(false);
         setOverlayOpen(editOverlay, false);
         setOverlayOpen(pageOverlay, false);
-        setOverlayOpen(navOverlay, false);
         setOverlayOpen(editHeroOverlay, false);
       }
     });
@@ -1194,17 +1213,6 @@ header.is-solid .brand-title span {
       return 'Styrelsen informerar';
     }
 
-    function setGlobalNewsCta(item){
-      const sourceLabel = item?.sourceLabel || 'Styrelsen informerar';
-      const sourceUrl = item?.sourceUrl || 'styrelseninformerar.html';
-      const topText = `Se fler från ${sourceLabel}`;
-      const bottomText = `Till ${sourceLabel}`;
-      allNewsTopBtn.textContent = topText;
-      allNewsTopBtn.href = sourceUrl;
-      allNewsBtn.textContent = bottomText;
-      allNewsBtn.href = sourceUrl;
-    }
-
     function updateNewsArrows(){
       const maxScroll = Math.max(0, latestNewsTrack.scrollWidth - latestNewsTrack.clientWidth);
       const current = Math.round(latestNewsTrack.scrollLeft);
@@ -1212,25 +1220,18 @@ header.is-solid .brand-title span {
       newsNextBtn.classList.toggle('is-hidden', current >= (maxScroll - 8) || maxScroll === 0);
 
       const cards = Array.from(latestNewsTrack.querySelectorAll('.news-card'));
-      if(!cards.length){
-        setGlobalNewsCta(null);
-        return;
-      }
+      if(!cards.length) return;
       let activeCard = cards[0];
       const viewportLeft = latestNewsTrack.scrollLeft;
       cards.forEach(card => {
         if(card.offsetLeft <= viewportLeft + 24) activeCard = card;
       });
-      const sourceLabel = activeCard.dataset.sourceLabel;
-      const sourceUrl = activeCard.dataset.sourceUrl;
-      setGlobalNewsCta({ sourceLabel, sourceUrl });
     }
 
     function renderLatestNews(){
       latestNewsTrack.innerHTML = '';
       if(!latestNews.length){
         latestNewsTrack.innerHTML = `<div class="news-empty">Det finns ännu inga publicerade kort ännu.</div>`;
-        setGlobalNewsCta({ sourceLabel:'Styrelsen informerar', sourceUrl:'styrelseninformerar.html' });
         updateNewsArrows();
         return;
       }
@@ -1244,11 +1245,10 @@ header.is-solid .brand-title span {
           <div class="news-card-meta">${escapeHtml(formatNewsDate(item))} · ${escapeHtml(item.sourceLabel || 'Läs vidare')}</div>
           <h4>${escapeHtml(item.title || 'Utan rubrik')}</h4>
           <p>${escapeHtml(item.text || '')}</p>
-          <a class="news-card-link" href="${escapeHtml(item.sourceUrl || 'styrelseninformerar.html')}">Läs vidare på ${escapeHtml(item.sourceLabel || 'sidan')} →</a>
+          <a class="news-card-link" href="${escapeHtml(item.sourceUrl || 'styrelseninformerar.html')}">${escapeHtml(item.sourceLabel ? `Läs vidare på ${item.sourceLabel} →` : 'Läs vidare →')}</a>
         `;
         latestNewsTrack.appendChild(article);
       });
-      setGlobalNewsCta(latestNews[0]);
       requestAnimationFrame(updateNewsArrows);
     }
 
@@ -1310,7 +1310,26 @@ header.is-solid .brand-title span {
       pageNewsTitle.value = pageData.newsTitle || '';
       pageNewsDesc.value = pageData.newsDesc || '';
       pageFooterText.value = pageData.footerText || '';
+      setPageLogoPreview(pageLogoUrl.value || pageData.logoUrl || 'logga.png');
+      setPageLogoProgress(null);
       setOverlayOpen(pageOverlay, true);
+    });
+    pageLogoUrl.addEventListener('input', () => setPageLogoPreview(pageLogoUrl.value));
+    pageLogoUpload?.addEventListener('change', async () => {
+      try{
+        const file = pageLogoUpload.files?.[0];
+        if(!file) return;
+        setPageLogoProgress(0);
+        const url = await uploadImageFileToStorageWithProgress(file, (pct) => setPageLogoProgress(pct));
+        pageLogoUrl.value = url;
+        setPageLogoPreview(url);
+        setPageLogoProgress(null);
+      }catch(err){
+        setPageLogoProgress(null);
+        alert(err?.message || 'Uppladdningen av loggan misslyckades.');
+      }finally{
+        pageLogoUpload.value = '';
+      }
     });
     cancelPageBtn.addEventListener('click', ()=>setOverlayOpen(pageOverlay, false));
     savePageBtn.addEventListener('click', () => {
@@ -1335,142 +1354,6 @@ header.is-solid .brand-title span {
       return JSON.parse(JSON.stringify(data || fallbackNav));
     }
 
-    function renderNavEditor(){
-      navEditorList.innerHTML = '';
-      (navDraft.items || []).sort((a,b)=>(a.order ?? 0)-(b.order ?? 0)).forEach((item, index) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'nav-item-card';
-        const childHtml = item.type === 'dropdown'
-          ? `
-            <div class="nav-children" data-children="${index}">
-              ${(item.children || []).map((child, childIndex) => `
-                <div class="nav-child-row" data-child-row="${index}:${childIndex}">
-                  <div>
-                    <label class="field-label">Undersidans namn</label>
-                    <input type="text" data-child-label="${index}:${childIndex}" value="${escapeHtml(child.label || '')}">
-                  </div>
-                  <div>
-                    <label class="field-label">Undersidans länk</label>
-                    <input type="text" data-child-url="${index}:${childIndex}" value="${escapeHtml(child.url || '')}">
-                  </div>
-                  <button type="button" class="small-btn danger-btn" data-remove-child="${index}:${childIndex}">Ta bort</button>
-                </div>
-              `).join('')}
-              <button type="button" class="small-btn" data-add-child="${index}">+ Lägg till undersida</button>
-            </div>
-          `
-          : '';
-
-        wrap.innerHTML = `
-          <div class="nav-item-head">
-            <strong>Menyval ${index + 1}</strong>
-            <button type="button" class="small-btn danger-btn" data-remove-item="${index}">Ta bort menyval</button>
-          </div>
-          <div class="nav-item-grid">
-            <div>
-              <label class="field-label">Namn i menyn</label>
-              <input type="text" data-item-label="${index}" value="${escapeHtml(item.label || '')}">
-            </div>
-            <div>
-              <label class="field-label">Länk</label>
-              <input type="text" data-item-url="${index}" value="${escapeHtml(item.url || '')}">
-            </div>
-            <div>
-              <label class="field-label">Typ</label>
-              <select data-item-type="${index}">
-                <option value="link" ${item.type === 'link' ? 'selected' : ''}>Vanlig länk</option>
-                <option value="dropdown" ${item.type === 'dropdown' ? 'selected' : ''}>Meny med undersidor</option>
-              </select>
-            </div>
-          </div>
-          ${childHtml}
-        `;
-        navEditorList.appendChild(wrap);
-      });
-
-      navEditorList.querySelectorAll('[data-item-label]').forEach(input => {
-        input.addEventListener('input', e => {
-          const i = Number(e.target.dataset.itemLabel);
-          navDraft.items[i].label = e.target.value;
-        });
-      });
-      navEditorList.querySelectorAll('[data-item-url]').forEach(input => {
-        input.addEventListener('input', e => {
-          const i = Number(e.target.dataset.itemUrl);
-          navDraft.items[i].url = e.target.value;
-        });
-      });
-      navEditorList.querySelectorAll('[data-item-type]').forEach(select => {
-        select.addEventListener('change', e => {
-          const i = Number(e.target.dataset.itemType);
-          navDraft.items[i].type = e.target.value;
-          if(e.target.value === 'dropdown') navDraft.items[i].children = navDraft.items[i].children || [];
-          else delete navDraft.items[i].children;
-          renderNavEditor();
-        });
-      });
-      navEditorList.querySelectorAll('[data-remove-item]').forEach(btn => {
-        btn.addEventListener('click', e => {
-          const i = Number(e.target.dataset.removeItem);
-          navDraft.items.splice(i, 1);
-          navDraft.items.forEach((item, idx) => item.order = idx);
-          renderNavEditor();
-        });
-      });
-      navEditorList.querySelectorAll('[data-add-child]').forEach(btn => {
-        btn.addEventListener('click', e => {
-          const i = Number(e.target.dataset.addChild);
-          navDraft.items[i].children = navDraft.items[i].children || [];
-          navDraft.items[i].children.push({ label:'Ny undersida', url:'#', order: navDraft.items[i].children.length });
-          renderNavEditor();
-        });
-      });
-      navEditorList.querySelectorAll('[data-child-label]').forEach(input => {
-        input.addEventListener('input', e => {
-          const [i, childIndex] = e.target.dataset.childLabel.split(':').map(Number);
-          navDraft.items[i].children[childIndex].label = e.target.value;
-        });
-      });
-      navEditorList.querySelectorAll('[data-child-url]').forEach(input => {
-        input.addEventListener('input', e => {
-          const [i, childIndex] = e.target.dataset.childUrl.split(':').map(Number);
-          navDraft.items[i].children[childIndex].url = e.target.value;
-        });
-      });
-      navEditorList.querySelectorAll('[data-remove-child]').forEach(btn => {
-        btn.addEventListener('click', e => {
-          const [i, childIndex] = e.target.dataset.removeChild.split(':').map(Number);
-          navDraft.items[i].children.splice(childIndex, 1);
-          navDraft.items[i].children.forEach((child, idx) => child.order = idx);
-          renderNavEditor();
-        });
-      });
-    }
-
-    editNavBtn.addEventListener('click', () => {
-      if(!isAdmin) return;
-      navDraft = cloneNavData(navData || fallbackNav);
-      if(!Array.isArray(navDraft.items)) navDraft.items = cloneNavData(fallbackNav).items;
-      renderNavEditor();
-      setOverlayOpen(navOverlay, true);
-    });
-    addNavItemBtn.addEventListener('click', () => {
-      navDraft.items.push({ type:'link', label:'Nytt menyval', url:'#', order: navDraft.items.length });
-      renderNavEditor();
-    });
-    cancelNavBtn.addEventListener('click', ()=>setOverlayOpen(navOverlay, false));
-    saveNavBtn.addEventListener('click', () => {
-      requireAdmin();
-      navDraft.items.forEach((item, index) => {
-        item.order = index;
-        if(item.type === 'dropdown') (item.children || []).forEach((child, childIndex) => child.order = childIndex);
-      });
-      pendingDrafts.nav = cloneNavData(navDraft);
-      navData = cloneNavData(navDraft);
-      renderNav();
-      persistDrafts();
-      setOverlayOpen(navOverlay, false);
-    });
 
     function setHeroBgPreview(url){
       const clean = (url || '').trim();
@@ -1481,6 +1364,24 @@ header.is-solid .brand-title span {
       }
       heroBgPreview.src = clean;
       heroBgPreviewWrap.style.display = 'block';
+    }
+
+    function setPageLogoPreview(url){
+      const clean = (url || '').trim();
+      pageLogoPreview.src = clean || 'logga.png';
+    }
+
+    function setPageLogoProgress(percent){
+      if(percent == null){
+        pageLogoProgressWrap.style.display = 'none';
+        pageLogoProgressBar.style.width = '0%';
+        pageLogoProgressText.textContent = '0%';
+        return;
+      }
+      pageLogoProgressWrap.style.display = 'block';
+      const p = Math.max(0, Math.min(100, Math.round(percent)));
+      pageLogoProgressBar.style.width = `${p}%`;
+      pageLogoProgressText.textContent = `${p}%`;
     }
 
     function setHeroBgProgress(percent){
