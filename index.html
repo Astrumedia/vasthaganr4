@@ -421,6 +421,55 @@ header.is-solid nav a { color: inherit; }
     .helptext{color:var(--muted);font-size:0.95rem;line-height:1.35;font-weight:750}
     .hidden{display:none !important;}
 
+    .field-label{display:block;margin-bottom:6px;font-size:0.95rem;font-weight:900;color:#111827}
+    .form-grid{display:grid;gap:12px}
+    .form-grid.two-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .admin-head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .admin-link-fix{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    .editor-wide{max-width:980px}
+
+    .news-carousel{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-top:16px}
+    .news-viewport{overflow:hidden}
+    .news-track{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding:4px 2px 12px 2px;scrollbar-width:none}
+    .news-track::-webkit-scrollbar{display:none}
+    .news-card{min-width:min(360px,85vw);max-width:360px;background:#fff;border-radius:18px;padding:18px;box-shadow:0 12px 26px rgba(11,18,32,0.08);display:flex;flex-direction:column;gap:10px;scroll-snap-align:start}
+    .news-card-meta{font-size:0.88rem;font-weight:900;color:#a86405;background:rgba(240,154,15,0.15);padding:6px 10px;border-radius:999px;align-self:flex-start}
+    .news-card h4{margin:0;font-size:1.18rem;line-height:1.2}
+    .news-card p{margin:0;color:var(--muted);font-size:0.98rem;line-height:1.45;font-weight:700;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+    .news-card-link{margin-top:auto;text-decoration:none;font-weight:900;color:#a86405}
+    .news-empty{background:#fff;border-radius:18px;padding:22px;box-shadow:0 12px 26px rgba(11,18,32,0.08);color:var(--muted);font-weight:800}
+    .news-arrow{width:48px;height:48px;border-radius:999px;border:1px solid rgba(0,0,0,0.08);background:#fff;font-size:1.8rem;line-height:1;cursor:pointer;box-shadow:0 10px 22px rgba(11,18,32,0.08)}
+    .news-arrow:hover{border-color:rgba(240,154,15,0.45)}
+    .news-footer-row{display:flex;justify-content:center;margin-top:8px}
+    .all-news-link{text-decoration:none}
+
+    .news-arrow.is-hidden{opacity:0;pointer-events:none;visibility:hidden}
+    .save-publish{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:none;align-items:center;gap:10px;padding:12px 14px;background:rgba(11,18,32,0.92);color:#fff;border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,0.22);z-index:40}
+    .save-publish.show{display:flex}
+    .save-publish-text{font-weight:900;font-size:0.95rem}
+    .save-publish .btn{box-shadow:none}
+    .save-publish .btn-primary{background:var(--accent);border-color:transparent}
+    .save-publish .btn-cancel{background:transparent;color:#fff;border-color:rgba(255,255,255,0.22)}
+
+    .nav-editor-list{display:flex;flex-direction:column;gap:14px;max-height:62vh;overflow:auto;padding-right:4px}
+    .nav-item-card{border:1px solid #e5e7eb;border-radius:16px;padding:16px;background:#fafafa;display:flex;flex-direction:column;gap:12px}
+    .nav-item-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .nav-item-head strong{font-size:1rem}
+    .nav-item-grid{display:grid;grid-template-columns:1.2fr 1fr .7fr;gap:12px}
+    .nav-children{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:14px;background:#fff;border:1px dashed #d1d5db}
+    .nav-child-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+    .small-btn{padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,0.1);background:#fff;cursor:pointer;font-weight:900}
+    .danger-btn{background:#fff1f2;color:#be123c;border-color:#fecdd3}
+
+    @media (max-width: 900px){
+      .form-grid.two-cols,.nav-item-grid,.nav-child-row{grid-template-columns:1fr}
+      .news-carousel{grid-template-columns:1fr;}
+      .news-arrow{display:none}
+      .admin-head-actions{width:100%}
+      .admin-head-actions > *{width:100%}
+    }
+
+
 /* ===== Header text is visible over hero ===== */
 header.is-hero,
 header.is-hero a,
@@ -485,79 +534,130 @@ header.is-solid .brand-title span {
 
     <div class="actions" id="quickActions" aria-label="Snabblänkar"></div>
 
-    <main class="grid" id="infoGrid" aria-live="polite" style="margin-top:18px;"></main>
-
-    <div class="section-head" style="margin-top:24px;">
+    <div class="section-head" style="margin-top:24px;align-items:center;">
       <div class="section-head-left">
-        <h3 class="section-title" id="newsTitle">Aktuellt</h3>
-        <p class="section-desc" id="newsDesc">Driftinfo, påminnelser och nyheter från föreningen.</p>
+        <h3 class="section-title" id="newsTitle">Senaste nytt från styrelsen</h3>
+        <p class="section-desc" id="newsDesc">Här visas de senaste nyheterna. För att se alla inlägg går du vidare till Styrelsen informerar.</p>
       </div>
-      <button class="mini-edit" id="editNavBtn" type="button" title="Redigera meny (Firestore)"><span>🧭</span> Meny</button>
+      <div class="admin-head-actions">
+        <button class="mini-edit" id="editNavBtn" type="button" title="Redigera menyn"><span>🧭</span> Meny</button>
+        <a class="btn btn-secondary all-news-link admin-link-fix" id="allNewsTopBtn" href="styrelseninformerar.html">Se alla nyheter</a>
+      </div>
     </div>
 
-    <main class="grid" id="cardGrid" aria-live="polite"></main>
-  </div>
-
-  <div class="save-publish" id="savePublish">
-    <button id="saveBtn" class="btn btn-primary">Spara och publicera</button>
-    <button id="cancelBtn" class="btn btn-cancel">Avbryt</button>
-  </div>
-
-  <!-- Generic editor (admin) -->
-  <div class="edit-overlay" id="editOverlay" role="dialog" aria-modal="true" aria-label="Redigera innehåll">
-    <div class="editor">
-      <div class="row">
-        <select id="editKind" aria-label="Typ">
-          <option value="card">Kort (cards/info)</option>
-          <option value="quickAction">Snabbknapp</option>
-          <option value="pageJson">Startsida (JSON)</option>
-          <option value="navJson">Meny (JSON)</option>
-        </select>
-        <button id="removeImageBtn" class="btn btn-secondary" type="button">Ta bort bild</button>
+    <section class="news-carousel" aria-label="Senaste nyheter från styrelsen">
+      <button class="news-arrow" id="newsPrevBtn" type="button" aria-label="Visa tidigare nyheter">‹</button>
+      <div class="news-viewport" id="newsViewport">
+        <div class="news-track" id="latestNewsTrack"></div>
       </div>
+      <button class="news-arrow" id="newsNextBtn" type="button" aria-label="Visa fler nyheter">›</button>
+    </section>
 
-      <!-- Fields for card + quickAction -->
-      <input type="text" id="editTitle" placeholder="Titel / Rubrik">
-      <input type="text" id="editSubtitle" placeholder="Underrad (för Snabbknapp)">
-      <input type="text" id="editImage" placeholder="Bild-URL (valfritt)">
-      <textarea id="editText" rows="7" placeholder="Text / JSON (beroende på typ)"></textarea>
+    <div class="news-footer-row">
+      <a class="btn btn-primary all-news-link" id="allNewsBtn" href="styrelseninformerar.html">Till Styrelsen informerar</a>
+    </div>
+  </div>
+
+  <div class="save-publish" id="savePublish" aria-live="polite"></div>
+
+  <!-- Snabblänkseditor -->
+  <div class="edit-overlay" id="editOverlay" role="dialog" aria-modal="true" aria-label="Redigera snabblänk">
+    <div class="editor">
+      <h3 id="editorHeading" style="margin:0;">Redigera snabblänk</h3>
+      <p class="helptext" id="editorHelp">Fyll i fälten nedan. Ändringarna sparas först lokalt för dig. När du är nöjd trycker du på "Spara och publicera" längst ner.</p>
+
+      <label class="field-label" for="editTitle">Rubrik</label>
+      <input type="text" id="editTitle" placeholder="Till exempel: Felanmälan">
+
+      <label class="field-label" for="editSubtitle">Kort förklaring</label>
+      <input type="text" id="editSubtitle" placeholder="Till exempel: Anmäl fel i fastigheten">
 
       <div class="row" id="rowLinkStuff">
-        <input type="text" id="editUrl" placeholder="Länk-URL (för Snabbknapp)">
-        <input type="text" id="editIcon" placeholder="Ikon (emoji) (för Snabbknapp)">
+        <div>
+          <label class="field-label" for="editUrl">Länk</label>
+          <input type="text" id="editUrl" placeholder="Till exempel: felanmalan.html">
+        </div>
+        <div>
+          <label class="field-label" for="editIcon">Ikon</label>
+          <input type="text" id="editIcon" placeholder="Till exempel: 🛠️">
+        </div>
       </div>
 
       <div class="row" id="rowPillOrder">
-        <input type="text" id="editPill" placeholder="Badge (t.ex. NU) (för Snabbknapp)">
-        <input type="number" id="editOrder" placeholder="Order" min="0" step="1">
-      </div>
-
-      <div id="imagePreviewWrap" class="preview-wrap">
-        <div class="preview-label">Förhandsvisning</div>
-        <img id="imagePreview" class="preview-img" alt="Bildförhandsvisning">
-      </div>
-
-      <div id="uploadProgressWrap" class="progress-wrap" aria-live="polite">
-        <div class="progress-head">
-          <span>Uppladdning</span>
-          <span id="uploadProgressText">0%</span>
+        <div>
+          <label class="field-label" for="editPill">Liten etikett (valfritt)</label>
+          <input type="text" id="editPill" placeholder="Till exempel: NYTT">
         </div>
-        <div class="progress-track">
-          <div id="uploadProgressBar" class="progress-bar"></div>
+        <div>
+          <label class="field-label" for="editOrder">Ordning</label>
+          <input type="number" id="editOrder" placeholder="0" min="0" step="1">
         </div>
       </div>
 
       <div class="row" style="justify-content:flex-start;">
-        <label class="btn btn-secondary" for="fileUpload" style="margin:0;flex:0 0 auto;">
-          <input id="fileUpload" type="file" accept="image/*" style="display:none;">
-          Ladda upp bild
-        </label>
-
-        <button id="applyEditBtn" class="btn btn-primary" type="button">Spara</button>
+        <button id="applyEditBtn" class="btn btn-primary" type="button">Spara lokalt</button>
         <button id="cancelEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
       </div>
+    </div>
+  </div>
 
-      <div class="helptext" id="editorHelp"></div>
+  <!-- Startsideeditor -->
+  <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera startsidan">
+    <div class="editor">
+      <h3 style="margin:0;">Redigera startsidan</h3>
+      <p class="helptext">Här kan styrelsen uppdatera texterna på startsidan. Ändringarna sparas först lokalt och blir publika när ni trycker på "Spara och publicera" längst ner.</p>
+      <div class="form-grid two-cols">
+        <div>
+          <label class="field-label" for="pageBrandName">Föreningens namn</label>
+          <input type="text" id="pageBrandName" placeholder="Västhaga Nr4">
+        </div>
+        <div>
+          <label class="field-label" for="pageBrandTagline">Underrubrik i toppen</label>
+          <input type="text" id="pageBrandTagline" placeholder="Bostadsrättsförening">
+        </div>
+      </div>
+      <div>
+        <label class="field-label" for="pageLogoUrl">Länk till logga</label>
+        <input type="text" id="pageLogoUrl" placeholder="logga.png eller fullständig bildlänk">
+      </div>
+      <div>
+        <label class="field-label" for="pageQuickTitle">Rubrik över snabblänkar</label>
+        <input type="text" id="pageQuickTitle" placeholder="Snabbt & viktigt">
+      </div>
+      <div>
+        <label class="field-label" for="pageQuickDesc">Text under snabblänkar</label>
+        <textarea id="pageQuickDesc" rows="3" placeholder="Kort beskrivning"></textarea>
+      </div>
+      <div>
+        <label class="field-label" for="pageNewsTitle">Rubrik över nyheterna</label>
+        <input type="text" id="pageNewsTitle" placeholder="Senaste nytt från styrelsen">
+      </div>
+      <div>
+        <label class="field-label" for="pageNewsDesc">Text under nyhetsrubriken</label>
+        <textarea id="pageNewsDesc" rows="3" placeholder="Kort beskrivning"></textarea>
+      </div>
+      <div>
+        <label class="field-label" for="pageFooterText">Text längst ner på sidan</label>
+        <input type="text" id="pageFooterText" placeholder="© Västhaga Nr4 — Bostadsrättsförening">
+      </div>
+      <div class="row">
+        <button id="savePageBtn" class="btn btn-primary" type="button">Spara lokalt</button>
+        <button id="cancelPageBtn" class="btn btn-cancel" type="button">Avbryt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menyeditor -->
+  <div class="edit-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Redigera menyn">
+    <div class="editor editor-wide">
+      <h3 style="margin:0;">Redigera menyn</h3>
+      <p class="helptext">Ändra namn och länkar i menyn genom att fylla i fälten. Ändringarna sparas först lokalt och publiceras när ni trycker på "Spara och publicera" längst ner.</p>
+      <div id="navEditorList" class="nav-editor-list"></div>
+      <div class="row">
+        <button id="addNavItemBtn" class="btn btn-secondary" type="button">+ Lägg till menyval</button>
+        <button id="saveNavBtn" class="btn btn-primary" type="button">Spara lokalt</button>
+        <button id="cancelNavBtn" class="btn btn-cancel" type="button">Avbryt</button>
+      </div>
     </div>
   </div>
 
@@ -589,7 +689,7 @@ header.is-solid .brand-title span {
           Ladda upp bakgrund
         </label>
 
-        <button id="applyHeroEditBtn" class="btn btn-primary" type="button">Spara</button>
+        <button id="applyHeroEditBtn" class="btn btn-primary" type="button">Spara lokalt</button>
         <button id="cancelHeroEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
       </div>
 
@@ -604,8 +704,7 @@ header.is-solid .brand-title span {
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
-      getFirestore, collection, doc, setDoc, updateDoc, deleteDoc,
-      onSnapshot, query, orderBy, getDoc
+      getFirestore, collection, doc, setDoc, onSnapshot, query, orderBy, getDoc
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import {
@@ -628,61 +727,62 @@ header.is-solid .brand-title span {
     const auth = getAuth(app);
     const storage = getStorage(app);
 
-    /* DOM */
     const body = document.body;
-
-    const mainNav = document.getElementById('mainNav');
-    const hamburger = document.getElementById('hamburger');
     const header = document.getElementById('siteHeader');
     const heroSection = document.getElementById('heroSection');
+    const mainNav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburger');
 
     const brandLogo = document.getElementById('brandLogo');
     const brandName = document.getElementById('brandName');
     const brandTagline = document.getElementById('brandTagline');
-
     const quickTitleEl = document.getElementById('quickTitle');
     const quickDescEl = document.getElementById('quickDesc');
     const quickActionsEl = document.getElementById('quickActions');
-
     const newsTitleEl = document.getElementById('newsTitle');
     const newsDescEl = document.getElementById('newsDesc');
-
     const footerTextEl = document.getElementById('footerText');
+    const latestNewsTrack = document.getElementById('latestNewsTrack');
+    const newsViewport = document.getElementById('newsViewport');
+    const newsPrevBtn = document.getElementById('newsPrevBtn');
+    const newsNextBtn = document.getElementById('newsNextBtn');
+    const allNewsTopBtn = document.getElementById('allNewsTopBtn');
+    const allNewsBtn = document.getElementById('allNewsBtn');
+    const savePublish = document.getElementById('savePublish');
 
-    const cardGrid = document.getElementById('cardGrid');
-    const infoGrid = document.getElementById('infoGrid');
-
-    /* Generic editor */
     const editOverlay = document.getElementById('editOverlay');
-    const editKind = document.getElementById('editKind');
+    const editorHeading = document.getElementById('editorHeading');
+    const editorHelp = document.getElementById('editorHelp');
     const editTitle = document.getElementById('editTitle');
     const editSubtitle = document.getElementById('editSubtitle');
-    const editImage = document.getElementById('editImage');
-    const editText = document.getElementById('editText');
     const editUrl = document.getElementById('editUrl');
     const editIcon = document.getElementById('editIcon');
     const editPill = document.getElementById('editPill');
     const editOrder = document.getElementById('editOrder');
-    const rowLinkStuff = document.getElementById('rowLinkStuff');
-    const rowPillOrder = document.getElementById('rowPillOrder');
-    const editorHelp = document.getElementById('editorHelp');
-
     const applyEditBtn = document.getElementById('applyEditBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
-    const removeImageBtn = document.getElementById('removeImageBtn');
-    const fileUpload = document.getElementById('fileUpload');
 
-    const imagePreviewWrap = document.getElementById('imagePreviewWrap');
-    const imagePreview = document.getElementById('imagePreview');
-    const uploadProgressWrap = document.getElementById('uploadProgressWrap');
-    const uploadProgressText = document.getElementById('uploadProgressText');
-    const uploadProgressBar = document.getElementById('uploadProgressBar');
+    const pageOverlay = document.getElementById('pageOverlay');
+    const pageBrandName = document.getElementById('pageBrandName');
+    const pageBrandTagline = document.getElementById('pageBrandTagline');
+    const pageLogoUrl = document.getElementById('pageLogoUrl');
+    const pageQuickTitle = document.getElementById('pageQuickTitle');
+    const pageQuickDesc = document.getElementById('pageQuickDesc');
+    const pageNewsTitle = document.getElementById('pageNewsTitle');
+    const pageNewsDesc = document.getElementById('pageNewsDesc');
+    const pageFooterText = document.getElementById('pageFooterText');
+    const savePageBtn = document.getElementById('savePageBtn');
+    const cancelPageBtn = document.getElementById('cancelPageBtn');
 
-    /* Page/menu edit buttons */
+    const navOverlay = document.getElementById('navOverlay');
+    const navEditorList = document.getElementById('navEditorList');
+    const addNavItemBtn = document.getElementById('addNavItemBtn');
+    const saveNavBtn = document.getElementById('saveNavBtn');
+    const cancelNavBtn = document.getElementById('cancelNavBtn');
+
     const editPageBtn = document.getElementById('editPageBtn');
     const editNavBtn = document.getElementById('editNavBtn');
 
-    /* Hero editor */
     const editHeroBtn = document.getElementById('editHeroBtn');
     const editHeroOverlay = document.getElementById('editHeroOverlay');
     const editHeroTitle = document.getElementById('editHeroTitle');
@@ -691,32 +791,37 @@ header.is-solid .brand-title span {
     const heroBgUpload = document.getElementById('heroBgUpload');
     const applyHeroEditBtn = document.getElementById('applyHeroEditBtn');
     const cancelHeroEditBtn = document.getElementById('cancelHeroEditBtn');
-
     const heroBgPreviewWrap = document.getElementById('heroBgPreviewWrap');
     const heroBgPreview = document.getElementById('heroBgPreview');
     const heroBgProgressWrap = document.getElementById('heroBgProgressWrap');
     const heroBgProgressText = document.getElementById('heroBgProgressText');
     const heroBgProgressBar = document.getElementById('heroBgProgressBar');
 
-    /* Draft publish */
-    const savePublishPanel = document.getElementById('savePublish');
-    const publishBtn = document.getElementById('saveBtn');
-    const cancelPublishBtn = document.getElementById('cancelBtn');
-
-    /* Firestore refs */
     const heroRef = doc(db,'hero','main');
     const pageHomeRef = doc(db,'pages','home');
     const navRef = doc(db,'site','navigation');
-
-    const cardsCol = collection(db,'cards');
-    const infoCol = collection(db,'info');
     const quickCol = collection(db,'quickActions');
+    const infoCol = collection(db,'info');
+    const latestFeedCol = collection(db,'latestFeed');
 
-    /* State */
     let currentUser = null;
     let isAdmin = false;
+    let editingQuickActionId = null;
+    let quickActions = [];
+    let latestNews = [];
+    let navData = null;
+    let navDraft = null;
+    const DRAFT_STORAGE_KEY = 'vasthaga_index_admin_drafts_v3';
+    let infoItems = [];
+    let sharedFeedItems = [];
+    let pendingDrafts = loadDrafts();
 
-    let heroData = { title:'Välkommen till BRF Västhaga Nr4', subtitle:'Information för boende, mäklare och besökare', bgUrl:'bakgrundsbild1.jpg' };
+    let heroData = {
+      title:'Välkommen till BRF Västhaga Nr4',
+      subtitle:'Information för boende, mäklare och besökare',
+      bgUrl:'bakgrundsbild1.jpg'
+    };
+
     let pageData = {
       brandName: 'Västhaga Nr4',
       brandTagline: 'Bostadsrättsförening',
@@ -724,561 +829,10 @@ header.is-solid .brand-title span {
       footerText: '© Västhaga Nr4 — Bostadsrättsförening',
       quickTitle: 'Snabbt & viktigt',
       quickDesc: 'Hitta rätt direkt: felanmälan, kontakt, dokument och vanliga ärenden.',
-      newsTitle: 'Aktuellt',
-      newsDesc: 'Driftinfo, påminnelser och nyheter från föreningen.'
+      newsTitle: 'Senaste nytt från styrelsen',
+      newsDesc: 'Här visas de senaste nyheterna. För att se alla inlägg går du vidare till Styrelsen informerar.'
     };
 
-    let navData = null;
-
-    let infoDocs = [];
-    let drafts = JSON.parse(localStorage.getItem('infoDrafts')||'{}');
-
-    let editingContext = null;
-
-    /* Helpers */
-    function escapeHtml(str){
-      return String(str ?? '')
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'",'&#039;');
-    }
-
-    function requireAdmin(){
-      if(!isAdmin) throw new Error('Inte behörig (admin krävs).');
-    }
-
-    function updateHeaderOnScroll(){
-      const heroH = heroSection ? heroSection.offsetHeight : 300;
-      const y = window.scrollY;
-      const op = Math.min(1, y/heroH);
-      if (!header) return;
-      header.style.background = `rgba(255,255,255,${op})`;
-      header.style.boxShadow = op>0 ? `0 4px 12px rgba(0,0,0,${op*0.08})` : 'none';
-    }
-    window.addEventListener('scroll', updateHeaderOnScroll);
-    window.addEventListener('load', updateHeaderOnScroll);
-
-const closeMenuBtn = document.getElementById('closeMenuBtn');
-
-function setNavOpen(open){
-  if(!hamburger || !mainNav) return;
-
-  mainNav.classList.toggle('show', open);
-
-  // closed = ☰, open = orange arrow
-  hamburger.textContent = open ? '➤' : '☰';
-  hamburger.classList.toggle('is-open', open);
-
-  hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
-}
-
-if (hamburger && mainNav){
-  hamburger.setAttribute('aria-expanded', 'false');
-
-  hamburger.addEventListener('click', ()=>{
-    const open = !mainNav.classList.contains('show');
-    setNavOpen(open);
-  });
-
-  // "Stäng meny" button (thumb-friendly)
-  if (closeMenuBtn){
-    closeMenuBtn.addEventListener('click', () => setNavOpen(false));
-  }
-
-  // Optional: close after tapping a link (mobile)
-  mainNav.addEventListener('click', (e) => {
-    const a = e.target?.closest?.('a');
-    if(a) setNavOpen(false);
-  });
-
-  // ESC closes
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') setNavOpen(false);
-  });
-}
-
-    function wireMobileDropdowns(){
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
-      if (!isMobile) return;
-
-      document.querySelectorAll('nav .dropdown > a').forEach(a => {
-        a.addEventListener('click', (e) => {
-          const li = a.closest('.dropdown');
-          if (!li) return;
-          e.preventDefault();
-          li.classList.toggle('active');
-        });
-      });
-    }
-    window.addEventListener('load', wireMobileDropdowns);
-    window.addEventListener('resize', wireMobileDropdowns);
-
-    function setPreview(url){
-      const clean = (url || '').trim();
-      if(!imagePreviewWrap || !imagePreview) return;
-
-      if(!clean){
-        imagePreviewWrap.style.display = 'none';
-        imagePreview.removeAttribute('src');
-        return;
-      }
-      imagePreview.src = clean;
-      imagePreviewWrap.style.display = 'block';
-    }
-
-    function setProgress(percent){
-      if(!uploadProgressWrap || !uploadProgressBar || !uploadProgressText) return;
-
-      if(percent == null){
-        uploadProgressWrap.style.display = 'none';
-        uploadProgressBar.style.width = '0%';
-        uploadProgressText.textContent = '0%';
-        return;
-      }
-      uploadProgressWrap.style.display = 'block';
-      const p = Math.max(0, Math.min(100, Math.round(percent)));
-      uploadProgressBar.style.width = `${p}%`;
-      uploadProgressText.textContent = `${p}%`;
-    }
-
-    function setHeroBgPreview(url){
-      const clean = (url || '').trim();
-      if(!heroBgPreviewWrap || !heroBgPreview) return;
-
-      if(!clean){
-        heroBgPreviewWrap.style.display = 'none';
-        heroBgPreview.removeAttribute('src');
-        return;
-      }
-      heroBgPreview.src = clean;
-      heroBgPreviewWrap.style.display = 'block';
-    }
-
-    function setHeroBgProgress(percent){
-      if(!heroBgProgressWrap || !heroBgProgressBar || !heroBgProgressText) return;
-
-      if(percent == null){
-        heroBgProgressWrap.style.display = 'none';
-        heroBgProgressBar.style.width = '0%';
-        heroBgProgressText.textContent = '0%';
-        return;
-      }
-      heroBgProgressWrap.style.display = 'block';
-      const p = Math.max(0, Math.min(100, Math.round(percent)));
-      heroBgProgressBar.style.width = `${p}%`;
-      heroBgProgressText.textContent = `${p}%`;
-    }
-
-    function setUploadUiState({busy, label}){
-      if(fileUpload) fileUpload.disabled = !!busy;
-      if(applyEditBtn) applyEditBtn.disabled = !!busy;
-      if(removeImageBtn) removeImageBtn.disabled = !!busy;
-      applyEditBtn.textContent = label || (busy ? 'Laddar upp…' : 'Spara');
-    }
-
-    function getStoragePathForUpload(file){
-      const safeName = (file.name || 'image').trim().replace(/[^\w.\-]+/g, '_').slice(0, 80);
-      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const rand = Math.random().toString(16).slice(2, 10);
-      return `uploads/${stamp}_${rand}_${safeName}`;
-    }
-
-    async function uploadImageFileToStorageWithProgress(file, onProgress){
-      requireAdmin();
-
-      if(!file) throw new Error('Ingen fil vald.');
-      if(!file.type?.startsWith('image/')) throw new Error('Endast bildfiler är tillåtna.');
-      const maxBytes = 6 * 1024 * 1024;
-      if(file.size > maxBytes) throw new Error('Filen är för stor (max 6 MB).');
-
-      const path = getStoragePathForUpload(file);
-      const objRef = storageRef(storage, path);
-
-      return await new Promise((resolve, reject) => {
-        const task = uploadBytesResumable(objRef, file, {
-          contentType: file.type,
-          cacheControl: 'public, max-age=31536000'
-        });
-
-        task.on('state_changed',
-          (snap) => {
-            const pct = snap.totalBytes > 0 ? (snap.bytesTransferred / snap.totalBytes) * 100 : 0;
-            onProgress?.(pct);
-          },
-          (err) => reject(err),
-          async () => resolve(await getDownloadURL(task.snapshot.ref))
-        );
-      });
-    }
-
-    function updateAdminVisibility(){
-      if (editHeroBtn) editHeroBtn.style.display = isAdmin ? 'inline' : 'none';
-      if (savePublishPanel) savePublishPanel.style.display = Object.keys(drafts).length ? 'flex' : 'none';
-    }
-
-    function applyEditorMode(kind){
-      const isJson = kind === 'pageJson' || kind === 'navJson';
-      const isQuick = kind === 'quickAction';
-      const isCard = kind === 'card';
-
-      editTitle.classList.toggle('hidden', isJson);
-      editSubtitle.classList.toggle('hidden', isJson || isCard);
-      editImage.classList.toggle('hidden', isJson);
-      rowLinkStuff.classList.toggle('hidden', !isQuick);
-      rowPillOrder.classList.toggle('hidden', !isQuick);
-
-      removeImageBtn.classList.toggle('hidden', isJson || isQuick);
-      imagePreviewWrap.classList.toggle('hidden', isJson);
-      uploadProgressWrap.classList.toggle('hidden', isJson);
-
-      if (isJson){
-        editorHelp.textContent =
-          kind === 'pageJson'
-            ? 'Klistra in JSON för pages/home. Exempel finns i instruktionerna.'
-            : 'Klistra in JSON för site/navigation. Exempel finns i instruktionerna.';
-        editText.placeholder = 'JSON...';
-      } else if (isQuick){
-        editorHelp.textContent = 'Snabbknapp sparas i collection quickActions.';
-        editText.placeholder = 'Ej använd för Snabbknapp';
-      } else {
-        editorHelp.textContent = 'Kort sparas i cards eller info. För info används draft + publicera.';
-        editText.placeholder = 'Text';
-      }
-    }
-
-    function openEditor(ctx){
-      editingContext = ctx;
-
-      editKind.value = ctx.kind;
-      applyEditorMode(ctx.kind);
-
-      editTitle.value = ctx.title ?? '';
-      editSubtitle.value = ctx.subtitle ?? '';
-      editImage.value = ctx.image ?? '';
-      editText.value = ctx.text ?? '';
-      editUrl.value = ctx.url ?? '';
-      editIcon.value = ctx.icon ?? '';
-      editPill.value = ctx.pill ?? '';
-      editOrder.value = (ctx.order ?? 0);
-
-      setPreview(editImage.value);
-      setProgress(null);
-
-      applyEditBtn.textContent = 'Spara';
-      editOverlay.style.display = 'flex';
-      applyEditBtn.focus();
-    }
-
-    function closeEditor(){
-      editingContext = null;
-      editOverlay.style.display = 'none';
-      setProgress(null);
-    }
-
-    cancelEditBtn.onclick = closeEditor;
-
-    editKind.addEventListener('change', () => {
-      applyEditorMode(editKind.value);
-    });
-
-    /* Wire generic image upload */
-    if(editImage){
-      editImage.addEventListener('input', () => setPreview(editImage.value));
-    }
-
-    if(fileUpload){
-      fileUpload.addEventListener('change', async () => {
-        try{
-          requireAdmin();
-          const file = fileUpload.files?.[0];
-          if(!file) return;
-
-          setUploadUiState({busy:true, label:'Laddar upp…'});
-          setProgress(0);
-
-          const url = await uploadImageFileToStorageWithProgress(file, (pct) => setProgress(pct));
-          editImage.value = url;
-          setPreview(url);
-          setProgress(null);
-        }catch(err){
-          setProgress(null);
-          alert(err?.message || 'Uppladdning misslyckades.');
-        }finally{
-          setUploadUiState({busy:false});
-          fileUpload.value = '';
-        }
-      });
-    }
-
-    removeImageBtn.addEventListener('click', () => {
-      editImage.value = '';
-      if(fileUpload) fileUpload.value = '';
-      setPreview('');
-    });
-
-    applyEditBtn.onclick = async () => {
-      if(!editingContext) return;
-      requireAdmin();
-
-      const kind = editKind.value;
-
-      try{
-        if(kind === 'card'){
-          const payload = {
-            title: editTitle.value.trim(),
-            text: editText.value.trim(),
-            image: editImage.value.trim()
-          };
-
-          if(editingContext.scope === 'info'){
-            drafts[editingContext.id] = payload;
-            localStorage.setItem('infoDrafts', JSON.stringify(drafts));
-            savePublishPanel.style.display = 'flex';
-          }else{
-            await updateDoc(doc(db, 'cards', editingContext.id), payload);
-          }
-
-          closeEditor();
-          return;
-        }
-
-        if(kind === 'quickAction'){
-          const payload = {
-            title: editTitle.value.trim(),
-            subtitle: editSubtitle.value.trim(),
-            icon: (editIcon.value.trim() || '🔗'),
-            pill: editPill.value.trim(),
-            url: editUrl.value.trim(),
-            order: Number.isFinite(Number(editOrder.value)) ? Number(editOrder.value) : 0
-          };
-
-          await setDoc(doc(db, 'quickActions', editingContext.id), payload, { merge:true });
-          closeEditor();
-          return;
-        }
-
-        if(kind === 'pageJson'){
-          let parsed;
-          try{
-            parsed = JSON.parse(editText.value);
-          }catch{
-            throw new Error('JSON för startsidan är ogiltig.');
-          }
-          await setDoc(pageHomeRef, parsed, { merge:false });
-          closeEditor();
-          return;
-        }
-
-        if(kind === 'navJson'){
-          let parsed;
-          try{
-            parsed = JSON.parse(editText.value);
-          }catch{
-            throw new Error('JSON för menyn är ogiltig.');
-          }
-          await setDoc(navRef, parsed, { merge:false });
-          closeEditor();
-          return;
-        }
-      }catch(err){
-        alert(err?.message || 'Kunde inte spara.');
-      }
-    };
-
-    /* Publish drafts for info */
-    publishBtn.onclick = async () => {
-      requireAdmin();
-      for(const id in drafts){
-        await setDoc(doc(db,'info',id), drafts[id], { merge:true });
-      }
-      drafts = {};
-      localStorage.removeItem('infoDrafts');
-      savePublishPanel.style.display = 'none';
-      alert('Ändringar publicerade!');
-    };
-
-    cancelPublishBtn.onclick = () => {
-      drafts = {};
-      localStorage.removeItem('infoDrafts');
-      savePublishPanel.style.display = 'none';
-      renderInfo(infoDocs);
-    };
-
-    /* Auth => admin */
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-
-      if (!user) {
-        isAdmin = false;
-        body.classList.remove('is-admin');
-        updateAdminVisibility();
-        renderNav(); /* will hide restricted/admin */
-        return;
-      }
-
-      const snap = await getDoc(doc(db, "users", user.uid));
-      const role = snap.exists() ? snap.data().role : null;
-      isAdmin = role === "admin" || role === "ordforande";
-
-      if (isAdmin) body.classList.add('is-admin');
-      else body.classList.remove('is-admin');
-
-      updateAdminVisibility();
-      renderNav();
-    });
-
-    /* HERO realtime + edit + bg */
-    onSnapshot(heroRef, snap => {
-      if(snap.exists()) heroData = { ...heroData, ...snap.data() };
-      renderHero();
-    });
-
-    function renderHero(){
-      const h = document.getElementById('heroTitle');
-      if(h) h.childNodes[0].nodeValue = heroData.title || '';
-
-      const sub = document.getElementById('heroSubtitle');
-      if(sub) sub.textContent = heroData.subtitle || '';
-
-      const bg = (heroData.bgUrl || '').trim();
-      if (heroSection && bg) {
-        const safe = bg.replaceAll("'", "\\'");
-        heroSection.style.backgroundImage = `url('${safe}')`;
-      }
-    }
-    renderHero();
-
-    editHeroBtn.onclick = () => {
-      if(!isAdmin) return;
-      editHeroTitle.value = heroData.title || '';
-      editHeroSubtitle.value = heroData.subtitle || '';
-      editHeroBgUrl.value = heroData.bgUrl || '';
-      setHeroBgPreview(editHeroBgUrl.value);
-      setHeroBgProgress(null);
-      editHeroOverlay.style.display = 'flex';
-    };
-
-    if (editHeroBgUrl){
-      editHeroBgUrl.addEventListener('input', () => setHeroBgPreview(editHeroBgUrl.value));
-    }
-
-    if (heroBgUpload){
-      heroBgUpload.addEventListener('change', async () => {
-        try{
-          requireAdmin();
-          const file = heroBgUpload.files?.[0];
-          if(!file) return;
-
-          setHeroBgProgress(0);
-          const url = await uploadImageFileToStorageWithProgress(file, (pct) => setHeroBgProgress(pct));
-          editHeroBgUrl.value = url;
-          setHeroBgPreview(url);
-          setHeroBgProgress(null);
-        }catch(err){
-          setHeroBgProgress(null);
-          alert(err?.message || 'Uppladdning misslyckades.');
-        }finally{
-          heroBgUpload.value = '';
-        }
-      });
-    }
-
-    applyHeroEditBtn.onclick = async () => {
-      requireAdmin();
-      await setDoc(heroRef,{
-        title: editHeroTitle.value.trim(),
-        subtitle: editHeroSubtitle.value.trim(),
-        bgUrl: (editHeroBgUrl.value || '').trim()
-      }, { merge:true });
-
-      editHeroOverlay.style.display='none';
-    };
-
-    cancelHeroEditBtn.onclick = () => {
-      editHeroOverlay.style.display='none';
-    };
-
-    /* PAGES/HOME realtime */
-    onSnapshot(pageHomeRef, snap => {
-      if(snap.exists()) pageData = { ...pageData, ...snap.data() };
-      renderPage();
-    });
-
-    function renderPage(){
-      brandName.textContent = pageData.brandName || 'Västhaga Nr4';
-      brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
-      footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
-
-      if (brandLogo && (pageData.logoUrl || '').trim()) {
-        brandLogo.src = pageData.logoUrl.trim();
-      }
-
-      quickTitleEl.textContent = pageData.quickTitle || 'Snabbt & viktigt';
-      quickDescEl.textContent = pageData.quickDesc || '';
-      newsTitleEl.textContent = pageData.newsTitle || 'Aktuellt';
-      newsDescEl.textContent = pageData.newsDesc || '';
-    }
-    renderPage();
-
-    /* Page edit opens JSON editor */
-    editPageBtn.onclick = () => {
-      if(!isAdmin) return;
-      openEditor({
-        kind:'pageJson',
-        text: JSON.stringify(pageData, null, 2)
-      });
-    };
-
-    /* QUICK ACTIONS realtime */
-    onSnapshot(query(quickCol, orderBy('order','asc')), snap => {
-      const arr = [];
-      snap.forEach(d => arr.push({ id:d.id, ...d.data() }));
-      renderQuickActions(arr);
-    });
-
-    function renderQuickActions(arr){
-      quickActionsEl.innerHTML = '';
-      arr.forEach(a => {
-        const btn = document.createElement('a');
-        btn.className = 'action-btn';
-        btn.href = a.url || '#';
-        btn.rel = 'noopener';
-
-        btn.innerHTML = `
-          <span class="action-left">
-            <span class="action-icon">${escapeHtml(a.icon || '🔗')}</span>
-            <span class="action-text">
-              <span class="action-title">${escapeHtml(a.title || '')}</span>
-              <span class="action-sub">${escapeHtml(a.subtitle || '')}</span>
-            </span>
-          </span>
-          ${a.pill ? `<span class="action-pill">${escapeHtml(a.pill)}</span>` : ``}
-        `;
-
-        if(isAdmin){
-          btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openEditor({
-              kind: 'quickAction',
-              id: a.id,
-              title: a.title || '',
-              subtitle: a.subtitle || '',
-              url: a.url || '',
-              icon: a.icon || '🔗',
-              pill: a.pill || '',
-              order: a.order ?? 0
-            });
-          });
-        }
-
-        quickActionsEl.appendChild(btn);
-      });
-    }
-
-    /* NAV realtime */
     const fallbackNav = {
       items: [
         { type:'link', label:'Hem', url:'index.html', order:0 },
@@ -1307,267 +861,791 @@ if (hamburger && mainNav){
       ]
     };
 
+
+    function loadDrafts(){
+      try{
+        const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return {
+          hero: parsed.hero || null,
+          page: parsed.page || null,
+          nav: parsed.nav || null,
+          quickActions: parsed.quickActions || {}
+        };
+      }catch(err){
+        return { hero:null, page:null, nav:null, quickActions:{} };
+      }
+    }
+
+    function persistDrafts(){
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(pendingDrafts));
+      renderSavePublishBar();
+    }
+
+    function hasPendingDrafts(){
+      return Boolean(
+        pendingDrafts.hero ||
+        pendingDrafts.page ||
+        pendingDrafts.nav ||
+        Object.keys(pendingDrafts.quickActions || {}).length
+      );
+    }
+
+    function countPendingDrafts(){
+      let total = 0;
+      if(pendingDrafts.hero) total += 1;
+      if(pendingDrafts.page) total += 1;
+      if(pendingDrafts.nav) total += 1;
+      total += Object.keys(pendingDrafts.quickActions || {}).length;
+      return total;
+    }
+
+    function renderSavePublishBar(){
+      if(!savePublish) return;
+      if(!isAdmin || !hasPendingDrafts()){
+        savePublish.classList.remove('show');
+        savePublish.innerHTML = '';
+        return;
+      }
+      const count = countPendingDrafts();
+      savePublish.classList.add('show');
+      savePublish.innerHTML = `
+        <div class="save-publish-text">${count} osparade ändring${count === 1 ? '' : 'ar'}</div>
+        <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
+        <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
+      `;
+      document.getElementById('publishDraftsBtn')?.addEventListener('click', publishPendingDrafts);
+      document.getElementById('discardDraftsBtn')?.addEventListener('click', discardPendingDrafts);
+    }
+
+    function applyDraftsToLiveState(){
+      if(pendingDrafts.hero) heroData = { ...heroData, ...pendingDrafts.hero };
+      if(pendingDrafts.page) pageData = { ...pageData, ...pendingDrafts.page };
+      if(pendingDrafts.nav) navData = cloneNavData(pendingDrafts.nav);
+      const quickDraftMap = pendingDrafts.quickActions || {};
+      const ids = Object.keys(quickDraftMap);
+      if(ids.length){
+        const quickMap = new Map(quickActions.map(item => [item.id, item]));
+        ids.forEach(id => quickMap.set(id, { ...(quickMap.get(id) || { id }), ...quickDraftMap[id] }));
+        quickActions = Array.from(quickMap.values()).sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+      }
+    }
+
+    async function publishPendingDrafts(){
+      requireAdmin();
+      const jobs = [];
+      if(pendingDrafts.hero) jobs.push(setDoc(heroRef, pendingDrafts.hero, { merge:true }));
+      if(pendingDrafts.page) jobs.push(setDoc(pageHomeRef, pendingDrafts.page, { merge:true }));
+      if(pendingDrafts.nav) jobs.push(setDoc(navRef, pendingDrafts.nav, { merge:false }));
+      Object.entries(pendingDrafts.quickActions || {}).forEach(([id, payload]) => {
+        jobs.push(setDoc(doc(db,'quickActions', id), payload, { merge:true }));
+      });
+      await Promise.all(jobs);
+      pendingDrafts = { hero:null, page:null, nav:null, quickActions:{} };
+      persistDrafts();
+      alert('Ändringarna är nu publicerade.');
+    }
+
+    function discardPendingDrafts(){
+      pendingDrafts = { hero:null, page:null, nav:null, quickActions:{} };
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      window.location.reload();
+    }
+
+    function normalizeInfoItem(item){
+      return {
+        id: item.id,
+        title: item.title || item.heading || 'Utan rubrik',
+        text: item.text || item.body || item.description || '',
+        updatedAt: item.updatedAt || item.createdAt || item.order || 0,
+        sourceLabel: item.sourceLabel || 'Styrelsen informerar',
+        sourceUrl: item.sourceUrl || 'styrelseninformerar.html',
+        sourceType: 'info'
+      };
+    }
+
+    function normalizeFeedItem(item){
+      return {
+        id: item.id,
+        title: item.title || item.heading || 'Utan rubrik',
+        text: item.text || item.body || item.description || '',
+        updatedAt: item.updatedAt || item.createdAt || item.order || 0,
+        sourceLabel: item.sourceLabel || item.pageTitle || item.sectionTitle || 'Läs vidare',
+        sourceUrl: item.sourceUrl || item.url || 'index.html',
+        sourceType: item.sourceType || 'feed'
+      };
+    }
+
+    function rebuildLatestNews(){
+      const merged = [...sharedFeedItems, ...infoItems];
+      const unique = [];
+      const seen = new Set();
+      merged
+        .filter(item => item && item.title && item.sourceUrl)
+        .sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+        .forEach(item => {
+          const key = `${item.sourceUrl}__${item.id || item.title}`;
+          if(seen.has(key)) return;
+          seen.add(key);
+          unique.push(item);
+        });
+      latestNews = unique.slice(0, 8);
+      renderLatestNews();
+    }
+
+    function escapeHtml(str=''){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+    }
+
+    function requireAdmin(){
+      if(!isAdmin) throw new Error('Du behöver vara admin för att göra detta.');
+    }
+
+    function setOverlayOpen(overlay, open){
+      if(!overlay) return;
+      overlay.style.display = open ? 'flex' : 'none';
+    }
+
+    function renderHero(){
+      const heroTitle = document.getElementById('heroTitle');
+      const heroSubtitle = document.getElementById('heroSubtitle');
+      if(heroTitle && heroTitle.childNodes[0]) heroTitle.childNodes[0].nodeValue = heroData.title || '';
+      if(heroSubtitle) heroSubtitle.textContent = heroData.subtitle || '';
+      if(heroSection && heroData.bgUrl){
+        const safe = String(heroData.bgUrl).replaceAll("'", "\'");
+        heroSection.style.backgroundImage = `url('${safe}')`;
+      }
+    }
+
+    function renderPage(){
+      brandName.textContent = pageData.brandName || 'Västhaga Nr4';
+      brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
+      footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+      quickTitleEl.textContent = pageData.quickTitle || 'Snabbt & viktigt';
+      quickDescEl.textContent = pageData.quickDesc || '';
+      newsTitleEl.textContent = pageData.newsTitle || 'Senaste nytt från styrelsen';
+      newsDescEl.textContent = pageData.newsDesc || '';
+      if((pageData.logoUrl || '').trim()) brandLogo.src = pageData.logoUrl.trim();
+    }
+
+    function updateAdminVisibility(){
+      body.classList.toggle('is-admin', isAdmin);
+      if(editHeroBtn) editHeroBtn.style.display = isAdmin ? 'inline' : 'none';
+      renderSavePublishBar();
+    }
+
+    function updateHeaderState(){
+      const solid = window.scrollY > 24;
+      header.classList.toggle('is-solid', solid);
+      header.classList.toggle('is-hero', !solid);
+      header.style.background = solid ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0)';
+      header.style.boxShadow = solid ? '0 8px 24px rgba(11,18,32,0.08)' : 'none';
+    }
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState);
+
+    function setNavOpen(open){
+      mainNav.classList.toggle('show', open);
+      hamburger.textContent = open ? '➤' : '☰';
+      hamburger.classList.toggle('is-open', open);
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.addEventListener('click', ()=>setNavOpen(!mainNav.classList.contains('show')));
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        setNavOpen(false);
+        setOverlayOpen(editOverlay, false);
+        setOverlayOpen(pageOverlay, false);
+        setOverlayOpen(navOverlay, false);
+        setOverlayOpen(editHeroOverlay, false);
+      }
+    });
+
+    function wireMobileDropdowns(){
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
+      if (!isMobile) return;
+      document.querySelectorAll('nav .dropdown > a').forEach(a => {
+        a.onclick = (e) => {
+          const li = a.closest('.dropdown');
+          if(!li) return;
+          e.preventDefault();
+          li.classList.toggle('active');
+        };
+      });
+    }
+    window.addEventListener('resize', wireMobileDropdowns);
+
+    function appendMobileCloseRow(){
+      const li = document.createElement('li');
+      li.className = 'mobile-close-wrap';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-close-btn';
+      btn.textContent = 'Stäng meny';
+      btn.addEventListener('click', () => setNavOpen(false));
+      li.appendChild(btn);
+      mainNav.appendChild(li);
+    }
+
+    function renderNav(){
+      const data = navData || fallbackNav;
+      const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+        .slice()
+        .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+      mainNav.innerHTML = '';
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentUser) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'dropdown';
+          const a = document.createElement('a');
+          a.href = item.url || '#';
+          a.textContent = `${item.label || ''} ▾`;
+
+          const dd = document.createElement('div');
+          dd.className = 'dropdown-content';
+          const children = (Array.isArray(item.children) ? item.children : []).slice().sort((x,y)=>(x.order ?? 0)-(y.order ?? 0));
+          children.forEach(ch => {
+            const ca = document.createElement('a');
+            ca.href = ch.url || '#';
+            ca.textContent = ch.label || '';
+            dd.appendChild(ca);
+          });
+
+          li.appendChild(a);
+          li.appendChild(dd);
+          mainNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        li.appendChild(a);
+        mainNav.appendChild(li);
+      });
+
+      appendMobileCloseRow();
+      wireMobileDropdowns();
+      mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+    }
+
+    function renderQuickActions(){
+      quickActionsEl.innerHTML = '';
+      quickActions.forEach((item) => {
+        const btn = document.createElement('a');
+        btn.className = 'action-btn';
+        btn.href = item.url || '#';
+        btn.rel = 'noopener';
+        btn.innerHTML = `
+          <span class="action-left">
+            <span class="action-icon">${escapeHtml(item.icon || '🔗')}</span>
+            <span class="action-text">
+              <span class="action-title">${escapeHtml(item.title || '')}</span>
+              <span class="action-sub">${escapeHtml(item.subtitle || '')}</span>
+            </span>
+          </span>
+          ${item.pill ? `<span class="action-pill">${escapeHtml(item.pill)}</span>` : ``}
+        `;
+
+        if(isAdmin){
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openQuickActionEditor(item);
+          });
+        }
+        quickActionsEl.appendChild(btn);
+      });
+
+      if(isAdmin){
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'action-btn';
+        addBtn.innerHTML = `
+          <span class="action-left">
+            <span class="action-icon">＋</span>
+            <span class="action-text">
+              <span class="action-title">Lägg till snabblänk</span>
+              <span class="action-sub">Skapa en ny knapp på startsidan</span>
+            </span>
+          </span>
+        `;
+        addBtn.addEventListener('click', ()=>openQuickActionEditor());
+        quickActionsEl.appendChild(addBtn);
+      }
+    }
+
+    function formatNewsDate(item){
+      const raw = item.updatedAt || item.createdAt || item.date || item.order;
+      if(typeof raw === 'number' && raw > 1000000000){
+        return new Date(raw).toLocaleDateString('sv-SE', { year:'numeric', month:'short', day:'numeric' });
+      }
+      return 'Styrelsen informerar';
+    }
+
+    function setGlobalNewsCta(item){
+      const sourceLabel = item?.sourceLabel || 'Styrelsen informerar';
+      const sourceUrl = item?.sourceUrl || 'styrelseninformerar.html';
+      const topText = `Se fler från ${sourceLabel}`;
+      const bottomText = `Till ${sourceLabel}`;
+      allNewsTopBtn.textContent = topText;
+      allNewsTopBtn.href = sourceUrl;
+      allNewsBtn.textContent = bottomText;
+      allNewsBtn.href = sourceUrl;
+    }
+
+    function updateNewsArrows(){
+      const maxScroll = Math.max(0, latestNewsTrack.scrollWidth - latestNewsTrack.clientWidth);
+      const current = Math.round(latestNewsTrack.scrollLeft);
+      newsPrevBtn.classList.toggle('is-hidden', current <= 8);
+      newsNextBtn.classList.toggle('is-hidden', current >= (maxScroll - 8) || maxScroll === 0);
+
+      const cards = Array.from(latestNewsTrack.querySelectorAll('.news-card'));
+      if(!cards.length){
+        setGlobalNewsCta(null);
+        return;
+      }
+      let activeCard = cards[0];
+      const viewportLeft = latestNewsTrack.scrollLeft;
+      cards.forEach(card => {
+        if(card.offsetLeft <= viewportLeft + 24) activeCard = card;
+      });
+      const sourceLabel = activeCard.dataset.sourceLabel;
+      const sourceUrl = activeCard.dataset.sourceUrl;
+      setGlobalNewsCta({ sourceLabel, sourceUrl });
+    }
+
+    function renderLatestNews(){
+      latestNewsTrack.innerHTML = '';
+      if(!latestNews.length){
+        latestNewsTrack.innerHTML = `<div class="news-empty">Det finns ännu inga publicerade kort ännu.</div>`;
+        setGlobalNewsCta({ sourceLabel:'Styrelsen informerar', sourceUrl:'styrelseninformerar.html' });
+        updateNewsArrows();
+        return;
+      }
+
+      latestNews.forEach((item) => {
+        const article = document.createElement('article');
+        article.className = 'news-card';
+        article.dataset.sourceLabel = item.sourceLabel || 'Läs vidare';
+        article.dataset.sourceUrl = item.sourceUrl || 'styrelseninformerar.html';
+        article.innerHTML = `
+          <div class="news-card-meta">${escapeHtml(formatNewsDate(item))} · ${escapeHtml(item.sourceLabel || 'Läs vidare')}</div>
+          <h4>${escapeHtml(item.title || 'Utan rubrik')}</h4>
+          <p>${escapeHtml(item.text || '')}</p>
+          <a class="news-card-link" href="${escapeHtml(item.sourceUrl || 'styrelseninformerar.html')}">Läs vidare på ${escapeHtml(item.sourceLabel || 'sidan')} →</a>
+        `;
+        latestNewsTrack.appendChild(article);
+      });
+      setGlobalNewsCta(latestNews[0]);
+      requestAnimationFrame(updateNewsArrows);
+    }
+
+    function scrollNews(direction){
+      const amount = Math.min(396, latestNewsTrack.clientWidth || 396);
+      latestNewsTrack.scrollBy({ left: direction * amount, behavior:'smooth' });
+    }
+    newsPrevBtn.addEventListener('click', ()=>scrollNews(-1));
+    newsNextBtn.addEventListener('click', ()=>scrollNews(1));
+    latestNewsTrack.addEventListener('scroll', updateNewsArrows, { passive:true });
+    window.addEventListener('resize', updateNewsArrows);
+
+    function openQuickActionEditor(item = null){
+      requireAdmin();
+      editingQuickActionId = item?.id || null;
+      editorHeading.textContent = item ? 'Redigera snabblänk' : 'Lägg till snabblänk';
+      editorHelp.textContent = 'Fyll i fälten nedan. Ändringarna sparas först lokalt för dig. När du är nöjd trycker du på "Spara och publicera" längst ner.';
+      editTitle.value = item?.title || '';
+      editSubtitle.value = item?.subtitle || '';
+      editUrl.value = item?.url || '';
+      editIcon.value = item?.icon || '🔗';
+      editPill.value = item?.pill || '';
+      editOrder.value = Number.isFinite(Number(item?.order)) ? item.order : (quickActions.length ? Math.max(...quickActions.map(x => Number(x.order) || 0)) + 1 : 0);
+      setOverlayOpen(editOverlay, true);
+    }
+
+    cancelEditBtn.addEventListener('click', ()=>setOverlayOpen(editOverlay, false));
+    applyEditBtn.addEventListener('click', () => {
+      requireAdmin();
+      const payload = {
+        title: editTitle.value.trim(),
+        subtitle: editSubtitle.value.trim(),
+        url: editUrl.value.trim(),
+        icon: (editIcon.value.trim() || '🔗'),
+        pill: editPill.value.trim(),
+        order: Number.isFinite(Number(editOrder.value)) ? Number(editOrder.value) : 0,
+        updatedAt: Date.now()
+      };
+      if(!payload.title) return alert('Skriv en rubrik för snabblänken.');
+      const id = editingQuickActionId || doc(quickCol).id;
+      pendingDrafts.quickActions = { ...(pendingDrafts.quickActions || {}), [id]: payload };
+      const existingIndex = quickActions.findIndex(item => item.id === id);
+      const nextItem = { id, ...payload };
+      if(existingIndex >= 0) quickActions.splice(existingIndex, 1, nextItem);
+      else quickActions.push(nextItem);
+      quickActions.sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+      persistDrafts();
+      renderQuickActions();
+      setOverlayOpen(editOverlay, false);
+    });
+
+    editPageBtn.addEventListener('click', () => {
+      if(!isAdmin) return;
+      pageBrandName.value = pageData.brandName || '';
+      pageBrandTagline.value = pageData.brandTagline || '';
+      pageLogoUrl.value = pageData.logoUrl || '';
+      pageQuickTitle.value = pageData.quickTitle || '';
+      pageQuickDesc.value = pageData.quickDesc || '';
+      pageNewsTitle.value = pageData.newsTitle || '';
+      pageNewsDesc.value = pageData.newsDesc || '';
+      pageFooterText.value = pageData.footerText || '';
+      setOverlayOpen(pageOverlay, true);
+    });
+    cancelPageBtn.addEventListener('click', ()=>setOverlayOpen(pageOverlay, false));
+    savePageBtn.addEventListener('click', () => {
+      requireAdmin();
+      pendingDrafts.page = {
+        brandName: pageBrandName.value.trim(),
+        brandTagline: pageBrandTagline.value.trim(),
+        logoUrl: pageLogoUrl.value.trim(),
+        quickTitle: pageQuickTitle.value.trim(),
+        quickDesc: pageQuickDesc.value.trim(),
+        newsTitle: pageNewsTitle.value.trim(),
+        newsDesc: pageNewsDesc.value.trim(),
+        footerText: pageFooterText.value.trim()
+      };
+      pageData = { ...pageData, ...pendingDrafts.page };
+      renderPage();
+      persistDrafts();
+      setOverlayOpen(pageOverlay, false);
+    });
+
+    function cloneNavData(data){
+      return JSON.parse(JSON.stringify(data || fallbackNav));
+    }
+
+    function renderNavEditor(){
+      navEditorList.innerHTML = '';
+      (navDraft.items || []).sort((a,b)=>(a.order ?? 0)-(b.order ?? 0)).forEach((item, index) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'nav-item-card';
+        const childHtml = item.type === 'dropdown'
+          ? `
+            <div class="nav-children" data-children="${index}">
+              ${(item.children || []).map((child, childIndex) => `
+                <div class="nav-child-row" data-child-row="${index}:${childIndex}">
+                  <div>
+                    <label class="field-label">Undersidans namn</label>
+                    <input type="text" data-child-label="${index}:${childIndex}" value="${escapeHtml(child.label || '')}">
+                  </div>
+                  <div>
+                    <label class="field-label">Undersidans länk</label>
+                    <input type="text" data-child-url="${index}:${childIndex}" value="${escapeHtml(child.url || '')}">
+                  </div>
+                  <button type="button" class="small-btn danger-btn" data-remove-child="${index}:${childIndex}">Ta bort</button>
+                </div>
+              `).join('')}
+              <button type="button" class="small-btn" data-add-child="${index}">+ Lägg till undersida</button>
+            </div>
+          `
+          : '';
+
+        wrap.innerHTML = `
+          <div class="nav-item-head">
+            <strong>Menyval ${index + 1}</strong>
+            <button type="button" class="small-btn danger-btn" data-remove-item="${index}">Ta bort menyval</button>
+          </div>
+          <div class="nav-item-grid">
+            <div>
+              <label class="field-label">Namn i menyn</label>
+              <input type="text" data-item-label="${index}" value="${escapeHtml(item.label || '')}">
+            </div>
+            <div>
+              <label class="field-label">Länk</label>
+              <input type="text" data-item-url="${index}" value="${escapeHtml(item.url || '')}">
+            </div>
+            <div>
+              <label class="field-label">Typ</label>
+              <select data-item-type="${index}">
+                <option value="link" ${item.type === 'link' ? 'selected' : ''}>Vanlig länk</option>
+                <option value="dropdown" ${item.type === 'dropdown' ? 'selected' : ''}>Meny med undersidor</option>
+              </select>
+            </div>
+          </div>
+          ${childHtml}
+        `;
+        navEditorList.appendChild(wrap);
+      });
+
+      navEditorList.querySelectorAll('[data-item-label]').forEach(input => {
+        input.addEventListener('input', e => {
+          const i = Number(e.target.dataset.itemLabel);
+          navDraft.items[i].label = e.target.value;
+        });
+      });
+      navEditorList.querySelectorAll('[data-item-url]').forEach(input => {
+        input.addEventListener('input', e => {
+          const i = Number(e.target.dataset.itemUrl);
+          navDraft.items[i].url = e.target.value;
+        });
+      });
+      navEditorList.querySelectorAll('[data-item-type]').forEach(select => {
+        select.addEventListener('change', e => {
+          const i = Number(e.target.dataset.itemType);
+          navDraft.items[i].type = e.target.value;
+          if(e.target.value === 'dropdown') navDraft.items[i].children = navDraft.items[i].children || [];
+          else delete navDraft.items[i].children;
+          renderNavEditor();
+        });
+      });
+      navEditorList.querySelectorAll('[data-remove-item]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const i = Number(e.target.dataset.removeItem);
+          navDraft.items.splice(i, 1);
+          navDraft.items.forEach((item, idx) => item.order = idx);
+          renderNavEditor();
+        });
+      });
+      navEditorList.querySelectorAll('[data-add-child]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const i = Number(e.target.dataset.addChild);
+          navDraft.items[i].children = navDraft.items[i].children || [];
+          navDraft.items[i].children.push({ label:'Ny undersida', url:'#', order: navDraft.items[i].children.length });
+          renderNavEditor();
+        });
+      });
+      navEditorList.querySelectorAll('[data-child-label]').forEach(input => {
+        input.addEventListener('input', e => {
+          const [i, childIndex] = e.target.dataset.childLabel.split(':').map(Number);
+          navDraft.items[i].children[childIndex].label = e.target.value;
+        });
+      });
+      navEditorList.querySelectorAll('[data-child-url]').forEach(input => {
+        input.addEventListener('input', e => {
+          const [i, childIndex] = e.target.dataset.childUrl.split(':').map(Number);
+          navDraft.items[i].children[childIndex].url = e.target.value;
+        });
+      });
+      navEditorList.querySelectorAll('[data-remove-child]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const [i, childIndex] = e.target.dataset.removeChild.split(':').map(Number);
+          navDraft.items[i].children.splice(childIndex, 1);
+          navDraft.items[i].children.forEach((child, idx) => child.order = idx);
+          renderNavEditor();
+        });
+      });
+    }
+
+    editNavBtn.addEventListener('click', () => {
+      if(!isAdmin) return;
+      navDraft = cloneNavData(navData || fallbackNav);
+      if(!Array.isArray(navDraft.items)) navDraft.items = cloneNavData(fallbackNav).items;
+      renderNavEditor();
+      setOverlayOpen(navOverlay, true);
+    });
+    addNavItemBtn.addEventListener('click', () => {
+      navDraft.items.push({ type:'link', label:'Nytt menyval', url:'#', order: navDraft.items.length });
+      renderNavEditor();
+    });
+    cancelNavBtn.addEventListener('click', ()=>setOverlayOpen(navOverlay, false));
+    saveNavBtn.addEventListener('click', () => {
+      requireAdmin();
+      navDraft.items.forEach((item, index) => {
+        item.order = index;
+        if(item.type === 'dropdown') (item.children || []).forEach((child, childIndex) => child.order = childIndex);
+      });
+      pendingDrafts.nav = cloneNavData(navDraft);
+      navData = cloneNavData(navDraft);
+      renderNav();
+      persistDrafts();
+      setOverlayOpen(navOverlay, false);
+    });
+
+    function setHeroBgPreview(url){
+      const clean = (url || '').trim();
+      if(!clean){
+        heroBgPreviewWrap.style.display = 'none';
+        heroBgPreview.removeAttribute('src');
+        return;
+      }
+      heroBgPreview.src = clean;
+      heroBgPreviewWrap.style.display = 'block';
+    }
+
+    function setHeroBgProgress(percent){
+      if(percent == null){
+        heroBgProgressWrap.style.display = 'none';
+        heroBgProgressBar.style.width = '0%';
+        heroBgProgressText.textContent = '0%';
+        return;
+      }
+      heroBgProgressWrap.style.display = 'block';
+      const p = Math.max(0, Math.min(100, Math.round(percent)));
+      heroBgProgressBar.style.width = `${p}%`;
+      heroBgProgressText.textContent = `${p}%`;
+    }
+
+    function getStoragePathForUpload(file){
+      const safeName = (file.name || 'image').trim().replace(/[^\w.\-]+/g, '_').slice(0, 80);
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const rand = Math.random().toString(16).slice(2, 10);
+      return `uploads/${stamp}_${rand}_${safeName}`;
+    }
+
+    async function uploadImageFileToStorageWithProgress(file, onProgress){
+      requireAdmin();
+      if(!file) throw new Error('Ingen fil vald.');
+      if(!file.type?.startsWith('image/')) throw new Error('Endast bildfiler är tillåtna.');
+      const maxBytes = 6 * 1024 * 1024;
+      if(file.size > maxBytes) throw new Error('Filen är för stor (max 6 MB).');
+
+      const objRef = storageRef(storage, getStoragePathForUpload(file));
+      return await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(objRef, file, {
+          contentType: file.type,
+          cacheControl: 'public, max-age=31536000'
+        });
+        task.on('state_changed',
+          (snap) => {
+            const pct = snap.totalBytes > 0 ? (snap.bytesTransferred / snap.totalBytes) * 100 : 0;
+            onProgress?.(pct);
+          },
+          (err) => reject(err),
+          async () => resolve(await getDownloadURL(task.snapshot.ref))
+        );
+      });
+    }
+
+    editHeroBtn.addEventListener('click', () => {
+      if(!isAdmin) return;
+      editHeroTitle.value = heroData.title || '';
+      editHeroSubtitle.value = heroData.subtitle || '';
+      editHeroBgUrl.value = heroData.bgUrl || '';
+      setHeroBgPreview(editHeroBgUrl.value);
+      setHeroBgProgress(null);
+      setOverlayOpen(editHeroOverlay, true);
+    });
+    editHeroBgUrl.addEventListener('input', () => setHeroBgPreview(editHeroBgUrl.value));
+    heroBgUpload.addEventListener('change', async () => {
+      try{
+        const file = heroBgUpload.files?.[0];
+        if(!file) return;
+        setHeroBgProgress(0);
+        const url = await uploadImageFileToStorageWithProgress(file, (pct) => setHeroBgProgress(pct));
+        editHeroBgUrl.value = url;
+        setHeroBgPreview(url);
+        setHeroBgProgress(null);
+      }catch(err){
+        setHeroBgProgress(null);
+        alert(err?.message || 'Uppladdningen misslyckades.');
+      }finally{
+        heroBgUpload.value = '';
+      }
+    });
+    applyHeroEditBtn.addEventListener('click', () => {
+      requireAdmin();
+      pendingDrafts.hero = {
+        title: editHeroTitle.value.trim(),
+        subtitle: editHeroSubtitle.value.trim(),
+        bgUrl: editHeroBgUrl.value.trim()
+      };
+      heroData = { ...heroData, ...pendingDrafts.hero };
+      renderHero();
+      persistDrafts();
+      setOverlayOpen(editHeroOverlay, false);
+    });
+    cancelHeroEditBtn.addEventListener('click', ()=>setOverlayOpen(editHeroOverlay, false));
+
+    document.querySelectorAll('.edit-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if(e.target === overlay) overlay.style.display = 'none';
+      });
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if(!user){
+        isAdmin = false;
+        updateAdminVisibility();
+        renderNav();
+        return;
+      }
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      const role = snap.exists() ? snap.data().role : null;
+      isAdmin = role === 'admin' || role === 'ordforande';
+      updateAdminVisibility();
+      renderNav();
+      renderQuickActions();
+    });
+
+    onSnapshot(heroRef, snap => {
+      if(snap.exists()) heroData = { ...heroData, ...snap.data() };
+      if(pendingDrafts.hero) heroData = { ...heroData, ...pendingDrafts.hero };
+      renderHero();
+    });
+
+    onSnapshot(pageHomeRef, snap => {
+      if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+      if(pendingDrafts.page) pageData = { ...pageData, ...pendingDrafts.page };
+      renderPage();
+    });
+
     onSnapshot(navRef, snap => {
       navData = snap.exists() ? snap.data() : fallbackNav;
+      if(pendingDrafts.nav) navData = cloneNavData(pendingDrafts.nav);
       renderNav();
     });
 
-function appendMobileCloseRow(){
-  const li = document.createElement('li');
-  li.className = 'mobile-close-wrap';
-
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'mobile-close-btn';
-  btn.id = 'closeMenuBtn';
-  btn.textContent = 'Stäng meny';
-
-  btn.addEventListener('click', () => setNavOpen(false));
-
-  li.appendChild(btn);
-  mainNav.appendChild(li);
-}
-
-function renderNav(){
-  const data = navData || fallbackNav;
-
-  // ✅ If Firestore doc exists but items missing/empty, fall back
-  const itemsRaw = Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items;
-  const items = itemsRaw.slice().sort((a,b) => (a.order ?? 0) - (b.order ?? 0));
-
-  mainNav.innerHTML = '';
-
-  items.forEach(item => {
-    if(item.adminOnly && !isAdmin) return;
-    if(item.restricted && !currentUser) return;
-
-    if(item.type === 'dropdown'){
-      const li = document.createElement('li');
-      li.className = 'dropdown';
-
-      const a = document.createElement('a');
-      a.href = item.url || '#';
-      a.textContent = (item.label || '') + ' ▾';
-
-      const dd = document.createElement('div');
-      dd.className = 'dropdown-content';
-
-      const children = Array.isArray(item.children) ? item.children.slice() : [];
-      children.sort((x,y) => (x.order ?? 0) - (y.order ?? 0));
-
-      children.forEach(ch => {
-        const ca = document.createElement('a');
-        ca.href = ch.url || '#';
-        ca.textContent = ch.label || '';
-        dd.appendChild(ca);
+    onSnapshot(query(quickCol, orderBy('order','asc')), snap => {
+      quickActions = [];
+      snap.forEach(d => quickActions.push({ id:d.id, ...d.data() }));
+      const quickDraftMap = pendingDrafts.quickActions || {};
+      Object.entries(quickDraftMap).forEach(([id, payload]) => {
+        const idx = quickActions.findIndex(item => item.id === id);
+        const draftItem = { id, ...payload };
+        if(idx >= 0) quickActions.splice(idx, 1, draftItem);
+        else quickActions.push(draftItem);
       });
-
-      li.appendChild(a);
-      li.appendChild(dd);
-      mainNav.appendChild(li);
-      return;
-    }
-
-    const li = document.createElement('li');
-    if(item.id) li.id = item.id;
-
-    const a = document.createElement('a');
-    a.href = item.url || '#';
-    a.textContent = item.label || '';
-    li.appendChild(a);
-    mainNav.appendChild(li);
-  });
-
-  // ✅ Always add thumb-friendly close row at bottom (mobile only via CSS)
-  appendMobileCloseRow();
-
-  wireMobileDropdowns();
-  updateAdminVisibility();
-}
-
-    editNavBtn.onclick = () => {
-      if(!isAdmin) return;
-      const current = navData || fallbackNav;
-      openEditor({
-        kind:'navJson',
-        text: JSON.stringify(current, null, 2)
-      });
-    };
-
-    /* NEWS cards realtime */
-    onSnapshot(query(cardsCol, orderBy('order','asc')), snap => {
-      const arr=[];
-      snap.forEach(d => arr.push({...d.data(), id:d.id}));
-      renderNews(arr);
+      quickActions.sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+      renderQuickActions();
     });
 
-    function renderNews(arr){
-      cardGrid.innerHTML = '';
-      arr.forEach(c=>{
-        const el = document.createElement('article');
-        el.className='card';
-
-        if(c.image){
-          const img = document.createElement('img');
-          img.src = c.image;
-          el.appendChild(img);
-        }
-
-        const h = document.createElement('h2');
-        h.textContent = c.title || '';
-        const p = document.createElement('p');
-        p.textContent = c.text || '';
-        el.appendChild(h);
-        el.appendChild(p);
-
-        if(isAdmin){
-          const eBtn = document.createElement('button');
-          eBtn.className='edit-btn';
-          eBtn.textContent='✏️';
-          eBtn.onclick = (ev)=>{ ev.stopPropagation(); openEditorForCard(c, 'cards'); };
-
-          const dBtn = document.createElement('button');
-          dBtn.className='delete-btn';
-          dBtn.textContent='🗑️';
-          dBtn.onclick = async(ev)=>{ ev.stopPropagation(); await deleteDoc(doc(db,'cards',c.id)); };
-
-          el.appendChild(eBtn);
-          el.appendChild(dBtn);
-        }
-
-        cardGrid.appendChild(el);
-      });
-    }
-
-    /* INFO realtime */
-    onSnapshot(query(infoCol, orderBy('order','asc')), snap=>{
-      const arr=[];
-      snap.forEach(d=>arr.push({...d.data(), id:d.id}));
-      infoDocs = arr;
-      renderInfo(arr);
+    onSnapshot(infoCol, snap => {
+      const arr = [];
+      snap.forEach(d => arr.push(normalizeInfoItem({ id:d.id, ...d.data() })));
+      infoItems = arr;
+      rebuildLatestNews();
     });
 
-    function renderInfo(arr){
-      infoGrid.innerHTML = '';
-      arr.forEach(c=>{
-        const el = document.createElement('article');
-        el.className='card';
-        el.dataset.id = c.id;
-
-        if(c.image){
-          const img = document.createElement('img');
-          img.src = c.image;
-          el.appendChild(img);
-        }
-
-        const h = document.createElement('h2');
-        h.textContent = c.title || '';
-        const p = document.createElement('p');
-        p.textContent = c.text || '';
-        el.appendChild(h);
-        el.appendChild(p);
-
-        if(isAdmin){
-          const eBtn = document.createElement('button');
-          eBtn.className='edit-btn';
-          eBtn.textContent='✏️';
-          eBtn.onclick = (ev)=>{ ev.stopPropagation(); openEditorForCard(c, 'info'); };
-
-          const dBtn = document.createElement('button');
-          dBtn.className='delete-btn';
-          dBtn.textContent='🗑️';
-          dBtn.onclick = async(ev)=>{ ev.stopPropagation(); await deleteDoc(doc(db,'info',c.id)); };
-
-          el.appendChild(eBtn);
-          el.appendChild(dBtn);
-        }
-
-        infoGrid.appendChild(el);
+    onSnapshot(latestFeedCol, snap => {
+      const arr = [];
+      snap.forEach(d => {
+        const data = { id:d.id, ...d.data() };
+        if(data.published === false) return;
+        arr.push(normalizeFeedItem(data));
       });
-
-      adjustInfoCardWidths();
-      if(isAdmin) enableDrag(infoGrid, infoCol);
-    }
-
-    function adjustInfoCardWidths(){
-      const cards = [...infoGrid.querySelectorAll('.card')];
-      cards.forEach(card=>{
-        const p = card.querySelector('p');
-        if(!p) return;
-
-        const style = window.getComputedStyle(p);
-        const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.4;
-        const lines = Math.round(p.clientHeight / lineHeight);
-
-        if(lines >= 6) card.classList.add('full-width');
-        else card.classList.remove('full-width');
-      });
-    }
-    window.addEventListener('resize', adjustInfoCardWidths);
-
-    function enableDrag(container, colRef){
-      let dragEl=null;
-
-      function onDragStart(e){
-        dragEl=e.currentTarget;
-        dragEl.classList.add('dragging');
-        e.dataTransfer?.setData?.('text/plain','drag');
-      }
-      function onDragEnd(){
-        dragEl.classList.remove('dragging');
-        const orderArr=[...container.children].map((el,i)=>({id:el.dataset.id,order:i}));
-        (async()=>{
-          for(const o of orderArr){
-            await updateDoc(doc(db,colRef.path,o.id),{order:o.order});
-          }
-        })();
-      }
-      function onDragOver(e){
-        e.preventDefault();
-        const after=getDragAfterElement(container,e.clientY);
-        if(after==null) container.appendChild(dragEl);
-        else container.insertBefore(dragEl,after);
-      }
-      function getDragAfterElement(container,y){
-        const els=[...container.querySelectorAll('.card:not(.dragging)')];
-        return els.reduce((c,child)=>{
-          const box=child.getBoundingClientRect();
-          const offset=y-box.top-box.height/2;
-          if(offset<0&&offset>c.offset) return {offset,element:child};
-          return c;
-        },{offset:-Infinity}).element;
-      }
-
-      [...container.children].forEach(c=>{
-        c.draggable=true;
-        c.addEventListener('dragstart',onDragStart);
-        c.addEventListener('dragend',onDragEnd);
-      });
-      container.addEventListener('dragover',onDragOver);
-    }
-
-    function openEditorForCard(docData, scope){
-      openEditor({
-        kind:'card',
-        scope,
-        id: docData.id,
-        title: docData.title || '',
-        image: docData.image || '',
-        text: docData.text || ''
-      });
-    }
-
-    /* Overlays close */
-    document.querySelectorAll('.edit-overlay').forEach(ov=>{
-      ov.addEventListener('click',e=>{
-        if(e.target===ov) ov.style.display='none';
-      });
+      sharedFeedItems = arr;
+      rebuildLatestNews();
     });
-    document.addEventListener('keydown',e=>{
-      if(e.key==='Escape'){
-        document.querySelectorAll('.edit-overlay').forEach(ov=>ov.style.display='none');
-      }
-    });
+
+    applyDraftsToLiveState();
+    renderHero();
+    renderPage();
+    renderNav();
+    renderQuickActions();
+    renderLatestNews();
+    renderSavePublishBar();
   </script>
 </body>
 </html>
