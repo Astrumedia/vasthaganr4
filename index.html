@@ -18,7 +18,7 @@ body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;backg
 
     .container{max-width:var(--maxw);margin:24px auto;padding:16px}
 
-    /* Header */
+    /* Header - restored to match indexNY */
     header {
       position: fixed;
       top: 0; left: 0;
@@ -31,39 +31,31 @@ body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;backg
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
     }
-    .brand{display:flex;align-items:center;gap:12px;min-width:0}
-    .logo{width:44px;height:44px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;overflow:hidden}
-    .logo img{width:100%;height:100%;object-fit:cover}
-    .brand-title{display:flex;flex-direction:column;min-width:0}
-    .brand-title strong{font-weight:700;font-size:1.5rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .brand-title span{color:var(--muted);font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+    .brand-title{display:flex;flex-direction:column;justify-content:center;margin-left:8px;min-width:0}
+    .brand-title strong{font-weight:700;font-size:1.5rem;line-height:1.1}
+    .brand-title span{font-size:1rem}
 
     nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
-    nav a{padding:8px 12px;border-radius:12px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;font: weight 0;;}
+    nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
     nav a:hover{background:var(--accent);color:#fff;}
     .dropdown{position:relative}
 
     .dropdown-content {
       position: absolute; top: 28px; left: 0;
       background: #fff;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.10);
-      padding: 4px;
-      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 8px;
+      border-radius: 8px;
       display: none;
-      min-width: 210px;
+      min-width: 180px;
       z-index: 10;
     }
     .dropdown:hover .dropdown-content{display:block}
-    .dropdown-content a{
-      color: var(--accent);
-      background:#fff;
-      margin:2px 0;
-      padding:10px 10px;
-      display:block;
-      border-radius:12px;
-    }
+    .dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
     .dropdown-content a:hover{background:var(--accent);color:#fff;}
 
     /* Hero */
@@ -308,12 +300,13 @@ body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;backg
     /* hamburger */
     .hamburger{
       display:none;
-      font-size: 1.9rem;
+      font-size: 1.8rem;
       cursor:pointer;
       user-select:none;
       z-index:70;
       color: var(--accent);
       position: relative;
+      transition: transform 0.3s ease;
       font-weight:900;
     }
 
@@ -337,41 +330,40 @@ body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;backg
 }
 
     @media (max-width: 768px) {
+      .hamburger { display: block; }
       header{padding:18px 14px}
       .brand-title span{display:none}
-      .hamburger{display:block}
       nav ul{
         flex-direction: column;
         position: fixed;
         top: 0; right: 0;
-        width: 290px;
+        width: 260px;
         height: 100%;
         background: #fff;
-        padding-top: 78px;
+        padding-top: 72px;
         padding-left: 12px;
         transform: translateX(100%);
         transition: transform 0.28s ease;
-        box-shadow: -10px 0 26px rgba(0,0,0,0.10);
+        box-shadow: -6px 0 20px rgba(0,0,0,0.08);
         z-index: 120;
         text-align: left;
         align-items: flex-start;
-        overflow-y:auto;
       }
       nav ul.show { transform: translateX(0); }
-      nav ul li { margin-bottom: 10px; width: 100%; }
-      nav ul li a { width: 100%; text-align: left; padding:12px 14px; font-size:1.06rem; font-weight:900; }
-      .dropdown-content { position: static; box-shadow: none; padding-left: 10px; display: none; }
+      nav ul li { margin-bottom: 12px; width: 100%; }
+      nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
+      .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
       .dropdown.active .dropdown-content { display: block; }
       .dropdown:hover .dropdown-content{display:none}
     }
 
     /* === Make desktop menu visible over hero === */
 /* When header is transparent at top, force nav links to white so they don't "disappear" */
-header.is-hero nav a { color: #fff; }
+header.is-hero nav a { color: #0b1220; }
 header.is-hero nav a:hover { background: rgba(240,154,15,0.95); color:#fff; }
 
 /* When header is solid (after scroll), use normal dark text */
-header.is-solid nav a { color: inherit; }
+header.is-solid nav a { color: #0b1220; }
 
 /* === Mobile: nicer close arrow look when menu is open === */
 @media (max-width: 768px) {
@@ -479,11 +471,13 @@ header.is-solid nav a { color: inherit; }
 
 
 /* ===== Header text is visible over hero ===== */
-header.is-hero,
-header.is-hero a,
 header.is-hero .brand-title strong,
 header.is-hero .brand-title span {
   color: #fff !important;
+}
+
+header.is-hero nav a{
+  color:#0b1220 !important;
 }
 
 header.is-hero nav a:hover{
@@ -492,10 +486,9 @@ header.is-hero nav a:hover{
 }
 
 /* when scrolled: normal dark */
-header.is-solid,
-header.is-solid a,
 header.is-solid .brand-title strong,
-header.is-solid .brand-title span {
+header.is-solid .brand-title span,
+header.is-solid nav a {
   color: inherit !important;
 }
 
@@ -508,10 +501,10 @@ header.is-solid .brand-title span {
       <a href="index.html" class="logo" aria-label="Hem">
         <img id="brandLogo" src="logga.png" alt="Logga">
       </a>
-      <a href="index.html" style="text-decoration:none;color:inherit;min-width:0;">
+      <a href="index.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:center;margin-left:8px;min-width:0;">
         <div class="brand-title">
           <strong id="brandName">Västhaga Nr4</strong>
-          <span id="brandTagline">Bostadsrättsförening</span>
+          <span id="brandTagline" class="muted">Bostadsrättsförening</span>
         </div>
       </a>
     </div>
@@ -1036,7 +1029,7 @@ header.is-solid .brand-title span {
       if(heroTitle && heroTitle.childNodes[0]) heroTitle.childNodes[0].nodeValue = heroData.title || '';
       if(heroSubtitle) heroSubtitle.textContent = heroData.subtitle || '';
       if(heroSection && heroData.bgUrl){
-        const safe = String(heroData.bgUrl).replaceAll("'", "\'");
+        const safe = String(heroData.bgUrl).replaceAll("'", "\\'");
         heroSection.style.backgroundImage = `url('${safe}')`;
       }
     }
