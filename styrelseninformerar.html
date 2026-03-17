@@ -44,7 +44,7 @@
       border-radius:8px;
       text-decoration:none;
       color:#0b1220;
-      transition: all 0.2s;
+      transition: all 0.22s ease;
       white-space: nowrap;
       font-weight:500;
     }
@@ -58,9 +58,9 @@
     .dropdown-content {
       position: absolute; top: 28px; left: 0;
       background: #fff;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.10);
       padding: 8px;
-      border-radius: 8px;
+      border-radius: 10px;
       display: none;
       min-width: 180px;
       z-index: 10;
@@ -70,10 +70,10 @@
       color:var(--accent);
       background:#fff;
       margin:2px 0;
-      padding:6px 10px;
+      padding:8px 10px;
       display:block;
-      border-radius:6px;
-      font-weight:600;
+      border-radius:8px;
+
     }
     .dropdown-content a:hover{
       background:var(--accent);
@@ -83,22 +83,26 @@
     /* hamburger */
     .hamburger{
       display:none;
-      font-size: 1.8rem;
+      font-size:1.8rem;
       cursor:pointer;
       user-select:none;
       z-index:70;
       color: var(--accent);
       position: relative;
-      transition: transform 0.3s ease;
-      font-weight:800;
+      transition:
+        transform .35s cubic-bezier(.22,1,.36,1),
+        background .22s ease,
+        box-shadow .22s ease;
+      font-weight:700;
+      line-height:1;
     }
 
     .hamburger.is-open{
-      background: #fff;
-      border-radius: 999px;
-      padding: 6px 10px;
-      box-shadow: 0 10px 22px rgba(11,18,32,0.10);
-      transform: translateX(-2px);
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      box-shadow:0 10px 22px rgba(11,18,32,0.10);
+      transform:translateX(-2px) scale(1.02);
     }
 
     @media (max-width: 768px) {
@@ -139,27 +143,128 @@
     .danger-btn{background:#fff1f2;color:#be123c;border:1px solid #fecdd3;box-shadow:none}
 
     .news-grid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:22px}
+
     .news-card{
-      background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;position:relative;
-      display:flex;flex-direction:row;min-height:200px;transition:transform .18s ease, box-shadow .18s ease;
+      background:var(--card);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      flex-direction:row;
+      min-height:200px;
+      transition:
+        transform .38s cubic-bezier(.22,1,.36,1),
+        box-shadow .38s cubic-bezier(.22,1,.36,1),
+        border-radius .38s cubic-bezier(.22,1,.36,1);
+      will-change: transform, box-shadow;
+      animation:cardIn .55s cubic-bezier(.22,1,.36,1) both;
     }
-    .news-card:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(11,18,32,0.10)}
-    .news-card{animation:cardIn .45s ease both}
     .news-card:nth-child(2){animation-delay:.04s}
     .news-card:nth-child(3){animation-delay:.08s}
     .news-card:nth-child(4){animation-delay:.12s}
     .news-card:nth-child(5){animation-delay:.16s}
-    .news-card img{width:220px;height:auto;min-height:200px;object-fit:cover;background:#eef2f6;flex:0 0 220px}
-    .news-card.expanded img{width:260px;flex-basis:260px}
-    .news-card-content{padding:18px 20px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1;justify-content:center;min-width:0}
+
+    .news-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 38px rgba(11,18,32,0.12);
+    }
+
+    .news-card img{
+      width:220px;
+      height:auto;
+      min-height:200px;
+      object-fit:cover;
+      background:#eef2f6;
+      flex:0 0 220px;
+      transition:
+        width .55s cubic-bezier(.22,1,.36,1),
+        flex-basis .55s cubic-bezier(.22,1,.36,1),
+        transform .55s cubic-bezier(.22,1,.36,1),
+        filter .40s ease;
+      will-change: width, flex-basis, transform;
+    }
+
+    .news-card.expanded img{
+      width:260px;
+      flex-basis:260px;
+      transform:scale(1.015);
+    }
+
+    .news-card-content{
+      padding:18px 20px 18px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+      justify-content:center;
+      min-width:0;
+      transition:
+        padding .45s cubic-bezier(.22,1,.36,1),
+        transform .45s cubic-bezier(.22,1,.36,1);
+    }
+
+    .news-card.expanded .news-card-content{
+      transform:translateY(-1px);
+    }
+
     .news-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .news-badge{font-size:.84rem;font-weight:900;color:#a86405;background:rgba(240,154,15,0.14);padding:6px 10px;border-radius:999px}
     .news-card h3{margin:0;font-size:1.45rem;line-height:1.14;color:#111}
-    .short-desc{margin:0;color:var(--muted);font-size:1rem;line-height:1.45;font-weight:700}
-    .full-text{max-height:0;opacity:0;overflow:hidden;transition:max-height .45s ease, opacity .28s ease;margin-top:0}
+
+    .short-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.45;
+      font-weight:700;
+      transition:
+        opacity .28s ease,
+        transform .38s cubic-bezier(.22,1,.36,1);
+    }
+
+    .news-card.expanded .short-desc{
+      opacity:.92;
+      transform:translateY(-1px);
+    }
+
+    .full-text{
+      max-height:0;
+      opacity:0;
+      overflow:hidden;
+      transform:translateY(10px);
+      transition:
+        max-height .68s cubic-bezier(.22,1,.36,1),
+        opacity .34s ease,
+        transform .48s cubic-bezier(.22,1,.36,1),
+        margin-top .48s cubic-bezier(.22,1,.36,1);
+      margin-top:0;
+    }
+
     .full-text p{margin:0;color:#0b1220;line-height:1.6;font-weight:650;white-space:pre-line}
-    .news-card.expanded .full-text{max-height:2200px;opacity:1;margin-top:4px}
-    .read-more{margin-top:2px;font-size:.92rem;font-weight:900;color:#a86405}
+
+    .news-card.expanded .full-text{
+      max-height:2200px;
+      opacity:1;
+      transform:translateY(0);
+      margin-top:8px;
+    }
+
+    .read-more{
+      margin-top:2px;
+      font-size:.92rem;
+      font-weight:900;
+      color:#a86405;
+      transition:
+        opacity .28s ease,
+        transform .38s cubic-bezier(.22,1,.36,1);
+    }
+
+    .news-card.expanded .read-more{
+      opacity:.78;
+      transform:translateY(2px);
+    }
+
     .news-card-actions{position:absolute;top:12px;right:12px;display:none;gap:8px}
     .is-admin .news-card-actions{display:flex}
     .icon-btn{
@@ -213,7 +318,13 @@
 
     @media (max-width: 900px){
       .news-card{flex-direction:column}
-      .news-card img,.news-card.expanded img{width:100%;min-height:220px;flex-basis:auto}
+      .news-card img,
+      .news-card.expanded img{
+        width:100%;
+        min-height:220px;
+        flex-basis:auto;
+        transform:none;
+      }
     }
 
     @media (max-width: 768px) {
@@ -221,12 +332,26 @@
       header{padding:18px 14px}
       .brand-title span{display:none}
       nav ul{
-        flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;background:#fff;padding-top:72px;padding-left:12px;
-        transform:translateX(100%);transition:transform .28s ease;box-shadow:-6px 0 20px rgba(0,0,0,0.08);z-index:120;text-align:left;align-items:flex-start;overflow-y:auto
+        flex-direction:column;
+        position:fixed;
+        top:0;
+        right:0;
+        width:260px;
+        height:100%;
+        background:#fff;
+        padding-top:72px;
+        padding-left:12px;
+        transform:translateX(100%);
+        transition:transform .42s cubic-bezier(.22,1,.36,1);
+        box-shadow:-10px 0 28px rgba(0,0,0,0.10);
+        z-index:120;
+        text-align:left;
+        align-items:flex-start;
+        overflow-y:auto
       }
       nav ul.show{transform:translateX(0)}
       nav ul li{margin-bottom:10px;width:100%}
-      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.02rem;font-weight:600}
+      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.02rem;font-weight:500}
       .dropdown-content{position:static;box-shadow:none;padding-left:10px;display:none;min-width:unset}
       .dropdown.active .dropdown-content{display:block}
       .dropdown:hover .dropdown-content{display:none}
@@ -263,8 +388,14 @@
     header.is-solid .brand-title span{ color:inherit !important; }
 
     @keyframes cardIn{
-      from{opacity:0;transform:translateY(10px)}
-      to{opacity:1;transform:translateY(0)}
+      from{
+        opacity:0;
+        transform:translateY(16px) scale(.985);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
     }
   </style>
 </head>
@@ -294,7 +425,7 @@
     <div class="page-head">
       <div class="page-head-left">
         <h1 id="pageTitle">Styrelsen informerar</h1>
-        <p class="subheader" id="pageSubtitle">Här delar styrelsen information, nyheter och uppdateringar till medlemmarna.</p>
+        <p class="subheader" id="pageSubtitle">Här hittar du information, nyheter och meddelanden från styrelsen.</p>
       </div>
       <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
     </div>
@@ -377,7 +508,7 @@
   <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera sidinställningar">
     <div class="editor editor-compact">
       <h3>Redigera sidan</h3>
-      <p class="helptext">Här kan styrelsen uppdatera sidans texter i tydliga delar. Ändringarna sparas först lokalt och blir publika när ni trycker på <strong>Spara och publicera</strong>.</p>
+      <p class="helptext">Redigera sidans innehåll här. Ändringar sparas som utkast tills de publiceras. <strong>Spara och publicera</strong>.</p>
 
       <div class="editor-section">
         <h4>1. Sidrubrik</h4>
@@ -444,7 +575,7 @@
     const PAGE_DOC_REF = doc(db, 'pages', 'styrelsenInformerar');
     const NAV_DOC_REF = doc(db, 'site', 'navigation');
     const FEED_COL = collection(db, 'latestFeed');
-    const DRAFT_STORAGE_KEY = 'vasthaga_styrelseninformerar_drafts_v2';
+    const DRAFT_STORAGE_KEY = 'vasthaga_styrelseninformerar_drafts_v3';
 
     const body = document.body;
     const mainNav = document.getElementById('mainNav');
@@ -490,6 +621,7 @@
     let visibleItems = [];
     let editingItemId = null;
     let navData = null;
+    let newsUploadInProgress = false;
 
     let pageData = {
       title: 'Styrelsen informerar',
@@ -815,9 +947,10 @@
       newsTitleInput.value = item?.title || '';
       newsShortInput.value = item?.shortText || '';
       newsBodyInput.value = item?.text || '';
-      newsImageInput.value = (item?.image || '').trim();
+      newsImageInput.value = (item?.image && item.image !== DEFAULT_NEWS_IMAGE) ? item.image.trim() : '';
       setNewsImagePreview(newsImageInput.value || DEFAULT_NEWS_IMAGE);
       setNewsImageProgress(null);
+      setNewsUploadBusy(false);
       setOverlayOpen(newsOverlay, true);
     }
 
@@ -850,6 +983,15 @@
       newsImageProgressText.textContent = `${p}%`;
     }
 
+    function setNewsUploadBusy(busy){
+      newsUploadInProgress = busy;
+      newsImageUpload.disabled = busy;
+      newsImageInput.disabled = busy;
+      removeNewsImageBtn.disabled = busy;
+      saveNewsDraftBtn.disabled = busy;
+      saveNewsDraftBtn.textContent = busy ? 'Laddar upp bild…' : 'Spara lokalt';
+    }
+
     function getStoragePathForUpload(file){
       const safeName = (file.name || 'image').trim().replace(/[^\w.\-]+/g, '_').slice(0, 80);
       const stamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -865,18 +1007,27 @@
       if(file.size > maxBytes) throw new Error('Filen är för stor (max 6 MB).');
 
       const objRef = storageRef(storage, getStoragePathForUpload(file));
+
       return await new Promise((resolve, reject) => {
         const task = uploadBytesResumable(objRef, file, {
           contentType: file.type,
           cacheControl: 'public, max-age=31536000'
         });
+
         task.on('state_changed',
           (snap) => {
             const pct = snap.totalBytes > 0 ? (snap.bytesTransferred / snap.totalBytes) * 100 : 0;
             onProgress?.(pct);
           },
           (err) => reject(err),
-          async () => resolve(await getDownloadURL(task.snapshot.ref))
+          async () => {
+            try{
+              const url = await getDownloadURL(task.snapshot.ref);
+              resolve(url);
+            }catch(err){
+              reject(err);
+            }
+          }
         );
       });
     }
@@ -916,19 +1067,30 @@
       setNewsImagePreview(DEFAULT_NEWS_IMAGE);
     });
 
-    newsImageUpload.addEventListener('change', async () => {
+    newsImageUpload.addEventListener('change', async (e) => {
       try{
-        const file = newsImageUpload.files?.[0];
+        requireAdmin();
+        const file = e.target.files?.[0];
         if(!file) return;
+
+        setNewsUploadBusy(true);
         setNewsImageProgress(0);
+
         const url = await uploadImageFileToStorageWithProgress(file, pct => setNewsImageProgress(pct));
+
         newsImageInput.value = url;
         setNewsImagePreview(url);
         setNewsImageProgress(null);
       }catch(err){
         setNewsImageProgress(null);
-        alert(err?.message || 'Uppladdningen misslyckades.');
+        const message = err?.message || '';
+        if(message.toLowerCase().includes('unauthorized') || message.toLowerCase().includes('permission')){
+          alert('Bilduppladdningen stoppades av Firebase Storage-reglerna. Koden är korrekt, men lagringsreglerna måste tillåta uppladdning för admin.');
+        }else{
+          alert(message || 'Uppladdningen misslyckades.');
+        }
       }finally{
+        setNewsUploadBusy(false);
         newsImageUpload.value = '';
       }
     });
@@ -938,6 +1100,8 @@
 
     saveNewsDraftBtn.addEventListener('click', () => {
       requireAdmin();
+      if(newsUploadInProgress) return alert('Vänta tills bilduppladdningen är klar först.');
+
       const title = newsTitleInput.value.trim();
       const shortText = newsShortInput.value.trim();
       const text = newsBodyInput.value.trim();
