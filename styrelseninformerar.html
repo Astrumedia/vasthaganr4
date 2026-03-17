@@ -17,15 +17,15 @@
     body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
     .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
-    /* HEADER – identisk med indexcopy */
- header {
+    /* HEADER */
+    header {
       position: fixed;
       top: 0; left: 0;
       width: 100%;
       padding: 22px 32px;
       z-index: 10;
-      background: rgba(255,255,255,0);
-      box-shadow: none;
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 8px 24px rgba(11,18,32,0.08);
       transition: background 0.35s ease, box-shadow 0.35s ease;
       display: flex;
       align-items: center;
@@ -39,8 +39,20 @@
     .brand-title span{font-size:1rem}
 
     nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
-    nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
-    nav a:hover{background:var(--accent);color:#fff;}
+    nav a{
+      padding:8px 12px;
+      border-radius:8px;
+      text-decoration:none;
+      color:#0b1220;
+      transition: all 0.2s;
+      white-space: nowrap;
+      font-weight:500;
+    }
+    nav > ul > li > a:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
+
     .dropdown{position:relative}
 
     .dropdown-content {
@@ -54,8 +66,19 @@
       z-index: 10;
     }
     .dropdown:hover .dropdown-content{display:block}
-    .dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
-    .dropdown-content a:hover{background:var(--accent);color:#fff;}
+    .dropdown-content a{
+      color:var(--accent);
+      background:#fff;
+      margin:2px 0;
+      padding:6px 10px;
+      display:block;
+      border-radius:6px;
+      font-weight:600;
+    }
+    .dropdown-content a:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
 
     /* hamburger */
     .hamburger{
@@ -67,56 +90,25 @@
       color: var(--accent);
       position: relative;
       transition: transform 0.3s ease;
-      font-weight:900;
+      font-weight:800;
     }
 
-/* Mobile hamburger: nicer close arrow when menu is open */
-.hamburger.is-open{
-  background: #fff;
-  border-radius: 999px;
-  padding: 6px 10px;
-  box-shadow: 0 10px 22px rgba(11,18,32,0.10);
-  transform: translateX(-2px);
-}
-
-/* make sure it's always above the drawer */
-@media (max-width: 768px) {
-  .hamburger{
-    position: fixed;
-    top: 18px;
-    right: 16px;
-    z-index: 130; /* above nav drawer (120) */
-  }
-}
+    .hamburger.is-open{
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      box-shadow: 0 10px 22px rgba(11,18,32,0.10);
+      transform: translateX(-2px);
+    }
 
     @media (max-width: 768px) {
-      .hamburger { display: block; }
-      header{padding:18px 14px}
-      .brand-title span{display:none}
-      nav ul{
-        flex-direction: column;
+      .hamburger{
         position: fixed;
-        top: 0; right: 0;
-        width: 260px;
-        height: 100%;
-        background: #fff;
-        padding-top: 72px;
-        padding-left: 12px;
-        transform: translateX(100%);
-        transition: transform 0.28s ease;
-        box-shadow: -6px 0 20px rgba(0,0,0,0.08);
-        z-index: 120;
-        text-align: left;
-        align-items: flex-start;
+        top: 18px;
+        right: 16px;
+        z-index: 130;
       }
-      nav ul.show { transform: translateX(0); }
-      nav ul li { margin-bottom: 12px; width: 100%; }
-      nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
-      .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
-      .dropdown.active .dropdown-content { display: block; }
-      .dropdown:hover .dropdown-content{display:none}
     }
-
 
     .hero-spacer{height:88px}
     .page-shell{padding-top:36px;padding-bottom:10px}
@@ -187,6 +179,10 @@
     }
     .editor.editor-compact{max-width:760px}
     .editor h3{margin:0}
+    .editor h4{margin:0;font-size:1.02rem}
+    .editor-section{
+      padding:14px;border:1px solid #e9eef5;border-radius:16px;background:#fbfcfe;display:flex;flex-direction:column;gap:12px
+    }
     .editor input,.editor textarea{
       width:100%;padding:12px;border-radius:14px;border:1px solid #e6eef2;font-size:1rem;outline:none;font-weight:750
     }
@@ -221,25 +217,46 @@
     }
 
     @media (max-width: 768px) {
+      .hamburger { display: block; }
       header{padding:18px 14px}
       .brand-title span{display:none}
-      .hamburger{display:block;position:fixed;top:18px;right:16px;z-index:130}
       nav ul{
         flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;background:#fff;padding-top:72px;padding-left:12px;
         transform:translateX(100%);transition:transform .28s ease;box-shadow:-6px 0 20px rgba(0,0,0,0.08);z-index:120;text-align:left;align-items:flex-start;overflow-y:auto
       }
       nav ul.show{transform:translateX(0)}
       nav ul li{margin-bottom:10px;width:100%}
-      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.06rem;font-weight:900}
+      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.02rem;font-weight:600}
       .dropdown-content{position:static;box-shadow:none;padding-left:10px;display:none;min-width:unset}
       .dropdown.active .dropdown-content{display:block}
       .dropdown:hover .dropdown-content{display:none}
       h1{font-size:2rem}
     }
 
+    .mobile-close-wrap{
+      margin-top:auto;
+      padding:12px 12px 18px 12px;
+      width:100%;
+    }
+    .mobile-close-btn{
+      width:100%;
+      padding:14px 14px;
+      border-radius:12px;
+      border:0;
+      background:rgba(240,154,15,0.16);
+      color:#a86405;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .mobile-close-btn:active{transform:translateY(1px)}
+    @media (min-width: 769px){
+      .mobile-close-wrap{display:none}
+    }
+
     header.is-hero nav a{ color:#0b1220; }
-    header.is-hero nav a:hover{ background:rgba(240,154,15,0.95); color:#fff; }
+    header.is-hero nav > ul > li > a:hover{ background:rgba(240,154,15,0.95); color:#fff !important; }
     header.is-solid nav a{ color:#0b1220; }
+    header.is-solid nav > ul > li > a:hover{ background:rgba(240,154,15,0.95); color:#fff !important; }
     header.is-hero .brand-title strong,
     header.is-hero .brand-title span{ color:#fff !important; }
     header.is-solid .brand-title strong,
@@ -324,28 +341,30 @@
           <input type="text" id="newsImageInput" placeholder="Bildlänk eller uppladdad bild">
         </div>
 
-      <div id="newsImagePreviewWrap" class="preview-wrap">
-        <div class="preview-label">Förhandsvisning</div>
-        <img id="newsImagePreview" class="preview-img" alt="Förhandsvisning av nyhetsbild">
-      </div>
-
-      <div id="newsImageProgressWrap" class="progress-wrap" aria-live="polite">
-        <div class="progress-head">
-          <span>Uppladdning</span>
-          <span id="newsImageProgressText">0%</span>
+        <div id="newsImagePreviewWrap" class="preview-wrap">
+          <div class="preview-label">Förhandsvisning</div>
+          <img id="newsImagePreview" class="preview-img" alt="Förhandsvisning av nyhetsbild">
         </div>
-        <div class="progress-track">
-          <div id="newsImageProgressBar" class="progress-bar"></div>
-        </div>
-      </div>
 
-      <div class="row">
-        <label class="btn btn-secondary" for="newsImageUpload" style="margin:0;flex:0 0 auto;">
-          <input id="newsImageUpload" type="file" accept="image/*" style="display:none;">
-          Ladda upp bild
-        </label>
-        <button id="removeNewsImageBtn" class="btn btn-secondary" type="button">Ta bort bild</button>
-      </div>
+        <div id="newsImageProgressWrap" class="progress-wrap" aria-live="polite">
+          <div class="progress-head">
+            <span>Uppladdning</span>
+            <span id="newsImageProgressText">0%</span>
+          </div>
+          <div class="progress-track">
+            <div id="newsImageProgressBar" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="btn btn-secondary" for="newsImageUpload" style="margin:0;flex:0 0 auto;">
+            <input id="newsImageUpload" type="file" accept="image/*" style="display:none;">
+            Ladda upp bild
+          </label>
+          <button id="removeNewsImageBtn" class="btn btn-secondary" type="button">Återgå till standardbild</button>
+        </div>
+
+        <p class="helptext">Om du inte väljer en egen bild används <strong>om_bild_1.jpg</strong> automatiskt.</p>
       </div>
 
       <div class="row">
@@ -421,10 +440,11 @@
 
     const SOURCE_LABEL = 'Styrelsen informerar';
     const SOURCE_URL = 'styrelseninformerar.html';
+    const DEFAULT_NEWS_IMAGE = 'om_bild_1.jpg';
     const PAGE_DOC_REF = doc(db, 'pages', 'styrelsenInformerar');
     const NAV_DOC_REF = doc(db, 'site', 'navigation');
     const FEED_COL = collection(db, 'latestFeed');
-    const DRAFT_STORAGE_KEY = 'vasthaga_styrelseninformerar_drafts_v1';
+    const DRAFT_STORAGE_KEY = 'vasthaga_styrelseninformerar_drafts_v2';
 
     const body = document.body;
     const mainNav = document.getElementById('mainNav');
@@ -563,12 +583,11 @@
     }
 
     function updateHeaderState(){
-      const solid = true;
       const siteHeader = document.getElementById('siteHeader');
-      siteHeader.classList.toggle('is-solid', solid);
-      siteHeader.classList.toggle('is-hero', !solid);
-      siteHeader.style.background = solid ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0)';
-      siteHeader.style.boxShadow = solid ? '0 8px 24px rgba(11,18,32,0.08)' : 'none';
+      siteHeader.classList.add('is-solid');
+      siteHeader.classList.remove('is-hero');
+      siteHeader.style.background = 'rgba(255,255,255,0.98)';
+      siteHeader.style.boxShadow = '0 8px 24px rgba(11,18,32,0.08)';
     }
 
     function setNavOpen(open){
@@ -582,6 +601,7 @@
       const isMobile = window.matchMedia('(max-width: 768px)').matches;
       document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
       if (!isMobile) return;
+
       document.querySelectorAll('nav .dropdown > a').forEach(a => {
         a.onclick = (e) => {
           const li = a.closest('.dropdown');
@@ -593,23 +613,18 @@
     }
 
     function appendMobileCloseRow(){
-      if (window.matchMedia('(min-width: 769px)').matches) return;
+      const existing = mainNav.querySelector('.mobile-close-wrap');
+      if(existing) existing.remove();
+
       const li = document.createElement('li');
-      li.style.marginTop = 'auto';
-      li.style.padding = '12px 12px 18px 12px';
-      li.style.width = '100%';
+      li.className = 'mobile-close-wrap';
+
       const btn = document.createElement('button');
       btn.type = 'button';
+      btn.className = 'mobile-close-btn';
       btn.textContent = 'Stäng meny';
-      btn.style.width = '100%';
-      btn.style.padding = '14px 14px';
-      btn.style.borderRadius = '12px';
-      btn.style.border = '0';
-      btn.style.background = 'rgba(240,154,15,0.16)';
-      btn.style.color = '#a86405';
-      btn.style.fontWeight = '800';
-      btn.style.cursor = 'pointer';
       btn.addEventListener('click', () => setNavOpen(false));
+
       li.appendChild(btn);
       mainNav.appendChild(li);
     }
@@ -628,18 +643,25 @@
         if(item.type === 'dropdown'){
           const li = document.createElement('li');
           li.className = 'dropdown';
+
           const a = document.createElement('a');
           a.href = item.url || '#';
           a.textContent = `${item.label || ''} ▾`;
+
           const dd = document.createElement('div');
           dd.className = 'dropdown-content';
-          const children = (Array.isArray(item.children) ? item.children : []).slice().sort((x,y)=>(x.order ?? 0)-(y.order ?? 0));
+
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((x,y)=>(x.order ?? 0)-(y.order ?? 0));
+
           children.forEach(ch => {
             const ca = document.createElement('a');
             ca.href = ch.url || '#';
             ca.textContent = ch.label || '';
             dd.appendChild(ca);
           });
+
           li.appendChild(a);
           li.appendChild(dd);
           mainNav.appendChild(li);
@@ -656,7 +678,16 @@
 
       appendMobileCloseRow();
       wireMobileDropdowns();
-      mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+      mainNav.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          if(window.matchMedia('(max-width: 768px)').matches){
+            const parentDropdown = a.closest('.dropdown');
+            if(!parentDropdown || a.closest('.dropdown-content')) {
+              setNavOpen(false);
+            }
+          }
+        });
+      });
     }
 
     function renderPage(){
@@ -666,6 +697,11 @@
       brandName.textContent = pageData.brandName || 'Västhaga Nr4';
       brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
       if((pageData.logoUrl || '').trim()) brandLogo.src = pageData.logoUrl.trim();
+    }
+
+    function withDefaultImage(url){
+      const clean = (url || '').trim();
+      return clean || DEFAULT_NEWS_IMAGE;
     }
 
     function applyLocalDrafts(){
@@ -687,6 +723,7 @@
 
       visibleItems = merged
         .filter(item => item.published !== false)
+        .map(item => ({ ...item, image: withDefaultImage(item.image) }))
         .sort((a,b)=>(b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
     }
 
@@ -706,8 +743,11 @@
         const article = document.createElement('article');
         article.className = 'news-card';
         article.dataset.id = item.id;
+
+        const imageUrl = withDefaultImage(item.image);
+
         article.innerHTML = `
-          ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || 'Nyhetsbild')}">` : ''}
+          <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title || 'Nyhetsbild')}">
           <div class="news-card-content">
             <div class="news-meta">
               <span class="news-badge">${escapeHtml(formatDate(item.updatedAt || item.createdAt))}</span>
@@ -775,8 +815,8 @@
       newsTitleInput.value = item?.title || '';
       newsShortInput.value = item?.shortText || '';
       newsBodyInput.value = item?.text || '';
-      newsImageInput.value = item?.image || '';
-      setNewsImagePreview(newsImageInput.value);
+      newsImageInput.value = (item?.image || '').trim();
+      setNewsImagePreview(newsImageInput.value || DEFAULT_NEWS_IMAGE);
       setNewsImageProgress(null);
       setOverlayOpen(newsOverlay, true);
     }
@@ -792,12 +832,7 @@
     }
 
     function setNewsImagePreview(url){
-      const clean = (url || '').trim();
-      if(!clean){
-        newsImagePreviewWrap.style.display = 'none';
-        newsImagePreview.removeAttribute('src');
-        return;
-      }
+      const clean = withDefaultImage(url);
       newsImagePreview.src = clean;
       newsImagePreviewWrap.style.display = 'block';
     }
@@ -871,12 +906,16 @@
       window.location.reload();
     }
 
-    newsImageInput.addEventListener('input', () => setNewsImagePreview(newsImageInput.value));
+    newsImageInput.addEventListener('input', () => {
+      setNewsImagePreview(newsImageInput.value || DEFAULT_NEWS_IMAGE);
+    });
+
     removeNewsImageBtn.addEventListener('click', () => {
       newsImageInput.value = '';
       newsImageUpload.value = '';
-      setNewsImagePreview('');
+      setNewsImagePreview(DEFAULT_NEWS_IMAGE);
     });
+
     newsImageUpload.addEventListener('change', async () => {
       try{
         const file = newsImageUpload.files?.[0];
@@ -896,6 +935,7 @@
 
     addNewsBtn.addEventListener('click', () => openNewsEditor());
     cancelNewsEditBtn.addEventListener('click', () => setOverlayOpen(newsOverlay, false));
+
     saveNewsDraftBtn.addEventListener('click', () => {
       requireAdmin();
       const title = newsTitleInput.value.trim();
@@ -913,7 +953,7 @@
           title,
           shortText,
           text,
-          image: newsImageInput.value.trim(),
+          image: withDefaultImage(newsImageInput.value.trim()),
           sourceLabel: SOURCE_LABEL,
           sourceUrl: SOURCE_URL,
           sourceType: 'boardInfo',
@@ -935,7 +975,9 @@
       pageFooterInput.value = pageData.footerText || '';
       setOverlayOpen(pageOverlay, true);
     });
+
     cancelPageEditBtn.addEventListener('click', () => setOverlayOpen(pageOverlay, false));
+
     savePageDraftBtn.addEventListener('click', () => {
       requireAdmin();
       pendingDrafts.page = {
@@ -954,6 +996,7 @@
         if(e.target === overlay) overlay.style.display = 'none';
       });
     });
+
     document.addEventListener('keydown', e => {
       if(e.key === 'Escape'){
         setNavOpen(false);
@@ -964,7 +1007,15 @@
 
     hamburger.setAttribute('aria-expanded', 'false');
     hamburger.addEventListener('click', () => setNavOpen(!mainNav.classList.contains('show')));
-    window.addEventListener('resize', wireMobileDropdowns);
+
+    window.addEventListener('resize', () => {
+      wireMobileDropdowns();
+      appendMobileCloseRow();
+      if(window.matchMedia('(min-width: 769px)').matches){
+        setNavOpen(false);
+      }
+    });
+
     updateHeaderState();
 
     onAuthStateChanged(auth, async (user) => {
@@ -999,7 +1050,7 @@
         const data = d.data();
         if(data.published === false) return;
         if((data.sourceUrl || '') !== SOURCE_URL) return;
-        serverItems.push({ id:d.id, ...data });
+        serverItems.push({ id:d.id, ...data, image: withDefaultImage(data.image) });
       });
       applyLocalDrafts();
       renderPage();
