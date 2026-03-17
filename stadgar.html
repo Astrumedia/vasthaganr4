@@ -6,246 +6,1053 @@
   <title>Stadgar | Bostadsrättsföreningen Västhaga Nr4</title>
   <style>
     :root{
-      --bg:#f7f9fc; 
-      --card:#ffffff; 
-      --accent:#f09a0f; 
-      --muted:#6b7280; 
+      --bg:#f7f9fc;
+      --card:#ffffff;
+      --accent:#f09a0f;
+      --muted:#6b7280;
       --maxw:1200px;
+      --shadow:0 10px 24px rgba(11,18,32,0.06);
     }
     *{box-sizing:border-box}
-    body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
-    .container{max-width:var(--maxw);margin:24px auto;padding:16px}
-
-    /* ---- Header ---- */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 22px 32px;
-      background: rgba(255,255,255,0);
-      transition: background 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
-      box-shadow: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 10;
+    body{
+      font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      margin:0;
+      background:var(--bg);
+      color:#0b1220;
     }
-    header.scrolled {
-      background: rgba(255,255,255,1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
+    .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:44px;
-      height:44px;
-      border-radius:8px;
-      background:var(--accent);
+    /* ===== Standardiserad header ===== */
+    header{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      padding:22px 32px;
+      z-index:40;
+      background:rgba(255,255,255,0.98);
+      box-shadow:0 8px 24px rgba(11,18,32,0.08);
       display:flex;
       align-items:center;
-      justify-content:center;
+      justify-content:space-between;
+      gap:12px;
     }
-    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .logo{
+      width:44px;height:44px;border-radius:8px;background:var(--accent);
+      display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex:0 0 auto;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .brand-title{display:flex;flex-direction:column;justify-content:center;min-width:0}
+    .brand-title strong{font-weight:700;font-size:1.3rem;line-height:1.1}
+    .brand-title span{font-size:.95rem;color:var(--muted)}
 
     nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
     nav a{
       padding:8px 12px;
       border-radius:8px;
       text-decoration:none;
-      color:inherit;
-      transition: all 0.2s;
-      white-space: nowrap;
+      color:#0b1220;
+      transition:all .2s ease;
+      white-space:nowrap;
+      font-weight:500;
     }
-    nav a:hover{background:var(--accent);color:#fff;}
+    nav > ul > li > a:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
+
     .dropdown{position:relative}
-    .dropdown-content {
-      position: absolute;
-      top: 36px;
-      left: 0;
-      background: #fff;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      padding: 8px;
-      border-radius: 8px;
-      display: none;
-      min-width: 180px;
-      z-index: 10;
+    .dropdown-content{
+      position:absolute;
+      top:28px; left:0;
+      background:#fff;
+      box-shadow:0 8px 22px rgba(0,0,0,0.10);
+      padding:8px;
+      border-radius:10px;
+      display:none;
+      min-width:190px;
+      z-index:80;
     }
-    .dropdown.show .dropdown-content{display:block}
-    .dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
-    .dropdown-content a:hover{background:var(--accent);color:#fff;}
-
-    h1{text-align:center;margin-top:100px;}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:32px}
-    .card{background:var(--card);padding:24px;border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.04);}
-    .card h3{margin-top:0;color:var(--accent);}
-    footer{margin-top:32px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:32px}
-
-    /* ---- Hamburger ---- */
-    .hamburger {
-      display: none;
-      font-size: 1.8rem;
-      cursor: pointer;
-      user-select: none;
-      color: var(--accent);
-      position: relative;
-      z-index: 30;
+    .dropdown:hover .dropdown-content{display:block}
+    .dropdown-content a{
+      color:var(--accent);
+      background:#fff;
+      margin:2px 0;
+      padding:8px 10px;
+      display:block;
+      border-radius:8px;
+      font-weight:600;
+    }
+    .dropdown-content a:hover{
+      background:var(--accent);
+      color:#fff !important;
     }
 
+    .hamburger{
+      display:none;
+      font-size:1.9rem;
+      cursor:pointer;
+      user-select:none;
+      z-index:70;
+      color:var(--accent);
+      position:relative;
+      font-weight:900;
+      line-height:1;
+      transition:
+        transform .35s cubic-bezier(.22,1,.36,1),
+        background .22s ease,
+        box-shadow .22s ease;
+    }
+    .hamburger.is-open{
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      box-shadow:0 10px 22px rgba(11,18,32,0.12);
+      transform:translateX(-2px) scale(1.02);
+    }
+
+    /* ===== Sida ===== */
+    .hero-spacer{height:98px}
+    .page-shell{padding-top:8px}
+    .page-head{display:block;margin-bottom:10px}
+    .page-head-left{
+      max-width:900px;
+      margin:0 auto;
+      text-align:center;
+    }
+    h1{
+      text-align:center;
+      margin:26px 0 0 0;
+      font-size:2.2rem;
+      color:var(--accent);
+    }
+    .page-subtitle{
+      text-align:center;
+      margin:10px auto 0 auto;
+      color:var(--muted);
+      font-size:1.02rem;
+      line-height:1.5;
+      font-weight:700;
+      max-width:840px;
+    }
+
+    .mini-edit{
+      display:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,0.08);
+      background:#fff;
+      cursor:pointer;
+      font-weight:950;
+      box-shadow:0 10px 24px rgba(11,18,32,0.06);
+      white-space:nowrap;
+    }
+    .mini-edit:hover{border-color:rgba(240,154,15,0.45)}
+    .mini-edit span{color:var(--accent)}
+    .is-admin .mini-edit{display:inline-flex;align-items:center;gap:8px}
+
+    .admin-tools{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:12px 0 8px 0;
+    }
+
+    .bottom-admin-tools{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:22px 0 8px 0;
+    }
+    .bottom-admin-tools .btn{display:none}
+    .is-admin .bottom-admin-tools .btn{display:inline-flex}
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+      margin-top:24px;
+    }
+
+    .card{
+      background:var(--card);
+      padding:24px;
+      border-radius:12px;
+      box-shadow:var(--shadow);
+      position:relative;
+      transition:
+        transform .28s cubic-bezier(.22,1,.36,1),
+        box-shadow .28s cubic-bezier(.22,1,.36,1);
+      animation:cardIn .45s cubic-bezier(.22,1,.36,1) both;
+    }
+    .card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 32px rgba(11,18,32,0.08);
+    }
+    .card:nth-child(2){animation-delay:.04s}
+    .card:nth-child(3){animation-delay:.08s}
+    .card:nth-child(4){animation-delay:.12s}
+    .card:nth-child(5){animation-delay:.16s}
+    .card:nth-child(6){animation-delay:.20s}
+    .card h3{margin:0 0 10px 0;color:var(--accent);font-size:1.22rem}
+    .card p{margin:0;line-height:1.6;white-space:pre-line}
+
+    .card .edit-btn,.card .delete-btn{
+      position:absolute;
+      top:8px;
+      right:8px;
+      border:none;
+      cursor:pointer;
+      border-radius:8px;
+      padding:6px 8px;
+      transition:.2s;
+      background:rgba(255,255,255,.96);
+      color:var(--accent);
+      font-size:1.05rem;
+      box-shadow:0 6px 18px rgba(11,18,32,0.08);
+    }
+    .card .edit-btn:hover,.card .delete-btn:hover{color:#d27c0c}
+    .card .delete-btn{bottom:8px;right:8px;top:auto}
+
+    .empty-state{
+      background:#fff;
+      border-radius:12px;
+      box-shadow:var(--shadow);
+      padding:28px;
+      color:var(--muted);
+      font-weight:800;
+      text-align:center;
+    }
+
+    /* ===== Editor ===== */
+    .edit-overlay{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.45);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:200;
+      padding:12px;
+    }
+    .editor{
+      background:#fff;
+      padding:20px;
+      border-radius:16px;
+      max-width:760px;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      max-height:min(92vh,1000px);
+      overflow:auto;
+      box-shadow:0 18px 46px rgba(0,0,0,0.25);
+    }
+    .editor.editor-compact{max-width:640px}
+    .editor h3,.editor h4{margin:0}
+    .editor-section{
+      padding:14px;
+      border:1px solid #e9eef5;
+      border-radius:16px;
+      background:#fbfcfe;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .editor input,.editor textarea{
+      padding:12px;
+      border-radius:12px;
+      border:1px solid #e6eef2;
+      width:100%;
+      font-size:.97rem;
+      font-family:inherit;
+    }
+    .editor textarea{resize:vertical;min-height:120px}
+    .field-label{display:block;margin-bottom:6px;font-size:.95rem;font-weight:900;color:#111827}
+    .helptext{color:var(--muted);font-size:.95rem;line-height:1.4;font-weight:750}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .row > *{flex:1 1 auto}
+
+    .btn{
+      padding:10px 12px;
+      border-radius:12px;
+      border:0;
+      cursor:pointer;
+      font-weight:700;
+      font-family:inherit;
+      transition:background .2s ease, transform .12s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:#d27c0c}
+    .btn-secondary{background:#fff;color:var(--accent);border:1px solid #eee}
+    .btn-secondary:hover{background:#f3f4f6}
+    .btn-cancel{background:#f3f4f6;color:#111}
+    .btn-cancel:hover{background:#e5e7eb}
+
+    /* ===== Save/publish ===== */
+    .save-publish{
+      position:fixed;
+      left:50%;
+      bottom:22px;
+      transform:translateX(-50%);
+      display:none;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      background:rgba(11,18,32,0.92);
+      color:#fff;
+      border-radius:18px;
+      box-shadow:0 18px 40px rgba(0,0,0,0.22);
+      z-index:180;
+      flex-wrap:wrap;
+    }
+    .save-publish.show{display:flex}
+    .save-publish-text{font-weight:900;font-size:.95rem}
+    .save-publish .btn{box-shadow:none}
+    .save-publish .btn-primary{background:var(--accent)}
+    .save-publish .btn-cancel{
+      background:transparent;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.22);
+    }
+
+    footer{
+      margin-top:32px;
+      text-align:center;
+      color:var(--muted);
+      font-size:.9rem;
+      padding:10px 14px 32px 14px;
+      font-weight:800;
+    }
+
+    /* ===== Mobilmeny ===== */
     @media (max-width: 768px) {
-      .hamburger { display: block; }
-      nav ul {
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 220px;
-        height: 100%;
-        background: #fff;
-        padding-top: 80px;
-        padding-left: 20px;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        box-shadow: -4px 0 12px rgba(0,0,0,0.08);
-        z-index: 20;
-        text-align: left;
-        align-items: flex-start;
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+
+      .hamburger{
+        display:block;
+        position:fixed;
+        top:18px;
+        right:16px;
+        z-index:130;
       }
+
+      nav ul{
+        flex-direction:column;
+        position:fixed;
+        top:0;
+        right:0;
+        width:290px;
+        height:100%;
+        background:#fff;
+        padding-top:78px;
+        padding-left:12px;
+        transform:translateX(100%);
+        transition:transform 0.28s ease;
+        box-shadow:-10px 0 26px rgba(0,0,0,0.10);
+        z-index:120;
+        text-align:left;
+        align-items:flex-start;
+        overflow-y:auto;
+      }
+
       nav ul.show { transform: translateX(0); }
-      nav ul li { margin-bottom: 12px; width: 100%; }
-      nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
-      .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
+      nav ul li { margin-bottom: 10px; width: 100%; }
+      nav ul li a {
+        width: 100%;
+        text-align: left;
+        padding:12px 14px;
+        font-size:1.06rem;
+        font-weight:900;
+      }
+
+      .dropdown-content {
+        position: static;
+        box-shadow: none;
+        padding-left: 10px;
+        display: none;
+        min-width: unset;
+      }
+
       .dropdown.active .dropdown-content { display: block; }
+      .dropdown:hover .dropdown-content{display:none}
+      h1{font-size:1.9rem}
+    }
+
+    .mobile-close-wrap{
+      margin-top:auto;
+      padding:12px 12px 18px 12px;
+      width:100%;
+    }
+    .mobile-close-btn{
+      width:100%;
+      padding:14px 14px;
+      border-radius:12px;
+      border:0;
+      background:rgba(240,154,15,0.16);
+      color:#a86405;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .mobile-close-btn:active{transform:translateY(1px)}
+    @media (min-width:769px){
+      .mobile-close-wrap{display:none}
+    }
+
+    @keyframes cardIn{
+      from{opacity:0;transform:translateY(12px) scale(.99)}
+      to{opacity:1;transform:translateY(0) scale(1)}
     }
   </style>
 </head>
 <body>
-<header id="mainHeader">
-  <div class="brand">
-    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
-    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
-      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
-      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
-    </a>
+  <header id="siteHeader" class="is-solid">
+    <div class="brand">
+      <a href="index.html" class="logo" aria-label="Hem">
+        <img id="brandLogo" src="logga.png" alt="Logga">
+      </a>
+      <a href="index.html" style="text-decoration:none;color:inherit;min-width:0;">
+        <div class="brand-title">
+          <strong id="brandName">Västhaga Nr4</strong>
+          <span id="brandTagline">Bostadsrättsförening</span>
+        </div>
+      </a>
+    </div>
+
+    <nav>
+      <div class="hamburger" id="hamburger">☰</div>
+      <ul id="mainNav"></ul>
+    </nav>
+  </header>
+
+  <div class="hero-spacer"></div>
+
+  <div class="container page-shell">
+    <div class="page-head">
+      <div class="page-head-left">
+        <h1 id="pageTitle">Stadgar för Bostadsrättsföreningen Västhaga Nr4</h1>
+        <p class="page-subtitle" id="pageSubtitle">Här kan ni samla och uppdatera föreningens stadgar i tydliga avsnitt.</p>
+      </div>
+    </div>
+
+    <div class="admin-tools">
+      <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
+    </div>
+
+    <main class="grid" id="cardGrid" aria-live="polite"></main>
+
+    <div class="bottom-admin-tools">
+      <button class="btn btn-primary" id="addCardBtn" type="button">＋ Ny paragraf</button>
+    </div>
   </div>
 
-  <nav>
-    <div class="hamburger" id="hamburger">☰</div>
-    <ul id="mainNav">
-      <li><a href="index.html">Hem</a></li>
-      <li class="dropdown">
-        <a href="om.html">Om föreningen ▾</a>
-        <div class="dropdown-content">
-          <a href="om.html">Om oss</a>
-          <a href="stadgar.html">Stadgar</a>
+  <div class="save-publish" id="savePublish" aria-live="polite"></div>
+
+  <div class="edit-overlay" id="cardOverlay" role="dialog" aria-modal="true" aria-label="Redigera paragraf">
+    <div class="editor">
+      <h3 id="cardEditorHeading">Ny paragraf</h3>
+      <p class="helptext">Här redigerar ni paragrafens innehåll. Ändringar sparas lokalt och publiceras när ni trycker på “Spara och publicera”.</p>
+
+      <div class="editor-section">
+        <h4>1. Innehåll</h4>
+        <div>
+          <label class="field-label" for="editTitle">Rubrik</label>
+          <input type="text" id="editTitle" placeholder="Till exempel: §1 Föreningens namn">
         </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="styrelsen.html">Styrelsen ▾</a>
-        <div class="dropdown-content">
-          <a href="styrelsen.html">Styrelsen</a>
-          <a href="styrelseninformerar.html">Styrelsen informerar</a>
+        <div>
+          <label class="field-label" for="editText">Text</label>
+          <textarea id="editText" rows="8" placeholder="Skriv paragrafens text här."></textarea>
         </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="#">Planeringsprojekt ▾</a>
-        <div class="dropdown-content">
-          <a href="pagaendeplaner.html">Pågående planer</a>
-          <a href="utfordaplaner.html">Utförda planer</a>
+        <div>
+          <label class="field-label" for="editOrder">Ordning</label>
+          <input type="number" id="editOrder" min="0" step="1" placeholder="0">
         </div>
-      </li>
+      </div>
 
-      <li><a href="felanmalan.html">Felanmälan</a></li>
-      <li><a href="loggain.html">Logga in</a></li>
-      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
-    </ul>
-  </nav>
-</header>
-
-  <div class="container">
-    <h1>Stadgar för Bostadsrättsföreningen Västhaga Nr4</h1>
-    <div class="grid">
-      <div class="card">
-        <h3>§1 Föreningens namn och ändamål</h3>
-        <p>Bostadsrättsföreningen Västhaga Nr4 har till ändamål att förvalta fastigheten och tillvarata medlemmarnas gemensamma intressen.</p>
-      </div>
-      <div class="card">
-        <h3>§2 Medlemskap</h3>
-        <p>Medlemskap kan erhållas av den som godkänns av styrelsen och som betalar insats och årsavgift.</p>
-      </div>
-      <div class="card">
-        <h3>§3 Styrelse</h3>
-        <p>Föreningen ska ha en styrelse enligt stadgarna som ansvarar för förvaltning och ekonomi.</p>
-      </div>
-      <div class="card">
-        <h3>§4 Årsstämma</h3>
-        <p>Årsstämman är föreningens högsta beslutande organ och hålls enligt stadgarna.</p>
-      </div>
-      <div class="card">
-        <h3>§5 Ekonomi</h3>
-        <p>Styrelsen ansvarar för föreningens ekonomi och budget.</p>
-      </div>
-      <div class="card">
-        <h3>§6 Övriga bestämmelser</h3>
-        <p>Övriga frågor regleras enligt föreningens stadgar.</p>
+      <div class="row">
+        <button id="applyEditBtn" class="btn btn-primary" type="button">Spara lokalt</button>
+        <button id="cancelEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
       </div>
     </div>
   </div>
 
-  <footer>
-    &copy; Västhaga Nr4 — Bostadsrättsförening
-  </footer>
+  <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera sidinställningar">
+    <div class="editor editor-compact">
+      <h3>Redigera sidan</h3>
+      <p class="helptext">Här redigerar ni sidans innehåll. Ändringar sparas lokalt och publiceras när ni trycker på “Spara och publicera”.</p>
 
-  <script>
-    const mainHeader = document.getElementById("mainHeader");
-    const mainNav = document.getElementById("mainNav");
-    const hamburger = document.getElementById("hamburger");
-    const dropdowns = document.querySelectorAll(".dropdown");
-    let hideTimer = null;
+      <div class="editor-section">
+        <h4>1. Rubriker</h4>
+        <div>
+          <label class="field-label" for="pageTitleInput">Sidrubrik</label>
+          <input type="text" id="pageTitleInput" placeholder="Stadgar för Bostadsrättsföreningen Västhaga Nr4">
+        </div>
+        <div>
+          <label class="field-label" for="pageSubtitleInput">Kort beskrivning</label>
+          <textarea id="pageSubtitleInput" rows="4" placeholder="Kort beskrivning av sidan"></textarea>
+        </div>
+      </div>
 
-    // Hamburger
-    hamburger.addEventListener("click", () => {
-      mainNav.classList.toggle("show");
-      hamburger.textContent = mainNav.classList.contains("show") ? "➤" : "☰";
+      <div class="editor-section">
+        <h4>2. Sidfot</h4>
+        <div>
+          <label class="field-label" for="pageFooterInput">Text längst ner på sidan</label>
+          <input type="text" id="pageFooterInput" placeholder="© Västhaga Nr4 — Bostadsrättsförening">
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="savePageDraftBtn" class="btn btn-primary" type="button">Spara lokalt</button>
+        <button id="cancelPageEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
+      </div>
+    </div>
+  </div>
+
+  <footer id="footerText">© Västhaga Nr4 — Bostadsrättsförening</footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getFirestore, collection, doc, setDoc, getDoc, onSnapshot, query, orderBy, deleteDoc
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const app = initializeApp({
+      apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
+      authDomain:"vasthaganr4.firebaseapp.com",
+      projectId:"vasthaganr4",
+      storageBucket:"vasthaganr4.firebasestorage.app",
+      messagingSenderId:"547846391741",
+      appId:"1:547846391741:web:048eb47b28d1027539f4d4"
     });
 
-    // Dropdown interaktion
-    dropdowns.forEach((dropdown) => {
-      dropdown.addEventListener("mouseenter", () => {
-        dropdowns.forEach((d) => {
-          if (d !== dropdown) d.classList.remove("show");
-        });
-        clearTimeout(hideTimer);
-        dropdown.classList.add("show");
-      });
-      dropdown.addEventListener("mouseleave", () => {
-        hideTimer = setTimeout(() => dropdown.classList.remove("show"), 200);
-      });
-    });
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    // Klick utanför stänger dropdowns
-    document.addEventListener("click", (e) => {
-      if (![...dropdowns].some((d) => d.contains(e.target))) {
-        dropdowns.forEach((d) => d.classList.remove("show"));
+    const PAGE_DOC_REF = doc(db, 'pages', 'stadgar');
+    const NAV_DOC_REF = doc(db, 'site', 'navigation');
+    const CARDS_COL = collection(db, 'stadgarCards');
+    const DRAFT_STORAGE_KEY = 'vasthaga_stadgar_drafts_v1';
+
+    const body = document.body;
+    const mainNav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburger');
+    const brandLogo = document.getElementById('brandLogo');
+    const brandName = document.getElementById('brandName');
+    const brandTagline = document.getElementById('brandTagline');
+
+    const pageTitleEl = document.getElementById('pageTitle');
+    const pageSubtitleEl = document.getElementById('pageSubtitle');
+    const footerTextEl = document.getElementById('footerText');
+
+    const cardGrid = document.getElementById('cardGrid');
+    const savePublish = document.getElementById('savePublish');
+    const addCardBtn = document.getElementById('addCardBtn');
+    const editPageBtn = document.getElementById('editPageBtn');
+
+    const cardOverlay = document.getElementById('cardOverlay');
+    const cardEditorHeading = document.getElementById('cardEditorHeading');
+    const editTitle = document.getElementById('editTitle');
+    const editText = document.getElementById('editText');
+    const editOrder = document.getElementById('editOrder');
+    const applyEditBtn = document.getElementById('applyEditBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+    const pageOverlay = document.getElementById('pageOverlay');
+    const pageTitleInput = document.getElementById('pageTitleInput');
+    const pageSubtitleInput = document.getElementById('pageSubtitleInput');
+    const pageFooterInput = document.getElementById('pageFooterInput');
+    const savePageDraftBtn = document.getElementById('savePageDraftBtn');
+    const cancelPageEditBtn = document.getElementById('cancelPageEditBtn');
+
+    let currentUser = null;
+    let isAdmin = false;
+    let navData = null;
+    let serverCards = [];
+    let visibleCards = [];
+    let editingCardId = null;
+
+    let pageData = {
+      title: 'Stadgar för Bostadsrättsföreningen Västhaga Nr4',
+      subtitle: 'Här kan ni samla och uppdatera föreningens stadgar i tydliga avsnitt.',
+      footerText: '© Västhaga Nr4 — Bostadsrättsförening',
+      brandName: 'Västhaga Nr4',
+      brandTagline: 'Bostadsrättsförening',
+      logoUrl: 'logga.png'
+    };
+
+    const defaultCards = [
+      {
+        id:'seed-1',
+        title:'§1 Föreningens namn',
+        text:'Föreningens namn är Bostadsrättsföreningen Västhaga Nr4.',
+        order:0,
+        published:true,
+        createdAt:Date.now()-3,
+        updatedAt:Date.now()-3
+      },
+      {
+        id:'seed-2',
+        title:'§2 Ändamål',
+        text:'Föreningen har till ändamål att främja medlemmarnas ekonomiska intressen genom att upplåta bostäder med bostadsrätt.',
+        order:1,
+        published:true,
+        createdAt:Date.now()-2,
+        updatedAt:Date.now()-2
       }
-    });
+    ];
 
-    // Header fade vid scroll
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 30) {
-        mainHeader.classList.add("scrolled");
-      } else {
-        mainHeader.classList.remove("scrolled");
+    const fallbackNav = {
+      items: [
+        { type:'link', label:'Hem', url:'index.html', order:0 },
+        {
+          type:'dropdown', label:'Om föreningen', order:1, children:[
+            { label:'Om oss', url:'om.html', order:0 },
+            { label:'Stadgar', url:'stadgar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Styrelsen', order:2, children:[
+            { label:'Styrelsen', url:'styrelsen.html', order:0 },
+            { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Planeringsprojekt', order:3, children:[
+            { label:'Pågående planer', url:'pagaendeplaner.html', order:0 },
+            { label:'Utförda planer', url:'utfordaplaner.html', order:1 }
+          ]
+        },
+        { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
+        { type:'link', label:'Logga in', url:'loggain.html', order:90 },
+        { type:'link', label:'Konto', url:'konto.html', order:91, restricted:true },
+        { type:'link', label:'Admin', url:'admin.html', order:92, adminOnly:true }
+      ]
+    };
+
+    function loadDrafts(){
+      try{
+        const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return {
+          page: parsed.page || null,
+          cards: parsed.cards || {},
+          deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : []
+        };
+      }catch(err){
+        return { page:null, cards:{}, deletedIds:[] };
       }
-    });
-
-    // Admin visibility
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser && currentUser.role === "admin") {
-      document.getElementById("adminNav").style.display = "block";
     }
+
+    let pendingDrafts = loadDrafts();
+
+    function persistDrafts(){
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(pendingDrafts));
+      renderSavePublishBar();
+    }
+
+    function hasPendingDrafts(){
+      return Boolean(
+        pendingDrafts.page ||
+        Object.keys(pendingDrafts.cards || {}).length ||
+        (pendingDrafts.deletedIds || []).length
+      );
+    }
+
+    function countPendingDrafts(){
+      let total = 0;
+      if(pendingDrafts.page) total += 1;
+      total += Object.keys(pendingDrafts.cards || {}).length;
+      total += (pendingDrafts.deletedIds || []).length;
+      return total;
+    }
+
+    function requireAdmin(){
+      if(!isAdmin) throw new Error('Du behöver vara admin för att göra detta.');
+    }
+
+    function escapeHtml(str=''){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+    }
+
+    function setOverlayOpen(overlay, open){
+      if(!overlay) return;
+      overlay.style.display = open ? 'flex' : 'none';
+    }
+
+    function setNavOpen(open){
+      mainNav.classList.toggle('show', open);
+      hamburger.textContent = open ? '➤' : '☰';
+      hamburger.classList.toggle('is-open', open);
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    function wireMobileDropdowns(){
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
+      if (!isMobile) return;
+
+      document.querySelectorAll('nav .dropdown > a').forEach(a => {
+        a.onclick = (e) => {
+          const li = a.closest('.dropdown');
+          if(!li) return;
+          e.preventDefault();
+          li.classList.toggle('active');
+        };
+      });
+    }
+
+    function appendMobileCloseRow(){
+      const existing = mainNav.querySelector('.mobile-close-wrap');
+      if(existing) existing.remove();
+
+      const li = document.createElement('li');
+      li.className = 'mobile-close-wrap';
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-close-btn';
+      btn.textContent = 'Stäng meny';
+      btn.addEventListener('click', () => setNavOpen(false));
+
+      li.appendChild(btn);
+      mainNav.appendChild(li);
+    }
+
+    function renderNav(){
+      const data = navData || fallbackNav;
+      const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+        .slice()
+        .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+      mainNav.innerHTML = '';
+
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentUser) return;
+        if(item.label === 'Logga in' && currentUser) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'dropdown';
+
+          const a = document.createElement('a');
+          a.href = item.url || '#';
+          a.textContent = `${item.label || ''} ▾`;
+
+          const dd = document.createElement('div');
+          dd.className = 'dropdown-content';
+
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((x,y)=>(x.order ?? 0)-(y.order ?? 0));
+
+          children.forEach(ch => {
+            const ca = document.createElement('a');
+            ca.href = ch.url || '#';
+            ca.textContent = ch.label || '';
+            dd.appendChild(ca);
+          });
+
+          li.appendChild(a);
+          li.appendChild(dd);
+          mainNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        li.appendChild(a);
+        mainNav.appendChild(li);
+      });
+
+      appendMobileCloseRow();
+      wireMobileDropdowns();
+
+      mainNav.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          if(window.matchMedia('(max-width: 768px)').matches){
+            const parentDropdown = a.closest('.dropdown');
+            if(!parentDropdown || a.closest('.dropdown-content')) {
+              setNavOpen(false);
+            }
+          }
+        });
+      });
+    }
+
+    function renderPage(){
+      pageTitleEl.textContent = pageData.title || 'Stadgar för Bostadsrättsföreningen Västhaga Nr4';
+      pageSubtitleEl.textContent = pageData.subtitle || '';
+      footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+      brandName.textContent = pageData.brandName || 'Västhaga Nr4';
+      brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
+      if((pageData.logoUrl || '').trim()) brandLogo.src = pageData.logoUrl.trim();
+    }
+
+    function applyLocalDrafts(){
+      if(pendingDrafts.page){
+        pageData = { ...pageData, ...pendingDrafts.page };
+      }
+
+      const deletedSet = new Set(pendingDrafts.deletedIds || []);
+      const baseCards = serverCards.length ? serverCards : defaultCards;
+      const merged = baseCards
+        .filter(item => !deletedSet.has(item.id))
+        .map(item => ({ ...item }));
+
+      Object.entries(pendingDrafts.cards || {}).forEach(([id, payload]) => {
+        const idx = merged.findIndex(item => item.id === id);
+        const nextItem = { ...(idx >= 0 ? merged[idx] : { id, createdAt: Date.now() }), ...payload, id };
+        if(idx >= 0) merged[idx] = nextItem;
+        else merged.push(nextItem);
+      });
+
+      visibleCards = merged
+        .filter(item => item.published !== false)
+        .sort((a,b)=>{
+          const ao = Number.isFinite(Number(a.order)) ? Number(a.order) : 9999;
+          const bo = Number.isFinite(Number(b.order)) ? Number(b.order) : 9999;
+          if(ao !== bo) return ao - bo;
+          return (a.createdAt || 0) - (b.createdAt || 0);
+        });
+    }
+
+    function renderCards(){
+      cardGrid.innerHTML = '';
+      if(!visibleCards.length){
+        cardGrid.innerHTML = `<div class="empty-state">Det finns ännu inga publicerade paragrafer på sidan.</div>`;
+        return;
+      }
+
+      visibleCards.forEach((c) => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.dataset.id = c.id;
+
+        card.innerHTML = `
+          <h3>${escapeHtml(c.title || '')}</h3>
+          <p>${escapeHtml(c.text || '')}</p>
+          <button class="edit-btn" type="button" title="Redigera">✏️</button>
+          <button class="delete-btn" type="button" title="Ta bort">🗑️</button>
+        `;
+
+        if(!isAdmin){
+          card.querySelector('.edit-btn')?.remove();
+          card.querySelector('.delete-btn')?.remove();
+        }else{
+          card.querySelector('.edit-btn')?.addEventListener('click', () => openCardEditor(c));
+          card.querySelector('.delete-btn')?.addEventListener('click', () => queueDelete(c.id));
+        }
+
+        cardGrid.appendChild(card);
+      });
+    }
+
+    function updateAdminVisibility(){
+      body.classList.toggle('is-admin', isAdmin);
+      renderSavePublishBar();
+    }
+
+    function renderSavePublishBar(){
+      if(!savePublish) return;
+      if(!isAdmin || !hasPendingDrafts()){
+        savePublish.classList.remove('show');
+        savePublish.innerHTML = '';
+        return;
+      }
+      const count = countPendingDrafts();
+      savePublish.classList.add('show');
+      savePublish.innerHTML = `
+        <div class="save-publish-text">${count} osparade ändring${count === 1 ? '' : 'ar'}</div>
+        <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
+        <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
+      `;
+      document.getElementById('publishDraftsBtn')?.addEventListener('click', publishPendingDrafts);
+      document.getElementById('discardDraftsBtn')?.addEventListener('click', discardPendingDrafts);
+    }
+
+    function openCardEditor(card = null){
+      requireAdmin();
+      editingCardId = card?.id || doc(CARDS_COL).id;
+      cardEditorHeading.textContent = card ? 'Redigera paragraf' : 'Ny paragraf';
+      editTitle.value = card?.title || '';
+      editText.value = card?.text || '';
+      editOrder.value = Number.isFinite(Number(card?.order)) ? Number(card.order) : (visibleCards.length ? Math.max(...visibleCards.map(x => Number(x.order) || 0)) + 1 : 0);
+      setOverlayOpen(cardOverlay, true);
+    }
+
+    function queueDelete(id){
+      requireAdmin();
+      if(!confirm('Vill du ta bort den här paragrafen? Den tas bort offentligt först när ni trycker på Spara och publicera.')) return;
+      pendingDrafts.deletedIds = Array.from(new Set([...(pendingDrafts.deletedIds || []), id]));
+      if(pendingDrafts.cards && pendingDrafts.cards[id]) delete pendingDrafts.cards[id];
+      applyLocalDrafts();
+      renderCards();
+      persistDrafts();
+    }
+
+    async function publishPendingDrafts(){
+      requireAdmin();
+      const jobs = [];
+      if(pendingDrafts.page){
+        jobs.push(setDoc(PAGE_DOC_REF, pendingDrafts.page, { merge:true }));
+      }
+      Object.entries(pendingDrafts.cards || {}).forEach(([id, payload]) => {
+        jobs.push(setDoc(doc(db, 'stadgarCards', id), payload, { merge:true }));
+      });
+      (pendingDrafts.deletedIds || []).forEach(id => {
+        jobs.push(deleteDoc(doc(db, 'stadgarCards', id)));
+      });
+      await Promise.all(jobs);
+      pendingDrafts = { page:null, cards:{}, deletedIds:[] };
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      renderSavePublishBar();
+      alert('Ändringarna är nu publicerade.');
+    }
+
+    function discardPendingDrafts(){
+      pendingDrafts = { page:null, cards:{}, deletedIds:[] };
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      window.location.reload();
+    }
+
+    addCardBtn.addEventListener('click', () => openCardEditor());
+    cancelEditBtn.addEventListener('click', () => setOverlayOpen(cardOverlay, false));
+
+    applyEditBtn.addEventListener('click', () => {
+      requireAdmin();
+
+      const title = editTitle.value.trim();
+      const text = editText.value.trim();
+      if(!title) return alert('Skriv en rubrik.');
+      if(!text) return alert('Skriv en text.');
+
+      const existing = serverCards.find(item => item.id === editingCardId) || visibleCards.find(item => item.id === editingCardId);
+      const fallbackOrder = visibleCards.length ? Math.max(...visibleCards.map(x => Number(x.order) || 0)) + 1 : 0;
+      const order = Number.isFinite(Number(editOrder.value)) ? Number(editOrder.value) : (existing?.order ?? fallbackOrder);
+
+      pendingDrafts.deletedIds = (pendingDrafts.deletedIds || []).filter(id => id !== editingCardId);
+      pendingDrafts.cards = {
+        ...(pendingDrafts.cards || {}),
+        [editingCardId]: {
+          title,
+          text,
+          order,
+          published: true,
+          createdAt: existing?.createdAt || Date.now(),
+          updatedAt: Date.now()
+        }
+      };
+
+      applyLocalDrafts();
+      renderCards();
+      persistDrafts();
+      setOverlayOpen(cardOverlay, false);
+    });
+
+    editPageBtn.addEventListener('click', () => {
+      if(!isAdmin) return;
+      pageTitleInput.value = pageData.title || '';
+      pageSubtitleInput.value = pageData.subtitle || '';
+      pageFooterInput.value = pageData.footerText || '';
+      setOverlayOpen(pageOverlay, true);
+    });
+
+    cancelPageEditBtn.addEventListener('click', () => setOverlayOpen(pageOverlay, false));
+
+    savePageDraftBtn.addEventListener('click', () => {
+      requireAdmin();
+      pendingDrafts.page = {
+        title: pageTitleInput.value.trim(),
+        subtitle: pageSubtitleInput.value.trim(),
+        footerText: pageFooterInput.value.trim()
+      };
+      pageData = { ...pageData, ...pendingDrafts.page };
+      renderPage();
+      persistDrafts();
+      setOverlayOpen(pageOverlay, false);
+    });
+
+    document.querySelectorAll('.edit-overlay').forEach(overlay => {
+      overlay.addEventListener('click', e => {
+        if(e.target === overlay) overlay.style.display = 'none';
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape'){
+        setNavOpen(false);
+        setOverlayOpen(cardOverlay, false);
+        setOverlayOpen(pageOverlay, false);
+      }
+    });
+
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.addEventListener('click', () => setNavOpen(!mainNav.classList.contains('show')));
+
+    window.addEventListener('resize', () => {
+      wireMobileDropdowns();
+      appendMobileCloseRow();
+      if(window.matchMedia('(min-width: 769px)').matches){
+        setNavOpen(false);
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if(!user){
+        isAdmin = false;
+        updateAdminVisibility();
+        renderNav();
+        return;
+      }
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      const role = snap.exists() ? snap.data().role : null;
+      isAdmin = role === 'admin' || role === 'ordforande';
+      updateAdminVisibility();
+      renderNav();
+    });
+
+    onSnapshot(PAGE_DOC_REF, snap => {
+      if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+      if(pendingDrafts.page) pageData = { ...pageData, ...pendingDrafts.page };
+      renderPage();
+    });
+
+    onSnapshot(NAV_DOC_REF, snap => {
+      navData = snap.exists() ? snap.data() : fallbackNav;
+      renderNav();
+    });
+
+    onSnapshot(query(CARDS_COL, orderBy('order', 'asc')), snap => {
+      serverCards = [];
+      snap.forEach(d => {
+        const data = d.data();
+        if(data.published === false) return;
+        serverCards.push({ id:d.id, ...data });
+      });
+      applyLocalDrafts();
+      renderPage();
+      renderCards();
+      renderSavePublishBar();
+    });
+
+    applyLocalDrafts();
+    renderPage();
+    renderNav();
+    renderCards();
+    renderSavePublishBar();
   </script>
 </body>
 </html>
