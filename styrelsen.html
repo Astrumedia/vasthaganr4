@@ -12,6 +12,10 @@
       --muted:#6b7280;
       --maxw:1200px;
       --shadow:0 10px 24px rgba(11,18,32,0.06);
+      --success:#166534;
+      --success-bg:#ecfdf5;
+      --error:#991b1b;
+      --error-bg:#fef2f2;
     }
     *{box-sizing:border-box}
     body{
@@ -22,7 +26,7 @@
     }
     .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
-    /* ===== Header – exakt samma grund ===== */
+    /* ===== Header – samma grund ===== */
     header{
       position:fixed;
       top:0; left:0;
@@ -56,7 +60,6 @@
       color:#0b1220;
       transition:all .2s ease;
       white-space:nowrap;
-      font-weight:500;
     }
     nav > ul > li > a:hover{
       background:var(--accent);
@@ -83,7 +86,6 @@
       padding:8px 10px;
       display:block;
       border-radius:8px;
-      font-weight:600;
     }
     .dropdown-content a:hover{
       background:var(--accent);
@@ -175,13 +177,13 @@
     .grid{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:18px;
+      gap:16px;
       margin-top:24px;
     }
     @media (max-width: 980px){
       .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
-    @media (max-width: 700px){
+    @media (max-width: 640px){
       .grid{grid-template-columns:1fr}
     }
 
@@ -208,7 +210,7 @@
 
     .card-portrait-wrap{
       width:100%;
-      aspect-ratio: 4 / 4.7;
+      aspect-ratio:1 / 0.68;
       overflow:hidden;
       background:#eef2f6;
     }
@@ -221,23 +223,23 @@
     }
 
     .card-body{
-      padding:18px 18px 20px 18px;
+      padding:14px 14px 16px 14px;
       text-align:center;
     }
     .card h3{
       margin:0;
       color:#0b1220;
-      font-size:1.25rem;
+      font-size:1.08rem;
       line-height:1.2;
     }
     .card-role{
-      margin:8px 0 0 0;
+      margin:6px 0 0 0;
       color:var(--accent);
       font-weight:900;
-      font-size:.98rem;
+      font-size:.93rem;
     }
     .card-duties{
-      margin:14px 0 0 0;
+      margin:12px 0 0 0;
       padding:0;
       list-style:none;
       display:flex;
@@ -249,10 +251,11 @@
       background:#f8fafc;
       border:1px solid #eef2f6;
       border-radius:12px;
-      padding:10px 12px;
+      padding:8px 10px;
       color:#334155;
       font-weight:700;
-      line-height:1.4;
+      line-height:1.35;
+      font-size:.93rem;
     }
 
     .card .edit-btn,.card .delete-btn{
@@ -281,6 +284,87 @@
       color:var(--muted);
       font-weight:800;
       text-align:center;
+      grid-column:1 / -1;
+    }
+
+    .contact-section{
+      margin:24px auto 8px auto;
+      max-width:760px;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:20px 22px;
+      text-align:center;
+    }
+    .contact-section h2{
+      margin:0;
+      font-size:1.2rem;
+    }
+    .contact-section p{
+      margin:10px 0 0 0;
+      color:var(--muted);
+      line-height:1.5;
+      font-weight:700;
+    }
+    .contact-actions{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .contact-form{
+      display:none;
+      margin-top:14px;
+      text-align:left;
+      gap:12px;
+      flex-direction:column;
+    }
+    .contact-form.show{display:flex}
+    .contact-form-grid{
+      display:grid;
+      gap:12px;
+      grid-template-columns:1fr 1fr;
+    }
+    @media (max-width: 700px){
+      .contact-form-grid{grid-template-columns:1fr}
+    }
+    .contact-form input,
+    .contact-form textarea{
+      width:100%;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid #e6eef2;
+      font-size:1rem;
+      font-family:inherit;
+      background:#fff;
+    }
+    .contact-form textarea{
+      min-height:140px;
+      resize:vertical;
+    }
+    .contact-note{
+      color:var(--muted);
+      font-size:.95rem;
+      line-height:1.4;
+      font-weight:700;
+    }
+    .form-status{
+      display:none;
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:800;
+      line-height:1.4;
+    }
+    .form-status.show{display:block}
+    .form-status.success{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+    .form-status.error{
+      background:var(--error-bg);
+      color:var(--error);
     }
 
     /* ===== Editor ===== */
@@ -317,13 +401,14 @@
       flex-direction:column;
       gap:12px;
     }
-    .editor input,.editor textarea{
+    .editor input,.editor textarea,.editor select{
       padding:12px;
       border-radius:12px;
       border:1px solid #e6eef2;
       width:100%;
       font-size:.97rem;
       font-family:inherit;
+      background:#fff;
     }
     .editor textarea{resize:vertical;min-height:120px}
     .field-label{display:block;margin-bottom:6px;font-size:.95rem;font-weight:900;color:#111827}
@@ -339,6 +424,10 @@
       font-weight:700;
       font-family:inherit;
       transition:background .2s ease, transform .12s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
     .btn:active{transform:translateY(1px)}
     .btn-primary{background:var(--accent);color:#fff}
@@ -538,6 +627,47 @@
 
     <main class="grid" id="cardGrid" aria-live="polite"></main>
 
+    <section class="contact-section" id="contactSection">
+      <h2 id="contactTitle">Kontakta styrelsen</h2>
+      <p id="contactText">Har du frågor, synpunkter eller ärenden till styrelsen? Hör gärna av dig så hjälper vi dig vidare.</p>
+
+      <div class="contact-actions" id="contactActions">
+        <button id="openContactFormBtn" class="btn btn-primary" type="button">Mejla styrelsen</button>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <div class="contact-form-grid">
+          <div>
+            <label class="field-label" for="contactName">Ditt namn</label>
+            <input id="contactName" name="name" type="text" placeholder="Till exempel: Anna Andersson" required>
+          </div>
+          <div>
+            <label class="field-label" for="contactEmail">Din e-postadress</label>
+            <input id="contactEmail" name="email" type="email" placeholder="namn@epost.se" required>
+          </div>
+        </div>
+
+        <div>
+          <label class="field-label" for="contactSubject">Ämne</label>
+          <input id="contactSubject" name="subject" type="text" placeholder="Vad gäller ditt ärende?" required>
+        </div>
+
+        <div>
+          <label class="field-label" for="contactMessage">Meddelande</label>
+          <textarea id="contactMessage" name="message" placeholder="Skriv ditt meddelande här" required></textarea>
+        </div>
+
+        <p class="contact-note">Fyll i dina uppgifter och skriv ditt meddelande. När du trycker på skicka skickas det vidare till styrelsen.</p>
+
+        <div id="contactFormStatus" class="form-status" aria-live="polite"></div>
+
+        <div class="row">
+          <button id="sendContactBtn" class="btn btn-primary" type="submit">Skicka meddelande</button>
+          <button id="cancelContactBtn" class="btn btn-cancel" type="button">Avbryt</button>
+        </div>
+      </form>
+    </section>
+
     <div class="bottom-admin-tools">
       <button class="btn btn-primary" id="addCardBtn" type="button">＋ Lägg till medlem</button>
     </div>
@@ -559,6 +689,13 @@
         <div>
           <label class="field-label" for="editRole">Roll</label>
           <input type="text" id="editRole" placeholder="Till exempel: Ordförande">
+        </div>
+        <div>
+          <label class="field-label" for="editGender">Standardbild</label>
+          <select id="editGender">
+            <option value="female">Kvinna</option>
+            <option value="male">Man</option>
+          </select>
         </div>
         <div>
           <label class="field-label" for="editOrder">Ordning</label>
@@ -604,7 +741,7 @@
           <button id="resetDefaultImageBtn" class="btn btn-secondary" type="button">Återgå till standardbild</button>
         </div>
 
-        <p class="helptext">Om ni inte väljer en egen bild används standardbilden automatiskt.</p>
+        <p class="helptext">Om ni inte väljer en egen bild används vald standardbild automatiskt.</p>
       </div>
 
       <div class="row">
@@ -632,7 +769,23 @@
       </div>
 
       <div class="editor-section">
-        <h4>2. Sidfot</h4>
+        <h4>2. Kontaktsektion</h4>
+        <div>
+          <label class="field-label" for="contactTitleInput">Rubrik</label>
+          <input type="text" id="contactTitleInput" placeholder="Kontakta styrelsen">
+        </div>
+        <div>
+          <label class="field-label" for="contactTextInput">Text</label>
+          <textarea id="contactTextInput" rows="4" placeholder="Text under kontaktsektionen"></textarea>
+        </div>
+        <div>
+          <label class="field-label" for="contactEmailInput">Mottagaradress</label>
+          <input type="email" id="contactEmailInput" placeholder="styrelsen@vasthaganr4.se">
+        </div>
+      </div>
+
+      <div class="editor-section">
+        <h4>3. Sidfot</h4>
         <div>
           <label class="field-label" for="pageFooterInput">Text längst ner på sidan</label>
           <input type="text" id="pageFooterInput" placeholder="© Västhaga Nr4 — Bostadsrättsförening">
@@ -651,7 +804,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
-      getFirestore, collection, doc, setDoc, getDoc, onSnapshot, query, orderBy, deleteDoc
+      getFirestore, collection, doc, setDoc, getDoc, onSnapshot, query, orderBy, deleteDoc, addDoc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import {
@@ -677,8 +830,10 @@
     const PAGE_DOC_REF = doc(db, 'pages', 'styrelsen');
     const NAV_DOC_REF = doc(db, 'site', 'navigation');
     const CARDS_COL = collection(db, 'boardMembers');
-    const DRAFT_STORAGE_KEY = 'vasthaga_styrelsen_drafts_v1';
-    const DEFAULT_BOARD_IMAGE = 'styrelse_standard.jpg';
+    const MAIL_COL = collection(db, 'mail'); // Kräver t.ex. Firebase Trigger Email-extension eller egen backend som lyssnar på denna collection
+    const DRAFT_STORAGE_KEY = 'vasthaga_styrelsen_drafts_v3';
+    const DEFAULT_FEMALE_IMAGE = 'female.png';
+    const DEFAULT_MALE_IMAGE = 'male.png';
 
     const body = document.body;
     const mainNav = document.getElementById('mainNav');
@@ -690,16 +845,30 @@
     const pageTitleEl = document.getElementById('pageTitle');
     const pageSubtitleEl = document.getElementById('pageSubtitle');
     const footerTextEl = document.getElementById('footerText');
+    const contactTitleEl = document.getElementById('contactTitle');
+    const contactTextEl = document.getElementById('contactText');
 
     const cardGrid = document.getElementById('cardGrid');
     const savePublish = document.getElementById('savePublish');
     const addCardBtn = document.getElementById('addCardBtn');
     const editPageBtn = document.getElementById('editPageBtn');
 
+    const openContactFormBtn = document.getElementById('openContactFormBtn');
+    const cancelContactBtn = document.getElementById('cancelContactBtn');
+    const contactForm = document.getElementById('contactForm');
+    const contactActions = document.getElementById('contactActions');
+    const contactFormStatus = document.getElementById('contactFormStatus');
+    const contactName = document.getElementById('contactName');
+    const contactEmail = document.getElementById('contactEmail');
+    const contactSubject = document.getElementById('contactSubject');
+    const contactMessage = document.getElementById('contactMessage');
+    const sendContactBtn = document.getElementById('sendContactBtn');
+
     const cardOverlay = document.getElementById('cardOverlay');
     const cardEditorHeading = document.getElementById('cardEditorHeading');
     const editName = document.getElementById('editName');
     const editRole = document.getElementById('editRole');
+    const editGender = document.getElementById('editGender');
     const editResponsibilities = document.getElementById('editResponsibilities');
     const editOrder = document.getElementById('editOrder');
     const editImage = document.getElementById('editImage');
@@ -716,6 +885,9 @@
     const pageOverlay = document.getElementById('pageOverlay');
     const pageTitleInput = document.getElementById('pageTitleInput');
     const pageSubtitleInput = document.getElementById('pageSubtitleInput');
+    const contactTitleInput = document.getElementById('contactTitleInput');
+    const contactTextInput = document.getElementById('contactTextInput');
+    const contactEmailInput = document.getElementById('contactEmailInput');
     const pageFooterInput = document.getElementById('pageFooterInput');
     const savePageDraftBtn = document.getElementById('savePageDraftBtn');
     const cancelPageEditBtn = document.getElementById('cancelPageEditBtn');
@@ -731,6 +903,9 @@
     let pageData = {
       title: 'Styrelsen',
       subtitle: 'Här presenteras föreningens styrelse och ansvarsområden.',
+      contactTitle: 'Kontakta styrelsen',
+      contactText: 'Har du frågor, synpunkter eller ärenden till styrelsen? Hör gärna av dig så hjälper vi dig vidare.',
+      contactEmail: 'styrelsen@vasthaganr4.se',
       footerText: '© Västhaga Nr4 — Bostadsrättsförening',
       brandName: 'Västhaga Nr4',
       brandTagline: 'Bostadsrättsförening',
@@ -923,18 +1098,13 @@
       });
     }
 
-    function renderPage(){
-      pageTitleEl.textContent = pageData.title || 'Styrelsen';
-      pageSubtitleEl.textContent = pageData.subtitle || '';
-      footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
-      brandName.textContent = pageData.brandName || 'Västhaga Nr4';
-      brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
-      if((pageData.logoUrl || '').trim()) brandLogo.src = pageData.logoUrl.trim();
+    function getDefaultBoardImage(gender='female'){
+      return gender === 'male' ? DEFAULT_MALE_IMAGE : DEFAULT_FEMALE_IMAGE;
     }
 
-    function withDefaultImage(url){
+    function withDefaultImage(url, gender='female'){
       const clean = (url || '').trim();
-      return clean || DEFAULT_BOARD_IMAGE;
+      return clean || getDefaultBoardImage(gender);
     }
 
     function parseResponsibilities(value=''){
@@ -949,9 +1119,19 @@
       return String(value || '');
     }
 
-    function setImagePreview(url){
-      const clean = withDefaultImage(url);
-      imagePreview.src = clean;
+    function renderPage(){
+      pageTitleEl.textContent = pageData.title || 'Styrelsen';
+      pageSubtitleEl.textContent = pageData.subtitle || '';
+      footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+      contactTitleEl.textContent = pageData.contactTitle || 'Kontakta styrelsen';
+      contactTextEl.textContent = pageData.contactText || '';
+      brandName.textContent = pageData.brandName || 'Västhaga Nr4';
+      brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
+      if((pageData.logoUrl || '').trim()) brandLogo.src = pageData.logoUrl.trim();
+    }
+
+    function setImagePreview(url, gender='female'){
+      imagePreview.src = withDefaultImage(url, gender);
       imagePreviewWrap.style.display = 'block';
     }
 
@@ -973,6 +1153,7 @@
       uploadFile.disabled = busy;
       editImage.disabled = busy;
       resetDefaultImageBtn.disabled = busy;
+      editGender.disabled = busy;
       applyEditBtn.disabled = busy;
       applyEditBtn.textContent = busy ? 'Laddar upp porträtt…' : 'Spara lokalt';
     }
@@ -1036,7 +1217,11 @@
 
       visibleCards = merged
         .filter(item => item.published !== false)
-        .map(item => ({ ...item, image: withDefaultImage(item.image) }))
+        .map(item => ({
+          ...item,
+          gender: item.gender || 'female',
+          image: withDefaultImage(item.image, item.gender || 'female')
+        }))
         .sort((a,b)=>{
           const ao = Number.isFinite(Number(a.order)) ? Number(a.order) : 9999;
           const bo = Number.isFinite(Number(b.order)) ? Number(b.order) : 9999;
@@ -1064,7 +1249,7 @@
 
         card.innerHTML = `
           <div class="card-portrait-wrap">
-            <img class="card-portrait" src="${escapeHtml(withDefaultImage(c.image))}" alt="${escapeHtml(c.name || 'Porträtt')}">
+            <img class="card-portrait" src="${escapeHtml(withDefaultImage(c.image, c.gender || 'female'))}" alt="${escapeHtml(c.name || 'Porträtt')}">
           </div>
           <div class="card-body">
             <h3>${escapeHtml(c.name || '')}</h3>
@@ -1116,12 +1301,13 @@
       cardEditorHeading.textContent = card ? 'Redigera medlem' : 'Ny medlem';
       editName.value = card?.name || '';
       editRole.value = card?.role || '';
+      editGender.value = card?.gender || 'female';
       editResponsibilities.value = responsibilitiesToTextarea(card?.responsibilities || []);
       editOrder.value = Number.isFinite(Number(card?.order))
         ? Number(card.order)
         : (visibleCards.length ? Math.max(...visibleCards.map(x => Number(x.order) || 0)) + 1 : 0);
       editImage.value = (card?.image || '').trim();
-      setImagePreview(editImage.value || DEFAULT_BOARD_IMAGE);
+      setImagePreview(editImage.value, editGender.value);
       setImageProgress(null);
       setImageUploadBusy(false);
       setOverlayOpen(cardOverlay, true);
@@ -1162,14 +1348,106 @@
       window.location.reload();
     }
 
+    function openContactForm(){
+      contactActions.style.display = 'none';
+      contactForm.classList.add('show');
+      contactFormStatus.className = 'form-status';
+      contactFormStatus.textContent = '';
+      contactName.focus();
+    }
+
+    function closeContactForm(){
+      contactForm.classList.remove('show');
+      contactActions.style.display = 'flex';
+      contactForm.reset();
+      contactFormStatus.className = 'form-status';
+      contactFormStatus.textContent = '';
+      sendContactBtn.disabled = false;
+      sendContactBtn.textContent = 'Skicka meddelande';
+    }
+
+    function setContactStatus(type, text){
+      contactFormStatus.className = `form-status show ${type}`;
+      contactFormStatus.textContent = text;
+    }
+
+    openContactFormBtn.addEventListener('click', openContactForm);
+    cancelContactBtn.addEventListener('click', closeContactForm);
+
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = contactName.value.trim();
+      const email = contactEmail.value.trim();
+      const subject = contactSubject.value.trim();
+      const message = contactMessage.value.trim();
+      const recipient = (pageData.contactEmail || 'styrelsen@vasthaganr4.se').trim();
+
+      if(!name || !email || !subject || !message){
+        setContactStatus('error', 'Fyll i alla fält innan du skickar.');
+        return;
+      }
+
+      try{
+        sendContactBtn.disabled = true;
+        sendContactBtn.textContent = 'Skickar...';
+        setContactStatus('success', 'Skickar meddelandet...');
+
+        await addDoc(MAIL_COL, {
+          to: [recipient],
+          replyTo: email,
+          message: {
+            subject: `Kontakt från hemsidan: ${subject}`,
+            text:
+`Nytt meddelande från hemsidans kontaktformulär
+
+Namn: ${name}
+E-post: ${email}
+Ämne: ${subject}
+
+Meddelande:
+${message}`,
+            html: `
+              <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111;">
+                <h2>Nytt meddelande från hemsidans kontaktformulär</h2>
+                <p><strong>Namn:</strong> ${escapeHtml(name)}</p>
+                <p><strong>E-post:</strong> ${escapeHtml(email)}</p>
+                <p><strong>Ämne:</strong> ${escapeHtml(subject)}</p>
+                <p><strong>Meddelande:</strong></p>
+                <p style="white-space:pre-line;">${escapeHtml(message)}</p>
+              </div>
+            `
+          },
+          meta: {
+            source: 'styrelsen_contact_form',
+            createdByName: name,
+            createdByEmail: email
+          },
+          createdAt: serverTimestamp()
+        });
+
+        setContactStatus('success', 'Tack! Ditt meddelande har skickats till styrelsen.');
+        contactForm.reset();
+        sendContactBtn.textContent = 'Skickat';
+      }catch(err){
+        setContactStatus('error', 'Det gick inte att skicka meddelandet just nu. Försök igen om en stund.');
+        sendContactBtn.disabled = false;
+        sendContactBtn.textContent = 'Skicka meddelande';
+      }
+    });
+
     editImage.addEventListener('input', () => {
-      setImagePreview(editImage.value || DEFAULT_BOARD_IMAGE);
+      setImagePreview(editImage.value, editGender.value);
+    });
+
+    editGender.addEventListener('change', () => {
+      setImagePreview(editImage.value, editGender.value);
     });
 
     resetDefaultImageBtn.addEventListener('click', () => {
       editImage.value = '';
       uploadFile.value = '';
-      setImagePreview(DEFAULT_BOARD_IMAGE);
+      setImagePreview('', editGender.value);
     });
 
     uploadFile.addEventListener('change', async (e) => {
@@ -1184,7 +1462,7 @@
         const url = await uploadImageFileToStorageWithProgress(file, pct => setImageProgress(pct));
 
         editImage.value = url;
-        setImagePreview(url);
+        setImagePreview(url, editGender.value);
         setImageProgress(null);
       }catch(err){
         setImageProgress(null);
@@ -1209,6 +1487,7 @@
 
       const name = editName.value.trim();
       const role = editRole.value.trim();
+      const gender = editGender.value || 'female';
       const responsibilities = parseResponsibilities(editResponsibilities.value);
       if(!name) return alert('Skriv ett namn.');
       if(!role) return alert('Skriv en roll.');
@@ -1223,6 +1502,7 @@
         [editingCardId]: {
           name,
           role,
+          gender,
           responsibilities,
           image: editImage.value.trim(),
           order,
@@ -1242,6 +1522,9 @@
       if(!isAdmin) return;
       pageTitleInput.value = pageData.title || '';
       pageSubtitleInput.value = pageData.subtitle || '';
+      contactTitleInput.value = pageData.contactTitle || '';
+      contactTextInput.value = pageData.contactText || '';
+      contactEmailInput.value = pageData.contactEmail || '';
       pageFooterInput.value = pageData.footerText || '';
       setOverlayOpen(pageOverlay, true);
     });
@@ -1253,6 +1536,9 @@
       pendingDrafts.page = {
         title: pageTitleInput.value.trim(),
         subtitle: pageSubtitleInput.value.trim(),
+        contactTitle: contactTitleInput.value.trim(),
+        contactText: contactTextInput.value.trim(),
+        contactEmail: contactEmailInput.value.trim(),
         footerText: pageFooterInput.value.trim()
       };
       pageData = { ...pageData, ...pendingDrafts.page };
