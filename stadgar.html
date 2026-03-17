@@ -22,7 +22,7 @@
     }
     .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
-    /* ===== Menyrad – samma stil som om.html ===== */
+    /* ===== Header – samma grund som om.html ===== */
     header{
       position:fixed;
       top:0; left:0;
@@ -92,24 +92,23 @@
 
     .hamburger{
       display:none;
-      font-size:1.9rem;
+      font-size:1.8rem;
       cursor:pointer;
       user-select:none;
       z-index:70;
       color:var(--accent);
       position:relative;
-      font-weight:900;
-      line-height:1;
       transition:
         transform .35s cubic-bezier(.22,1,.36,1),
         background .22s ease,
         box-shadow .22s ease;
+      line-height:1;
     }
     .hamburger.is-open{
       background:#fff;
       border-radius:999px;
       padding:6px 10px;
-      box-shadow:0 10px 22px rgba(11,18,32,0.12);
+      box-shadow:0 10px 22px rgba(11,18,32,0.10);
       transform:translateX(-2px) scale(1.02);
     }
 
@@ -203,7 +202,6 @@
     .card h3{margin:0 0 10px 0;color:var(--accent);font-size:1.22rem}
     .card p{margin:0;line-height:1.6;white-space:pre-line}
 
-    /* samma ikonknappar som på andra sidor */
     .card .edit-btn,.card .delete-btn{
       position:absolute;
       top:8px;
@@ -332,60 +330,78 @@
       font-weight:800;
     }
 
-    /* ===== Mobilmeny – samma upplägg som om.html ===== */
-    @media (max-width: 768px) {
-      header{padding:18px 14px}
-      .brand-title span{display:none}
+    /* ===== Mobilmeny – samma som om.html ===== */
+ @media (max-width: 768px) {
+  .hamburger{
+    display:block;
+    position:fixed;
+    top:18px;
+    right:16px;
+    z-index:140;
+  }
 
-      .hamburger{
-        display:block;
-        position:fixed;
-        top:18px;
-        right:16px;
-        z-index:130;
-      }
+  header{padding:18px 14px}
+  .brand-title span{display:none}
 
-      nav ul{
-        flex-direction:column;
-        position:fixed;
-        top:0;
-        right:0;
-        width:290px;
-        height:100%;
-        background:#fff;
-        padding-top:78px;
-        padding-left:12px;
-        transform:translateX(100%);
-        transition:transform 0.28s ease;
-        box-shadow:-10px 0 26px rgba(0,0,0,0.10);
-        z-index:120;
-        text-align:left;
-        align-items:flex-start;
-        overflow-y:auto;
-      }
+  nav ul{
+    flex-direction:column;
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    width:290px;
+    height:100dvh;
+    max-height:100dvh;
+    background:#fff;
+    padding-top:78px;
+    padding-left:12px;
+    padding-right:12px;
+    padding-bottom:18px;
+    transform:translateX(100%);
+    transition:transform 0.28s ease;
+    box-shadow:-10px 0 26px rgba(0,0,0,0.10);
+    z-index:130;
+    text-align:left;
+    align-items:flex-start;
+    overflow-y:auto;
+    overflow-x:hidden;
+  }
 
-      nav ul.show{transform:translateX(0)}
-      nav ul li{margin-bottom:10px;width:100%}
-      nav ul li a{
-        width:100%;
-        text-align:left;
-        padding:12px 14px;
-        font-size:1.06rem;
-        font-weight:900;
-      }
+  nav ul.show{
+    transform:translateX(0);
+  }
 
-      .dropdown-content{
-        position:static;
-        box-shadow:none;
-        padding-left:10px;
-        display:none;
-        min-width:unset;
-      }
+  nav ul li{
+    margin-bottom:10px;
+    width:100%;
+  }
 
-      .dropdown.active .dropdown-content{display:block}
-      .dropdown:hover .dropdown-content{display:none}
-      h1{font-size:1.9rem}
-    }
+  nav ul li a{
+    width:100%;
+    text-align:left;
+    padding:12px 14px;
+    font-size:1.06rem;
+
+  }
+
+  .dropdown-content{
+    position:static;
+    box-shadow:none;
+    padding-left:10px;
+    display:none;
+    min-width:unset;
+  }
+
+  .dropdown.active .dropdown-content{
+    display:block;
+  }
+
+  .dropdown:hover .dropdown-content{
+    display:none;
+  }
+
+  h1{font-size:1.9rem}
+}
 
     .mobile-close-wrap{
       margin-top:auto;
@@ -399,7 +415,6 @@
       border:0;
       background:rgba(240,154,15,0.16);
       color:#a86405;
-      font-weight:700;
       cursor:pointer;
     }
     .mobile-close-btn:active{transform:translateY(1px)}
@@ -411,6 +426,11 @@
       from{opacity:0;transform:translateY(12px) scale(.99)}
       to{opacity:1;transform:translateY(0) scale(1)}
     }
+
+nav{
+  position:relative;
+  z-index:120;
+}
   </style>
 </head>
 <body>
@@ -443,7 +463,7 @@
       </div>
     </div>
 
-    <div class="admin-tools">
+    <div class="admin-tools" style="margin-top:10px; justify-content:flex-end;">
       <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
     </div>
 
@@ -540,7 +560,7 @@
     const PAGE_DOC_REF = doc(db, 'pages', 'stadgar');
     const NAV_DOC_REF = doc(db, 'site', 'navigation');
     const CARDS_COL = collection(db, 'stadgarCards');
-    const DRAFT_STORAGE_KEY = 'vasthaga_stadgar_drafts_v2';
+    const DRAFT_STORAGE_KEY = 'vasthaga_stadgar_drafts_v3';
 
     const body = document.body;
     const mainNav = document.getElementById('mainNav');
@@ -588,27 +608,6 @@
       brandTagline: 'Bostadsrättsförening',
       logoUrl: 'logga.png'
     };
-
-    const defaultCards = [
-      {
-        id:'seed-1',
-        title:'§1 Föreningens namn',
-        text:'Föreningens namn är Bostadsrättsföreningen Västhaga Nr4.',
-        order:0,
-        published:true,
-        createdAt:Date.now()-3,
-        updatedAt:Date.now()-3
-      },
-      {
-        id:'seed-2',
-        title:'§2 Ändamål',
-        text:'Föreningen har till ändamål att främja medlemmarnas ekonomiska intressen genom att upplåta bostäder med bostadsrätt.',
-        order:1,
-        published:true,
-        createdAt:Date.now()-2,
-        updatedAt:Date.now()-2
-      }
-    ];
 
     const fallbackNav = {
       items: [
@@ -811,8 +810,7 @@
       }
 
       const deletedSet = new Set(pendingDrafts.deletedIds || []);
-      const baseCards = serverCards.length ? serverCards : defaultCards;
-      const merged = baseCards
+      const merged = serverCards
         .filter(item => !deletedSet.has(item.id))
         .map(item => ({ ...item }));
 
@@ -836,7 +834,7 @@
     function renderCards(){
       cardGrid.innerHTML = '';
       if(!visibleCards.length){
-        cardGrid.innerHTML = `<div class="empty-state">Det finns ännu inga publicerade paragrafer på sidan.</div>`;
+        cardGrid.innerHTML = `<div class="empty-state">Inga stadgar har lagts till ännu.</div>`;
         return;
       }
 
