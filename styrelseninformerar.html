@@ -6,66 +6,45 @@
   <title>Styrelsen informerar — Västhaga Nr4</title>
   <style>
     :root{
-      --bg:#f7f9fc; 
-      --card:#ffffff; 
-      --accent:#f09a0f; 
-      --muted:#6b7280; 
+      --bg:#f7f9fc;
+      --card:#ffffff;
+      --accent:#f09a0f;
+      --muted:#6b7280;
       --maxw:1200px;
+      --shadow:0 12px 28px rgba(11,18,32,0.08);
     }
-    *{box-sizing:border-box;}
-    body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220;}
-    .container{max-width:var(--maxw);margin:24px auto;padding:16px;}
-    
-    /* ---- Header ---- */
-    header {
+    *{box-sizing:border-box}
+    body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
+    .container{max-width:var(--maxw);margin:0 auto;padding:16px}
+
+    /* HEADER – identisk med indexcopy */
+ header {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       padding: 22px 32px;
+      z-index: 10;
       background: rgba(255,255,255,0);
-      transition: background 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
       box-shadow: none;
+      transition: background 0.35s ease, box-shadow 0.35s ease;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      z-index: 10;
     }
-    header.scrolled {
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .brand{display:flex;align-items:center;gap:12px;}
-    .logo{
-      width:44px;
-      height:44px;
-      border-radius:8px;
-      background:var(--accent);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
     .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
-    .brand-text{display:flex;flex-direction:column;}
-    .brand-text div:first-child{font-weight:700;font-size:1.5rem;}
-    .brand-text div:last-child{font-size:1rem;color:var(--muted);}
+    .brand-title{display:flex;flex-direction:column;justify-content:center;margin-left:8px;min-width:0}
+    .brand-title strong{font-weight:700;font-size:1.5rem;line-height:1.1}
+    .brand-title span{font-size:1rem}
 
-    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center;}
-    nav a{
-      padding:8px 12px;
-      border-radius:8px;
-      text-decoration:none;
-      color:inherit;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
+    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+    nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
     nav a:hover{background:var(--accent);color:#fff;}
-    .dropdown{position:relative;}
+    .dropdown{position:relative}
+
     .dropdown-content {
-      position: absolute;
-      top: 36px;
-      left: 0;
+      position: absolute; top: 28px; left: 0;
       background: #fff;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
       padding: 8px;
@@ -74,227 +53,965 @@
       min-width: 180px;
       z-index: 10;
     }
-    .dropdown.show .dropdown-content{display:block;}
+    .dropdown:hover .dropdown-content{display:block}
     .dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
     .dropdown-content a:hover{background:var(--accent);color:#fff;}
 
-    /* ---- Nyheter ---- */
-    h1{text-align:center;margin-top:100px;}
-    h2.subheader{text-align:center;color:var(--muted);font-weight:400;margin-top:4px;}
-    .news-grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:32px;}
-
-    .news-card{
-      background: var(--card);
-      border-radius: 10px;
-      box-shadow: 0 6px 18px rgba(11,18,32,0.04);
-      cursor: pointer;
-      display: flex;
-      flex-direction: row;
-      overflow: hidden;
-      position: relative;
-      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-      min-height:180px;
-    }
-    .news-card img{
-      width:180px;
-      height:100%;
-      object-fit:cover;
-      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .news-card.expanded img{width:220px;}
-    .news-card-content{
-      padding:12px 16px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:6px;
-      flex:1;
-      text-align:left;
-      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .news-card h3{margin:0;color:var(--accent);}
-    .news-card p.short-desc{margin:0;font-size:0.95rem;color:var(--muted);}
-    .news-card .full-text{
-      max-height:0;
-      opacity:0;
-      overflow:hidden;
-      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-      margin-top:8px;
-      font-size:0.95rem;
-      color:#0b1220;
-    }
-    .news-card.expanded .full-text{
-      max-height:2000px;
-      opacity:1;
-    }
-    .news-card .read-more{
-      position:absolute;
-      bottom:8px;
-      right:12px;
-      font-size:0.85rem;
-      color:var(--accent);
-    }
-
-    footer{margin-top:32px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:32px;}
-
-    .hamburger {
+    /* hamburger */
+    .hamburger{
       display:none;
-      font-size:1.8rem;
+      font-size: 1.8rem;
       cursor:pointer;
       user-select:none;
-      color:var(--accent);
-      z-index:30;
+      z-index:70;
+      color: var(--accent);
+      position: relative;
+      transition: transform 0.3s ease;
+      font-weight:900;
     }
 
-    @media (max-width:768px){
-      .news-card{flex-direction:column;}
-      .news-card img{width:100%;height:160px;border-right:none;border-bottom:1px solid #e6eef2;}
-      .hamburger{display:block;}
-      nav ul{flex-direction:column;position:fixed;top:0;right:0;width:220px;height:100%;background:#fff;padding-top:80px;padding-left:20px;transform:translateX(100%);transition:transform 0.3s ease;box-shadow:-4px 0 12px rgba(0,0,0,0.08);z-index:20;text-align:left;align-items:flex-start;}
-      nav ul.show{transform:translateX(0);}
-      nav ul li{margin-bottom:12px;width:100%;}
-      nav ul li a{width:100%;text-align:left;padding-left:16px;}
-      .dropdown-content{position:static;box-shadow:none;padding-left:12px;display:none;}
-      .dropdown.active .dropdown-content{display:block;}
+/* Mobile hamburger: nicer close arrow when menu is open */
+.hamburger.is-open{
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  box-shadow: 0 10px 22px rgba(11,18,32,0.10);
+  transform: translateX(-2px);
+}
+
+/* make sure it's always above the drawer */
+@media (max-width: 768px) {
+  .hamburger{
+    position: fixed;
+    top: 18px;
+    right: 16px;
+    z-index: 130; /* above nav drawer (120) */
+  }
+}
+
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+      nav ul{
+        flex-direction: column;
+        position: fixed;
+        top: 0; right: 0;
+        width: 260px;
+        height: 100%;
+        background: #fff;
+        padding-top: 72px;
+        padding-left: 12px;
+        transform: translateX(100%);
+        transition: transform 0.28s ease;
+        box-shadow: -6px 0 20px rgba(0,0,0,0.08);
+        z-index: 120;
+        text-align: left;
+        align-items: flex-start;
+      }
+      nav ul.show { transform: translateX(0); }
+      nav ul li { margin-bottom: 12px; width: 100%; }
+      nav ul li a { width: 100%; text-align: left; padding-left: 16px; }
+      .dropdown-content { position: static; box-shadow: none; padding-left: 12px; display: none; }
+      .dropdown.active .dropdown-content { display: block; }
+      .dropdown:hover .dropdown-content{display:none}
+    }
+
+
+    .hero-spacer{height:88px}
+    .page-shell{padding-top:36px;padding-bottom:10px}
+    .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .page-head-left{max-width:840px}
+    h1{margin:0;font-size:2.5rem;line-height:1.05;letter-spacing:-0.02em}
+    .subheader{margin:10px 0 0 0;color:var(--muted);font-size:1.08rem;line-height:1.45;font-weight:700}
+
+    .mini-edit{
+      display:none;padding:10px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer;
+      font-weight:950;box-shadow:0 10px 24px rgba(11,18,32,0.06);white-space:nowrap;
+    }
+    .mini-edit:hover{border-color:rgba(240,154,15,0.45)}
+    .mini-edit span{color:var(--accent)}
+    .is-admin .mini-edit{display:inline-flex;align-items:center;gap:8px}
+
+    .admin-tools{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .admin-tools .btn{display:none}
+    .is-admin .admin-tools .btn{display:inline-flex}
+
+    .btn{
+      padding:12px 14px;border-radius:14px;border:0;cursor:pointer;font-weight:950;font-size:1rem;
+      box-shadow:0 10px 22px rgba(11,18,32,0.06)
+    }
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-secondary{background:#fff;color:var(--accent);border:1px solid rgba(0,0,0,0.10);box-shadow:none}
+    .btn-cancel{background:#eef2f6;color:#111;box-shadow:none}
+    .danger-btn{background:#fff1f2;color:#be123c;border:1px solid #fecdd3;box-shadow:none}
+
+    .news-grid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:22px}
+    .news-card{
+      background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;position:relative;
+      display:flex;flex-direction:row;min-height:200px;transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .news-card:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(11,18,32,0.10)}
+    .news-card{animation:cardIn .45s ease both}
+    .news-card:nth-child(2){animation-delay:.04s}
+    .news-card:nth-child(3){animation-delay:.08s}
+    .news-card:nth-child(4){animation-delay:.12s}
+    .news-card:nth-child(5){animation-delay:.16s}
+    .news-card img{width:220px;height:auto;min-height:200px;object-fit:cover;background:#eef2f6;flex:0 0 220px}
+    .news-card.expanded img{width:260px;flex-basis:260px}
+    .news-card-content{padding:18px 20px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1;justify-content:center;min-width:0}
+    .news-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .news-badge{font-size:.84rem;font-weight:900;color:#a86405;background:rgba(240,154,15,0.14);padding:6px 10px;border-radius:999px}
+    .news-card h3{margin:0;font-size:1.45rem;line-height:1.14;color:#111}
+    .short-desc{margin:0;color:var(--muted);font-size:1rem;line-height:1.45;font-weight:700}
+    .full-text{max-height:0;opacity:0;overflow:hidden;transition:max-height .45s ease, opacity .28s ease;margin-top:0}
+    .full-text p{margin:0;color:#0b1220;line-height:1.6;font-weight:650;white-space:pre-line}
+    .news-card.expanded .full-text{max-height:2200px;opacity:1;margin-top:4px}
+    .read-more{margin-top:2px;font-size:.92rem;font-weight:900;color:#a86405}
+    .news-card-actions{position:absolute;top:12px;right:12px;display:none;gap:8px}
+    .is-admin .news-card-actions{display:flex}
+    .icon-btn{
+      width:42px;height:42px;border-radius:12px;border:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,.96);
+      box-shadow:0 10px 22px rgba(11,18,32,0.08);cursor:pointer;font-size:18px
+    }
+
+    .empty-state{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:28px;color:var(--muted);font-weight:800;text-align:center}
+
+    .edit-overlay{
+      position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);display:none;
+      justify-content:center;align-items:center;z-index:200;padding:12px;
+    }
+    .editor{
+      background:#fff;padding:18px;border-radius:18px;max-width:840px;width:100%;display:flex;flex-direction:column;gap:12px;
+      box-shadow:0 18px 46px rgba(0,0,0,0.25);max-height:min(92vh,1000px);overflow:auto;
+    }
+    .editor.editor-compact{max-width:760px}
+    .editor h3{margin:0}
+    .editor input,.editor textarea{
+      width:100%;padding:12px;border-radius:14px;border:1px solid #e6eef2;font-size:1rem;outline:none;font-weight:750
+    }
+    .editor textarea{min-height:120px;resize:vertical;font-family:inherit}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .row > *{flex:1 1 auto}
+    .field-label{display:block;margin-bottom:6px;font-size:.95rem;font-weight:900;color:#111827}
+    .helptext{color:var(--muted);font-size:.95rem;line-height:1.4;font-weight:750}
+    .preview-wrap{display:none;margin-top:6px}
+    .preview-label{font-size:12px;opacity:.75;margin-bottom:6px;font-weight:850}
+    .preview-img{width:100%;max-height:260px;object-fit:cover;border-radius:16px;border:1px solid rgba(0,0,0,.08);background:#fafafa}
+    .progress-wrap{display:none;margin-top:6px}
+    .progress-head{display:flex;justify-content:space-between;font-size:12px;opacity:.75;font-weight:850}
+    .progress-track{height:10px;background:rgba(0,0,0,.10);border-radius:999px;overflow:hidden;margin-top:8px}
+    .progress-bar{height:100%;width:0%;background:rgba(0,0,0,.35)}
+
+    .save-publish{
+      position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:none;align-items:center;gap:10px;
+      padding:12px 14px;background:rgba(11,18,32,0.92);color:#fff;border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,0.22);z-index:250;flex-wrap:wrap
+    }
+    .save-publish.show{display:flex}
+    .save-publish-text{font-weight:900;font-size:.95rem}
+    .save-publish .btn{box-shadow:none}
+    .save-publish .btn-primary{background:var(--accent)}
+    .save-publish .btn-cancel{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.22)}
+
+    footer{margin-top:28px;text-align:center;color:var(--muted);font-size:.98rem;padding:20px 14px 30px 14px;font-weight:800}
+
+    @media (max-width: 900px){
+      .news-card{flex-direction:column}
+      .news-card img,.news-card.expanded img{width:100%;min-height:220px;flex-basis:auto}
+    }
+
+    @media (max-width: 768px) {
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+      .hamburger{display:block;position:fixed;top:18px;right:16px;z-index:130}
+      nav ul{
+        flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;background:#fff;padding-top:72px;padding-left:12px;
+        transform:translateX(100%);transition:transform .28s ease;box-shadow:-6px 0 20px rgba(0,0,0,0.08);z-index:120;text-align:left;align-items:flex-start;overflow-y:auto
+      }
+      nav ul.show{transform:translateX(0)}
+      nav ul li{margin-bottom:10px;width:100%}
+      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.06rem;font-weight:900}
+      .dropdown-content{position:static;box-shadow:none;padding-left:10px;display:none;min-width:unset}
+      .dropdown.active .dropdown-content{display:block}
+      .dropdown:hover .dropdown-content{display:none}
+      h1{font-size:2rem}
+    }
+
+    header.is-hero nav a{ color:#0b1220; }
+    header.is-hero nav a:hover{ background:rgba(240,154,15,0.95); color:#fff; }
+    header.is-solid nav a{ color:#0b1220; }
+    header.is-hero .brand-title strong,
+    header.is-hero .brand-title span{ color:#fff !important; }
+    header.is-solid .brand-title strong,
+    header.is-solid .brand-title span{ color:inherit !important; }
+
+    @keyframes cardIn{
+      from{opacity:0;transform:translateY(10px)}
+      to{opacity:1;transform:translateY(0)}
     }
   </style>
 </head>
 <body>
-<header id="mainHeader">
+<header id="siteHeader" class="is-solid">
   <div class="brand">
-    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
-    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
-      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
-      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
+    <a href="index.html" class="logo">
+      <img id="brandLogo" src="logga.png" alt="Logga">
+    </a>
+    <a href="index.html" style="text-decoration:none;color:inherit;min-width:0;">
+      <div class="brand-title">
+        <strong id="brandName">Västhaga Nr4</strong>
+        <span id="brandTagline">Bostadsrättsförening</span>
+      </div>
     </a>
   </div>
 
   <nav>
     <div class="hamburger" id="hamburger">☰</div>
-    <ul id="mainNav">
-      <li><a href="index.html">Hem</a></li>
-      <li class="dropdown">
-        <a href="om.html">Om föreningen ▾</a>
-        <div class="dropdown-content">
-          <a href="om.html">Om oss</a>
-          <a href="stadgar.html">Stadgar</a>
-        </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="styrelsen.html">Styrelsen ▾</a>
-        <div class="dropdown-content">
-          <a href="styrelsen.html">Styrelsen</a>
-          <a href="styrelseninformerar.html">Styrelsen informerar</a>
-        </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="#">Planeringsprojekt ▾</a>
-        <div class="dropdown-content">
-          <a href="pagaendeplaner.html">Pågående planer</a>
-          <a href="utfordaplaner.html">Utförda planer</a>
-        </div>
-      </li>
-
-      <li><a href="felanmalan.html">Felanmälan</a></li>
-      <li><a href="loggain.html">Logga in</a></li>
-      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
-    </ul>
+    <ul id="mainNav"></ul>
   </nav>
 </header>
 
-  <div class="container">
-    <h1>Styrelsen informerar</h1>
-    <h2 class="subheader">Här delar styrelsen information, nyheter och uppdateringar till medlemmarna.</h2>
+  <div class="hero-spacer"></div>
 
-    <div class="news-grid">
-      <div class="news-card">
-        <img src="om_bild_1.jpg" alt="Nyhet 1">
-        <div class="news-card-content">
-          <h3>Renovering av trapphuset på gång</h3>
-          <p class="short-desc">Trapphuset kommer att renoveras under sommaren.</p>
-          <div class="full-text">
-            <p>Styrelsen har beslutat att trapphuset ska fräschas upp med ny målning, belysning och golv. Arbetet påbörjas i juli och beräknas pågå i cirka tre veckor. Under perioden installeras tillfälliga lösningar för sopnedkast och postboxar. Alla medlemmar uppmanas att ta del av tidsschemat och planera sina besök därefter. Vi tackar för ert tålamod och hoppas det färdiga resultatet skapar en trevligare miljö för alla. Dessutom kommer extra säkerhetsrutiner för barn och äldre att införas under byggtiden.</p>
-          </div>
+  <div class="container page-shell">
+    <div class="page-head">
+      <div class="page-head-left">
+        <h1 id="pageTitle">Styrelsen informerar</h1>
+        <p class="subheader" id="pageSubtitle">Här delar styrelsen information, nyheter och uppdateringar till medlemmarna.</p>
+      </div>
+      <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
+    </div>
+
+    <div class="admin-tools">
+      <button class="btn btn-primary" id="addNewsBtn" type="button">＋ Ny nyhet</button>
+    </div>
+
+    <div class="news-grid" id="newsGrid" aria-live="polite"></div>
+  </div>
+
+  <div class="save-publish" id="savePublish" aria-live="polite"></div>
+
+  <div class="edit-overlay" id="newsOverlay" role="dialog" aria-modal="true" aria-label="Redigera nyhet">
+    <div class="editor">
+      <h3 id="newsEditorHeading">Ny nyhet</h3>
+      <p class="helptext">Fyll i fälten nedan. Ändringarna sparas först lokalt för dig. När du är nöjd trycker du på <strong>Spara och publicera</strong> längst ner.</p>
+
+      <div class="editor-section">
+        <h4>1. Rubrik och ingress</h4>
+        <div>
+          <label class="field-label" for="newsTitleInput">Rubrik</label>
+          <input type="text" id="newsTitleInput" placeholder="Till exempel: Renovering av trapphuset på gång">
         </div>
-        <div class="read-more">Klicka för att läsa mer</div>
+
+        <div>
+          <label class="field-label" for="newsShortInput">Kort ingress</label>
+          <textarea id="newsShortInput" rows="3" placeholder="En kort sammanfattning som syns direkt i kortet."></textarea>
+        </div>
       </div>
 
-      <div class="news-card">
-        <img src="om_bild_1.jpg" alt="Nyhet 2">
-        <div class="news-card-content">
-          <h3>Viktiga förändringar i sophantering</h3>
-          <p class="short-desc">Nya regler för återvinning gäller från augusti.</p>
-          <div class="full-text">
-            <p>Styrelsen informerar att nya rutiner för sopsortering införs från 1 augusti. Alla hushåll ska sortera plast, metall och glas separat från matavfall. Tydliga skyltar installeras vid alla sopstationer. Informationsblad kommer att skickas ut och ett kort informationsmöte hållas. Målet är att förbättra miljön i föreningen och underlätta återvinningen.</p>
-          </div>
+      <div class="editor-section">
+        <h4>2. Full text</h4>
+        <div>
+          <label class="field-label" for="newsBodyInput">Fullständig text</label>
+          <textarea id="newsBodyInput" rows="8" placeholder="Här kan styrelsen skriva hela informationen som visas när man klickar på kortet."></textarea>
         </div>
-        <div class="read-more">Klicka för att läsa mer</div>
+      </div>
+
+      <div class="editor-section">
+        <h4>3. Bild</h4>
+        <div>
+          <label class="field-label" for="newsImageInput">Bild</label>
+          <input type="text" id="newsImageInput" placeholder="Bildlänk eller uppladdad bild">
+        </div>
+
+      <div id="newsImagePreviewWrap" class="preview-wrap">
+        <div class="preview-label">Förhandsvisning</div>
+        <img id="newsImagePreview" class="preview-img" alt="Förhandsvisning av nyhetsbild">
+      </div>
+
+      <div id="newsImageProgressWrap" class="progress-wrap" aria-live="polite">
+        <div class="progress-head">
+          <span>Uppladdning</span>
+          <span id="newsImageProgressText">0%</span>
+        </div>
+        <div class="progress-track">
+          <div id="newsImageProgressBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="btn btn-secondary" for="newsImageUpload" style="margin:0;flex:0 0 auto;">
+          <input id="newsImageUpload" type="file" accept="image/*" style="display:none;">
+          Ladda upp bild
+        </label>
+        <button id="removeNewsImageBtn" class="btn btn-secondary" type="button">Ta bort bild</button>
+      </div>
+      </div>
+
+      <div class="row">
+        <button id="saveNewsDraftBtn" class="btn btn-primary" type="button">Spara lokalt</button>
+        <button id="cancelNewsEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
       </div>
     </div>
   </div>
 
-  <footer>
-    &copy; Västhaga Nr4 — Bostadsrättsförening
-  </footer>
+  <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera sidinställningar">
+    <div class="editor editor-compact">
+      <h3>Redigera sidan</h3>
+      <p class="helptext">Här kan styrelsen uppdatera sidans texter i tydliga delar. Ändringarna sparas först lokalt och blir publika när ni trycker på <strong>Spara och publicera</strong>.</p>
 
-  <script>
-    const mainHeader = document.getElementById("mainHeader");
-    const mainNav = document.getElementById("mainNav");
-    const hamburger = document.getElementById("hamburger");
-    const dropdowns = document.querySelectorAll(".dropdown");
-    let hideTimer = null;
+      <div class="editor-section">
+        <h4>1. Sidrubrik</h4>
+        <div>
+          <label class="field-label" for="pageTitleInput">Sidrubrik</label>
+          <input type="text" id="pageTitleInput" placeholder="Styrelsen informerar">
+        </div>
+      </div>
 
-    // Hamburger
-    hamburger.addEventListener("click", () => {
-      mainNav.classList.toggle("show");
-      hamburger.textContent = mainNav.classList.contains("show") ? "➤" : "☰";
+      <div class="editor-section">
+        <h4>2. Beskrivning</h4>
+        <div>
+          <label class="field-label" for="pageSubtitleInput">Beskrivning under rubriken</label>
+          <textarea id="pageSubtitleInput" rows="4" placeholder="Kort text om sidan"></textarea>
+        </div>
+      </div>
+
+      <div class="editor-section">
+        <h4>3. Sidfot</h4>
+        <div>
+          <label class="field-label" for="pageFooterInput">Text längst ner på sidan</label>
+          <input type="text" id="pageFooterInput" placeholder="© Västhaga Nr4 — Bostadsrättsförening">
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="savePageDraftBtn" class="btn btn-primary" type="button">Spara lokalt</button>
+        <button id="cancelPageEditBtn" class="btn btn-cancel" type="button">Avbryt</button>
+      </div>
+    </div>
+  </div>
+
+  <footer id="footerText">© Västhaga Nr4 — Bostadsrättsförening</footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getFirestore, collection, doc, setDoc, getDoc, onSnapshot, query, orderBy, deleteDoc
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import {
+      getStorage,
+      ref as storageRef,
+      uploadBytesResumable,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+
+    const app = initializeApp({
+      apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
+      authDomain:"vasthaganr4.firebaseapp.com",
+      projectId:"vasthaganr4",
+      storageBucket:"vasthaganr4.firebasestorage.app",
+      messagingSenderId:"547846391741",
+      appId:"1:547846391741:web:048eb47b28d1027539f4d4"
     });
 
-    // Dropdown interaktion
-    dropdowns.forEach((dropdown) => {
-      dropdown.addEventListener("mouseenter", () => {
-        dropdowns.forEach((d) => {
-          if (d !== dropdown) d.classList.remove("show");
-        });
-        clearTimeout(hideTimer);
-        dropdown.classList.add("show");
-      });
-      dropdown.addEventListener("mouseleave", () => {
-        hideTimer = setTimeout(() => dropdown.classList.remove("show"), 200);
-      });
-    });
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
 
-    // Klick utanför stänger dropdowns
-    document.addEventListener("click", (e) => {
-      if (![...dropdowns].some((d) => d.contains(e.target))) {
-        dropdowns.forEach((d) => d.classList.remove("show"));
+    const SOURCE_LABEL = 'Styrelsen informerar';
+    const SOURCE_URL = 'styrelseninformerar.html';
+    const PAGE_DOC_REF = doc(db, 'pages', 'styrelsenInformerar');
+    const NAV_DOC_REF = doc(db, 'site', 'navigation');
+    const FEED_COL = collection(db, 'latestFeed');
+    const DRAFT_STORAGE_KEY = 'vasthaga_styrelseninformerar_drafts_v1';
+
+    const body = document.body;
+    const mainNav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburger');
+    const brandLogo = document.getElementById('brandLogo');
+    const brandName = document.getElementById('brandName');
+    const brandTagline = document.getElementById('brandTagline');
+
+    const pageTitleEl = document.getElementById('pageTitle');
+    const pageSubtitleEl = document.getElementById('pageSubtitle');
+    const footerTextEl = document.getElementById('footerText');
+    const newsGrid = document.getElementById('newsGrid');
+    const savePublish = document.getElementById('savePublish');
+    const addNewsBtn = document.getElementById('addNewsBtn');
+    const editPageBtn = document.getElementById('editPageBtn');
+
+    const newsOverlay = document.getElementById('newsOverlay');
+    const newsEditorHeading = document.getElementById('newsEditorHeading');
+    const newsTitleInput = document.getElementById('newsTitleInput');
+    const newsShortInput = document.getElementById('newsShortInput');
+    const newsBodyInput = document.getElementById('newsBodyInput');
+    const newsImageInput = document.getElementById('newsImageInput');
+    const newsImageUpload = document.getElementById('newsImageUpload');
+    const removeNewsImageBtn = document.getElementById('removeNewsImageBtn');
+    const newsImagePreviewWrap = document.getElementById('newsImagePreviewWrap');
+    const newsImagePreview = document.getElementById('newsImagePreview');
+    const newsImageProgressWrap = document.getElementById('newsImageProgressWrap');
+    const newsImageProgressText = document.getElementById('newsImageProgressText');
+    const newsImageProgressBar = document.getElementById('newsImageProgressBar');
+    const saveNewsDraftBtn = document.getElementById('saveNewsDraftBtn');
+    const cancelNewsEditBtn = document.getElementById('cancelNewsEditBtn');
+
+    const pageOverlay = document.getElementById('pageOverlay');
+    const pageTitleInput = document.getElementById('pageTitleInput');
+    const pageSubtitleInput = document.getElementById('pageSubtitleInput');
+    const pageFooterInput = document.getElementById('pageFooterInput');
+    const savePageDraftBtn = document.getElementById('savePageDraftBtn');
+    const cancelPageEditBtn = document.getElementById('cancelPageEditBtn');
+
+    let currentUser = null;
+    let isAdmin = false;
+    let serverItems = [];
+    let visibleItems = [];
+    let editingItemId = null;
+    let navData = null;
+
+    let pageData = {
+      title: 'Styrelsen informerar',
+      subtitle: 'Här delar styrelsen information, nyheter och uppdateringar till medlemmarna.',
+      footerText: '© Västhaga Nr4 — Bostadsrättsförening',
+      brandName: 'Västhaga Nr4',
+      brandTagline: 'Bostadsrättsförening',
+      logoUrl: 'logga.png'
+    };
+
+    const fallbackNav = {
+      items: [
+        { type:'link', label:'Hem', url:'index.html', order:0 },
+        {
+          type:'dropdown', label:'Om föreningen', order:1, children:[
+            { label:'Om oss', url:'om.html', order:0 },
+            { label:'Stadgar', url:'stadgar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Styrelsen', order:2, children:[
+            { label:'Styrelsen', url:'styrelsen.html', order:0 },
+            { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Planeringsprojekt', order:3, children:[
+            { label:'Pågående planer', url:'pagaendeplaner.html', order:0 },
+            { label:'Utförda planer', url:'utfordaplaner.html', order:1 }
+          ]
+        },
+        { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
+        { type:'link', label:'Logga in', url:'loggain.html', order:90 },
+        { type:'link', label:'Admin', url:'admin.html', order:92, adminOnly:true }
+      ]
+    };
+
+    function loadDrafts(){
+      try{
+        const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return {
+          page: parsed.page || null,
+          items: parsed.items || {},
+          deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : []
+        };
+      }catch(err){
+        return { page:null, items:{}, deletedIds:[] };
       }
-    });
-
-    // Header fade vid scroll
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 30) {
-        mainHeader.classList.add("scrolled");
-      } else {
-        mainHeader.classList.remove("scrolled");
-      }
-    });
-
-    // Admin visibility
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser && currentUser.role === "admin") {
-      document.getElementById("adminNav").style.display = "block";
     }
 
-    // Nyhetskort expand
-    const newsCards = document.querySelectorAll('.news-card');
-    newsCards.forEach(card => {
-      card.addEventListener('click', () => {
-        card.classList.toggle('expanded');
+    let pendingDrafts = loadDrafts();
+
+    function persistDrafts(){
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(pendingDrafts));
+      renderSavePublishBar();
+    }
+
+    function hasPendingDrafts(){
+      return Boolean(
+        pendingDrafts.page ||
+        Object.keys(pendingDrafts.items || {}).length ||
+        (pendingDrafts.deletedIds || []).length
+      );
+    }
+
+    function countPendingDrafts(){
+      let total = 0;
+      if(pendingDrafts.page) total += 1;
+      total += Object.keys(pendingDrafts.items || {}).length;
+      total += (pendingDrafts.deletedIds || []).length;
+      return total;
+    }
+
+    function requireAdmin(){
+      if(!isAdmin) throw new Error('Du behöver vara admin för att göra detta.');
+    }
+
+    function escapeHtml(str=''){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+    }
+
+    function setOverlayOpen(overlay, open){
+      if(!overlay) return;
+      overlay.style.display = open ? 'flex' : 'none';
+    }
+
+    function updateHeaderState(){
+      const solid = true;
+      const siteHeader = document.getElementById('siteHeader');
+      siteHeader.classList.toggle('is-solid', solid);
+      siteHeader.classList.toggle('is-hero', !solid);
+      siteHeader.style.background = solid ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0)';
+      siteHeader.style.boxShadow = solid ? '0 8px 24px rgba(11,18,32,0.08)' : 'none';
+    }
+
+    function setNavOpen(open){
+      mainNav.classList.toggle('show', open);
+      hamburger.textContent = open ? '➤' : '☰';
+      hamburger.classList.toggle('is-open', open);
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    function wireMobileDropdowns(){
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
+      if (!isMobile) return;
+      document.querySelectorAll('nav .dropdown > a').forEach(a => {
+        a.onclick = (e) => {
+          const li = a.closest('.dropdown');
+          if(!li) return;
+          e.preventDefault();
+          li.classList.toggle('active');
+        };
+      });
+    }
+
+    function appendMobileCloseRow(){
+      if (window.matchMedia('(min-width: 769px)').matches) return;
+      const li = document.createElement('li');
+      li.style.marginTop = 'auto';
+      li.style.padding = '12px 12px 18px 12px';
+      li.style.width = '100%';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Stäng meny';
+      btn.style.width = '100%';
+      btn.style.padding = '14px 14px';
+      btn.style.borderRadius = '12px';
+      btn.style.border = '0';
+      btn.style.background = 'rgba(240,154,15,0.16)';
+      btn.style.color = '#a86405';
+      btn.style.fontWeight = '800';
+      btn.style.cursor = 'pointer';
+      btn.addEventListener('click', () => setNavOpen(false));
+      li.appendChild(btn);
+      mainNav.appendChild(li);
+    }
+
+    function renderNav(){
+      const data = navData || fallbackNav;
+      const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+        .slice()
+        .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+      mainNav.innerHTML = '';
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentUser) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'dropdown';
+          const a = document.createElement('a');
+          a.href = item.url || '#';
+          a.textContent = `${item.label || ''} ▾`;
+          const dd = document.createElement('div');
+          dd.className = 'dropdown-content';
+          const children = (Array.isArray(item.children) ? item.children : []).slice().sort((x,y)=>(x.order ?? 0)-(y.order ?? 0));
+          children.forEach(ch => {
+            const ca = document.createElement('a');
+            ca.href = ch.url || '#';
+            ca.textContent = ch.label || '';
+            dd.appendChild(ca);
+          });
+          li.appendChild(a);
+          li.appendChild(dd);
+          mainNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        li.appendChild(a);
+        mainNav.appendChild(li);
+      });
+
+      appendMobileCloseRow();
+      wireMobileDropdowns();
+      mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+    }
+
+    function renderPage(){
+      pageTitleEl.textContent = pageData.title || 'Styrelsen informerar';
+      pageSubtitleEl.textContent = pageData.subtitle || '';
+      footerTextEl.textContent = pageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+      brandName.textContent = pageData.brandName || 'Västhaga Nr4';
+      brandTagline.textContent = pageData.brandTagline || 'Bostadsrättsförening';
+      if((pageData.logoUrl || '').trim()) brandLogo.src = pageData.logoUrl.trim();
+    }
+
+    function applyLocalDrafts(){
+      if(pendingDrafts.page){
+        pageData = { ...pageData, ...pendingDrafts.page };
+      }
+
+      const deletedSet = new Set(pendingDrafts.deletedIds || []);
+      const merged = serverItems
+        .filter(item => !deletedSet.has(item.id))
+        .map(item => ({ ...item }));
+
+      Object.entries(pendingDrafts.items || {}).forEach(([id, payload]) => {
+        const idx = merged.findIndex(item => item.id === id);
+        const nextItem = { ...(idx >= 0 ? merged[idx] : { id, createdAt: Date.now() }), ...payload, id };
+        if(idx >= 0) merged[idx] = nextItem;
+        else merged.push(nextItem);
+      });
+
+      visibleItems = merged
+        .filter(item => item.published !== false)
+        .sort((a,b)=>(b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
+    }
+
+    function formatDate(ts){
+      if(!ts || typeof ts !== 'number') return 'Nyhet';
+      return new Date(ts).toLocaleDateString('sv-SE', { year:'numeric', month:'short', day:'numeric' });
+    }
+
+    function renderNews(){
+      newsGrid.innerHTML = '';
+      if(!visibleItems.length){
+        newsGrid.innerHTML = `<div class="empty-state">Det finns ännu inga publicerade nyheter här.</div>`;
+        return;
+      }
+
+      visibleItems.forEach(item => {
+        const article = document.createElement('article');
+        article.className = 'news-card';
+        article.dataset.id = item.id;
+        article.innerHTML = `
+          ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || 'Nyhetsbild')}">` : ''}
+          <div class="news-card-content">
+            <div class="news-meta">
+              <span class="news-badge">${escapeHtml(formatDate(item.updatedAt || item.createdAt))}</span>
+              <span class="news-badge">${escapeHtml(item.sourceLabel || SOURCE_LABEL)}</span>
+            </div>
+            <h3>${escapeHtml(item.title || 'Utan rubrik')}</h3>
+            <p class="short-desc">${escapeHtml(item.shortText || '')}</p>
+            <div class="full-text"><p>${escapeHtml(item.text || '')}</p></div>
+            <div class="read-more">Klicka för att läsa mer</div>
+          </div>
+          <div class="news-card-actions">
+            <button class="icon-btn" type="button" data-action="edit" title="Redigera">✏️</button>
+            <button class="icon-btn" type="button" data-action="delete" title="Ta bort">🗑️</button>
+          </div>
+        `;
+
+        article.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-action]');
+          if(btn) return;
+          article.classList.toggle('expanded');
+        });
+
+        const editBtn = article.querySelector('[data-action="edit"]');
+        const deleteBtn = article.querySelector('[data-action="delete"]');
+        editBtn?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openNewsEditor(item);
+        });
+        deleteBtn?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          queueDelete(item.id);
+        });
+
+        newsGrid.appendChild(article);
+      });
+    }
+
+    function updateAdminVisibility(){
+      body.classList.toggle('is-admin', isAdmin);
+      renderSavePublishBar();
+    }
+
+    function renderSavePublishBar(){
+      if(!savePublish) return;
+      if(!isAdmin || !hasPendingDrafts()){
+        savePublish.classList.remove('show');
+        savePublish.innerHTML = '';
+        return;
+      }
+      const count = countPendingDrafts();
+      savePublish.classList.add('show');
+      savePublish.innerHTML = `
+        <div class="save-publish-text">${count} osparade ändring${count === 1 ? '' : 'ar'}</div>
+        <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
+        <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
+      `;
+      document.getElementById('publishDraftsBtn')?.addEventListener('click', publishPendingDrafts);
+      document.getElementById('discardDraftsBtn')?.addEventListener('click', discardPendingDrafts);
+    }
+
+    function openNewsEditor(item = null){
+      requireAdmin();
+      editingItemId = item?.id || doc(FEED_COL).id;
+      newsEditorHeading.textContent = item ? 'Redigera nyhet' : 'Ny nyhet';
+      newsTitleInput.value = item?.title || '';
+      newsShortInput.value = item?.shortText || '';
+      newsBodyInput.value = item?.text || '';
+      newsImageInput.value = item?.image || '';
+      setNewsImagePreview(newsImageInput.value);
+      setNewsImageProgress(null);
+      setOverlayOpen(newsOverlay, true);
+    }
+
+    function queueDelete(id){
+      requireAdmin();
+      if(!confirm('Vill du ta bort den här nyheten? Den försvinner först offentligt när du trycker på Spara och publicera.')) return;
+      pendingDrafts.deletedIds = Array.from(new Set([...(pendingDrafts.deletedIds || []), id]));
+      if(pendingDrafts.items && pendingDrafts.items[id]) delete pendingDrafts.items[id];
+      applyLocalDrafts();
+      renderNews();
+      persistDrafts();
+    }
+
+    function setNewsImagePreview(url){
+      const clean = (url || '').trim();
+      if(!clean){
+        newsImagePreviewWrap.style.display = 'none';
+        newsImagePreview.removeAttribute('src');
+        return;
+      }
+      newsImagePreview.src = clean;
+      newsImagePreviewWrap.style.display = 'block';
+    }
+
+    function setNewsImageProgress(percent){
+      if(percent == null){
+        newsImageProgressWrap.style.display = 'none';
+        newsImageProgressBar.style.width = '0%';
+        newsImageProgressText.textContent = '0%';
+        return;
+      }
+      newsImageProgressWrap.style.display = 'block';
+      const p = Math.max(0, Math.min(100, Math.round(percent)));
+      newsImageProgressBar.style.width = `${p}%`;
+      newsImageProgressText.textContent = `${p}%`;
+    }
+
+    function getStoragePathForUpload(file){
+      const safeName = (file.name || 'image').trim().replace(/[^\w.\-]+/g, '_').slice(0, 80);
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const rand = Math.random().toString(16).slice(2, 10);
+      return `uploads/${stamp}_${rand}_${safeName}`;
+    }
+
+    async function uploadImageFileToStorageWithProgress(file, onProgress){
+      requireAdmin();
+      if(!file) throw new Error('Ingen fil vald.');
+      if(!file.type?.startsWith('image/')) throw new Error('Endast bildfiler är tillåtna.');
+      const maxBytes = 6 * 1024 * 1024;
+      if(file.size > maxBytes) throw new Error('Filen är för stor (max 6 MB).');
+
+      const objRef = storageRef(storage, getStoragePathForUpload(file));
+      return await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(objRef, file, {
+          contentType: file.type,
+          cacheControl: 'public, max-age=31536000'
+        });
+        task.on('state_changed',
+          (snap) => {
+            const pct = snap.totalBytes > 0 ? (snap.bytesTransferred / snap.totalBytes) * 100 : 0;
+            onProgress?.(pct);
+          },
+          (err) => reject(err),
+          async () => resolve(await getDownloadURL(task.snapshot.ref))
+        );
+      });
+    }
+
+    async function publishPendingDrafts(){
+      requireAdmin();
+      const jobs = [];
+      if(pendingDrafts.page){
+        jobs.push(setDoc(PAGE_DOC_REF, pendingDrafts.page, { merge:true }));
+      }
+      Object.entries(pendingDrafts.items || {}).forEach(([id, payload]) => {
+        jobs.push(setDoc(doc(db, 'latestFeed', id), payload, { merge:true }));
+      });
+      (pendingDrafts.deletedIds || []).forEach(id => {
+        jobs.push(deleteDoc(doc(db, 'latestFeed', id)));
+      });
+      await Promise.all(jobs);
+      pendingDrafts = { page:null, items:{}, deletedIds:[] };
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      renderSavePublishBar();
+      alert('Ändringarna är nu publicerade.');
+    }
+
+    function discardPendingDrafts(){
+      pendingDrafts = { page:null, items:{}, deletedIds:[] };
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      window.location.reload();
+    }
+
+    newsImageInput.addEventListener('input', () => setNewsImagePreview(newsImageInput.value));
+    removeNewsImageBtn.addEventListener('click', () => {
+      newsImageInput.value = '';
+      newsImageUpload.value = '';
+      setNewsImagePreview('');
+    });
+    newsImageUpload.addEventListener('change', async () => {
+      try{
+        const file = newsImageUpload.files?.[0];
+        if(!file) return;
+        setNewsImageProgress(0);
+        const url = await uploadImageFileToStorageWithProgress(file, pct => setNewsImageProgress(pct));
+        newsImageInput.value = url;
+        setNewsImagePreview(url);
+        setNewsImageProgress(null);
+      }catch(err){
+        setNewsImageProgress(null);
+        alert(err?.message || 'Uppladdningen misslyckades.');
+      }finally{
+        newsImageUpload.value = '';
+      }
+    });
+
+    addNewsBtn.addEventListener('click', () => openNewsEditor());
+    cancelNewsEditBtn.addEventListener('click', () => setOverlayOpen(newsOverlay, false));
+    saveNewsDraftBtn.addEventListener('click', () => {
+      requireAdmin();
+      const title = newsTitleInput.value.trim();
+      const shortText = newsShortInput.value.trim();
+      const text = newsBodyInput.value.trim();
+      if(!title) return alert('Skriv en rubrik.');
+      if(!shortText) return alert('Skriv en kort ingress.');
+      if(!text) return alert('Skriv den fullständiga texten.');
+
+      const existing = serverItems.find(item => item.id === editingItemId) || visibleItems.find(item => item.id === editingItemId);
+      pendingDrafts.deletedIds = (pendingDrafts.deletedIds || []).filter(id => id !== editingItemId);
+      pendingDrafts.items = {
+        ...(pendingDrafts.items || {}),
+        [editingItemId]: {
+          title,
+          shortText,
+          text,
+          image: newsImageInput.value.trim(),
+          sourceLabel: SOURCE_LABEL,
+          sourceUrl: SOURCE_URL,
+          sourceType: 'boardInfo',
+          published: true,
+          createdAt: existing?.createdAt || Date.now(),
+          updatedAt: Date.now()
+        }
+      };
+      applyLocalDrafts();
+      renderNews();
+      persistDrafts();
+      setOverlayOpen(newsOverlay, false);
+    });
+
+    editPageBtn.addEventListener('click', () => {
+      if(!isAdmin) return;
+      pageTitleInput.value = pageData.title || '';
+      pageSubtitleInput.value = pageData.subtitle || '';
+      pageFooterInput.value = pageData.footerText || '';
+      setOverlayOpen(pageOverlay, true);
+    });
+    cancelPageEditBtn.addEventListener('click', () => setOverlayOpen(pageOverlay, false));
+    savePageDraftBtn.addEventListener('click', () => {
+      requireAdmin();
+      pendingDrafts.page = {
+        title: pageTitleInput.value.trim(),
+        subtitle: pageSubtitleInput.value.trim(),
+        footerText: pageFooterInput.value.trim()
+      };
+      pageData = { ...pageData, ...pendingDrafts.page };
+      renderPage();
+      persistDrafts();
+      setOverlayOpen(pageOverlay, false);
+    });
+
+    document.querySelectorAll('.edit-overlay').forEach(overlay => {
+      overlay.addEventListener('click', e => {
+        if(e.target === overlay) overlay.style.display = 'none';
       });
     });
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape'){
+        setNavOpen(false);
+        setOverlayOpen(newsOverlay, false);
+        setOverlayOpen(pageOverlay, false);
+      }
+    });
+
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.addEventListener('click', () => setNavOpen(!mainNav.classList.contains('show')));
+    window.addEventListener('resize', wireMobileDropdowns);
+    updateHeaderState();
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if(!user){
+        isAdmin = false;
+        updateAdminVisibility();
+        renderNav();
+        return;
+      }
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      const role = snap.exists() ? snap.data().role : null;
+      isAdmin = role === 'admin' || role === 'ordforande';
+      updateAdminVisibility();
+      renderNav();
+    });
+
+    onSnapshot(PAGE_DOC_REF, snap => {
+      if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+      if(pendingDrafts.page) pageData = { ...pageData, ...pendingDrafts.page };
+      renderPage();
+    });
+
+    onSnapshot(NAV_DOC_REF, snap => {
+      navData = snap.exists() ? snap.data() : fallbackNav;
+      renderNav();
+    });
+
+    onSnapshot(query(FEED_COL, orderBy('updatedAt', 'desc')), snap => {
+      serverItems = [];
+      snap.forEach(d => {
+        const data = d.data();
+        if(data.published === false) return;
+        if((data.sourceUrl || '') !== SOURCE_URL) return;
+        serverItems.push({ id:d.id, ...data });
+      });
+      applyLocalDrafts();
+      renderPage();
+      renderNews();
+      renderSavePublishBar();
+    });
+
+    applyLocalDrafts();
+    renderPage();
+    renderNav();
+    renderNews();
+    renderSavePublishBar();
   </script>
 </body>
 </html>
