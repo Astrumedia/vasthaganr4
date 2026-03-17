@@ -29,8 +29,10 @@
       width:100%;
       padding:22px 32px;
       z-index:60;
-      background:rgba(255,255,255,0.98);
-      box-shadow:0 8px 24px rgba(11,18,32,0.08);
+      background:transparent;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      box-shadow:0 8px 24px rgba(11,18,32,0.05);
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -81,7 +83,6 @@
       padding:8px 10px;
       display:block;
       border-radius:8px;
-
     }
     .dropdown-content a:hover{
       background:var(--accent);
@@ -130,7 +131,7 @@
     }
     .page-subtitle{
       text-align:center;
-      margin:10px auto 0 auto;s
+      margin:10px auto 0 auto;
       color:var(--muted);
       font-size:1.02rem;
       line-height:1.5;
@@ -162,6 +163,16 @@
     }
     .admin-tools .btn{display:none}
     .is-admin .admin-tools .btn{display:inline-flex}
+
+    .bottom-admin-tools{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:22px 0 8px 0;
+    }
+    .bottom-admin-tools .btn{display:none}
+    .is-admin .bottom-admin-tools .btn{display:inline-flex}
 
     .grid{
       display:grid;
@@ -230,14 +241,6 @@
       transition:transform .42s cubic-bezier(.22,1,.36,1);
     }
     .card:hover .card-img-wrapper img{transform:scale(1.03)}
-
-    .add-card-btn{
-      width:48px;height:48px;background:var(--accent);color:#fff;border-radius:50%;
-      font-size:24px;display:none;justify-content:center;align-items:center;cursor:pointer;
-      z-index:50;margin:16px auto;transition:0.2s;border:none;
-      box-shadow:0 10px 22px rgba(240,154,15,0.25);
-    }
-    .add-card-btn:hover{background:#d27c0c}
 
     /* ===== Editor ===== */
     .edit-overlay{
@@ -368,7 +371,9 @@
         right:0;
         width:260px;
         height:100%;
-        background:#fff;
+        background:rgba(255,255,255,0.96);
+        backdrop-filter:blur(10px);
+        -webkit-backdrop-filter:blur(10px);
         padding-top:72px;
         padding-left:12px;
         transform:translateX(100%);
@@ -443,22 +448,22 @@
   <div class="hero-spacer"></div>
 
   <div class="container page-shell">
-<div class="page-head">
-  <div class="page-head-left">
-    <h1 id="pageTitle">Om Bostadsrättsföreningen Västhaga Nr4</h1>
-    <p class="page-subtitle" id="pageSubtitle">Här hittar du grundläggande information om föreningen, området och fastigheten.</p>
-  </div>
-</div>
+    <div class="page-head">
+      <div class="page-head-left">
+        <h1 id="pageTitle">Om Bostadsrättsföreningen Västhaga Nr4</h1>
+        <p class="page-subtitle" id="pageSubtitle">Här hittar du grundläggande information om föreningen, området och fastigheten.</p>
+      </div>
+    </div>
 
-<div class="admin-tools" style="margin-top:10px; justify-content:flex-end;">
-  <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
-</div>
-
-    <div class="admin-tools">
-      <button class="btn btn-primary" id="addCardBtn" type="button">＋ Nytt kort</button>
+    <div class="admin-tools" style="margin-top:10px; justify-content:flex-end;">
+      <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
     </div>
 
     <main class="grid" id="cardGrid" aria-live="polite"></main>
+
+    <div class="bottom-admin-tools">
+      <button class="btn btn-primary" id="addCardBtn" type="button">＋ Nytt kort</button>
+    </div>
   </div>
 
   <div class="save-publish" id="savePublish" aria-live="polite"></div>
