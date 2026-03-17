@@ -635,37 +635,44 @@
         <button id="openContactFormBtn" class="btn btn-primary" type="button">Mejla styrelsen</button>
       </div>
 
-      <form class="contact-form" id="contactForm">
-        <div class="contact-form-grid">
-          <div>
-            <label class="field-label" for="contactName">Ditt namn</label>
-            <input id="contactName" name="name" type="text" placeholder="Till exempel: Anna Andersson" required>
-          </div>
-          <div>
-            <label class="field-label" for="contactEmail">Din e-postadress</label>
-            <input id="contactEmail" name="email" type="email" placeholder="namn@epost.se" required>
-          </div>
-        </div>
+<form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
 
-        <div>
-          <label class="field-label" for="contactSubject">Ämne</label>
-          <input id="contactSubject" name="subject" type="text" placeholder="Vad gäller ditt ärende?" required>
-        </div>
+  <input type="hidden" name="access_key" value="473cbe19-7e5f-4d0b-bac8-12604642edac">
+  <input type="hidden" name="subject" value="Kontakt från Västhaga Nr4">
+  <input type="hidden" name="from_name" value="Västhaga Nr4 hemsida">
 
-        <div>
-          <label class="field-label" for="contactMessage">Meddelande</label>
-          <textarea id="contactMessage" name="message" placeholder="Skriv ditt meddelande här" required></textarea>
-        </div>
+  <!-- spam-skydd -->
+  <input type="checkbox" name="botcheck" style="display:none;">
 
-        <p class="contact-note">Fyll i dina uppgifter och skriv ditt meddelande. När du trycker på skicka skickas det vidare till styrelsen.</p>
+  <div class="contact-form-grid">
+    <div>
+      <label class="field-label">Ditt namn</label>
+      <input type="text" name="name" required placeholder="Till exempel: Anna Andersson">
+    </div>
 
-        <div id="contactFormStatus" class="form-status" aria-live="polite"></div>
+    <div>
+      <label class="field-label">Din e-postadress</label>
+      <input type="email" name="email" required placeholder="namn@epost.se">
+    </div>
+  </div>
 
-        <div class="row">
-          <button id="sendContactBtn" class="btn btn-primary" type="submit">Skicka meddelande</button>
-          <button id="cancelContactBtn" class="btn btn-cancel" type="button">Avbryt</button>
-        </div>
-      </form>
+  <div>
+    <label class="field-label">Ämne</label>
+    <input type="text" name="subject" required placeholder="Vad gäller ditt ärende?">
+  </div>
+
+  <div>
+    <label class="field-label">Meddelande</label>
+    <textarea name="message" required placeholder="Skriv ditt meddelande här"></textarea>
+  </div>
+
+  <div class="row">
+    <button class="btn btn-primary" type="submit">Skicka meddelande</button>
+    <button id="cancelContactBtn" class="btn btn-cancel" type="button">Avbryt</button>
+  </div>
+
+  <div id="result" style="margin-top:10px;font-weight:800;"></div>
+</form>
     </section>
 
     <div class="bottom-admin-tools">
@@ -830,7 +837,6 @@
     const PAGE_DOC_REF = doc(db, 'pages', 'styrelsen');
     const NAV_DOC_REF = doc(db, 'site', 'navigation');
     const CARDS_COL = collection(db, 'boardMembers');
-    const MAIL_COL = collection(db, 'mail'); // Kräver t.ex. Firebase Trigger Email-extension eller egen backend som lyssnar på denna collection
     const DRAFT_STORAGE_KEY = 'vasthaga_styrelsen_drafts_v3';
     const DEFAULT_FEMALE_IMAGE = 'female.png';
     const DEFAULT_MALE_IMAGE = 'male.png';
@@ -1374,68 +1380,6 @@
     openContactFormBtn.addEventListener('click', openContactForm);
     cancelContactBtn.addEventListener('click', closeContactForm);
 
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = contactName.value.trim();
-      const email = contactEmail.value.trim();
-      const subject = contactSubject.value.trim();
-      const message = contactMessage.value.trim();
-      const recipient = (pageData.contactEmail || 'styrelsen@vasthaganr4.se').trim();
-
-      if(!name || !email || !subject || !message){
-        setContactStatus('error', 'Fyll i alla fält innan du skickar.');
-        return;
-      }
-
-      try{
-        sendContactBtn.disabled = true;
-        sendContactBtn.textContent = 'Skickar...';
-        setContactStatus('success', 'Skickar meddelandet...');
-
-        await addDoc(MAIL_COL, {
-          to: [recipient],
-          replyTo: email,
-          message: {
-            subject: `Kontakt från hemsidan: ${subject}`,
-            text:
-`Nytt meddelande från hemsidans kontaktformulär
-
-Namn: ${name}
-E-post: ${email}
-Ämne: ${subject}
-
-Meddelande:
-${message}`,
-            html: `
-              <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111;">
-                <h2>Nytt meddelande från hemsidans kontaktformulär</h2>
-                <p><strong>Namn:</strong> ${escapeHtml(name)}</p>
-                <p><strong>E-post:</strong> ${escapeHtml(email)}</p>
-                <p><strong>Ämne:</strong> ${escapeHtml(subject)}</p>
-                <p><strong>Meddelande:</strong></p>
-                <p style="white-space:pre-line;">${escapeHtml(message)}</p>
-              </div>
-            `
-          },
-          meta: {
-            source: 'styrelsen_contact_form',
-            createdByName: name,
-            createdByEmail: email
-          },
-          createdAt: serverTimestamp()
-        });
-
-        setContactStatus('success', 'Tack! Ditt meddelande har skickats till styrelsen.');
-        contactForm.reset();
-        sendContactBtn.textContent = 'Skickat';
-      }catch(err){
-        setContactStatus('error', 'Det gick inte att skicka meddelandet just nu. Försök igen om en stund.');
-        sendContactBtn.disabled = false;
-        sendContactBtn.textContent = 'Skicka meddelande';
-      }
-    });
-
     editImage.addEventListener('input', () => {
       setImagePreview(editImage.value, editGender.value);
     });
@@ -1618,6 +1562,37 @@ ${message}`,
     renderNav();
     renderCards();
     renderSavePublishBar();
+
+
+const form = document.getElementById('contactForm');
+const result = document.getElementById('result');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      result.innerHTML = "✅ Meddelandet skickades!";
+      result.style.color = "green";
+      form.reset();
+    } else {
+      result.innerHTML = "❌ Något gick fel, försök igen.";
+      result.style.color = "red";
+    }
+  })
+  .catch(error => {
+    result.innerHTML = "❌ Serverfel, försök igen senare.";
+    result.style.color = "red";
+  });
+});
+
   </script>
 </body>
 </html>
