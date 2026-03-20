@@ -308,7 +308,7 @@
 <div class="edit-overlay" id="projectOverlay" role="dialog" aria-modal="true" aria-label="Redigera projekt">
   <div class="editor">
     <h3 id="projectEditorHeading">Nytt projekt</h3>
-    <p class="helptext">Ändringarna sparas först lokalt. Flytt mellan Framtida/Utförda sker när du trycker <strong>Spara och publicera</strong>.</p>
+    <p class="helptext">Ändringar sparas lokalt. Flytt mellan Framtida/Utförda sker när du trycker <strong>Spara och publicera</strong>.</p>
 
     <div class="editor-section">
       <h4>1. Rubrik och status</h4>
@@ -326,7 +326,7 @@
         </div>
       </div>
 
-      <div class="status-hint" id="statusHint">
+      <div class="status-hint">
         Flyttas till: <span id="statusHintTarget">Framtida projekt</span>
       </div>
     </div>
@@ -439,7 +439,7 @@
     console.error("[pagaendeplaner] runtime error:", msg, err);
     if(!runtimeError) return;
     runtimeError.style.display = "block";
-    runtimeErrorDetails.textContent = err?.message ? `${msg}: ${err.message}` : msg;
+    runtimeErrorDetails.textContent = err?.message ? `${msg}: ${err.message}` : String(msg);
   }
   window.addEventListener("error", (e)=> showRuntimeError("JavaScript-fel", e.error || e.message));
   window.addEventListener("unhandledrejection", (e)=> showRuntimeError("Ohanterat Promise-fel", e.reason));
@@ -499,7 +499,7 @@
       const PAGE_DOC_REF = doc(db, "pages", "projectsOngoing");
       const PROJECTS_COL = collection(db, "projects");
       const FEED_COL = collection(db, "latestFeed");
-      const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_like_news_v3:${STATUS}`;
+      const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_like_news_v4:${STATUS}`;
 
       const pageTitleEl = document.getElementById("pageTitle");
       const pageSubtitleEl = document.getElementById("pageSubtitle");
@@ -613,12 +613,9 @@
       function setOverlayOpen(ov, open){ ov.style.display = open ? "flex" : "none"; }
       function requireAdmin(){ if(!isAdmin) throw new Error("Admin krävs."); }
 
-      function statusLabel(status){
-        return status === "done" ? "Utförda projekt" : "Framtida projekt";
-      }
-      function statusUrl(status){
-        return status === "done" ? "utfordaplaner.html" : "pagaendeplaner.html";
-      }
+      function statusLabel(status){ return status === "done" ? "Utförda projekt" : "Framtida projekt"; }
+      function statusUrl(status){ return status === "done" ? "utfordaplaner.html" : "pagaendeplaner.html"; }
+
       function syncStatusHint(){
         if(!statusHintTarget) return;
         statusHintTarget.textContent = projDoneCheckbox.checked ? "Utförda projekt" : "Framtida projekt";
@@ -696,11 +693,8 @@
           const actions = article.querySelector(".news-card-actions");
           if(!isAdmin && actions) actions.style.display = "none";
 
-          const editBtn = article.querySelector('[data-action="edit"]');
-          const delBtn = article.querySelector('[data-action="delete"]');
-
-          editBtn?.addEventListener("click", (e)=>{ e.stopPropagation(); if(isAdmin) openProjectEditor(item); });
-          delBtn?.addEventListener("click", (e)=>{ e.stopPropagation(); if(isAdmin) queueDelete(item.id); });
+          article.querySelector('[data-action="edit"]')?.addEventListener("click", (e)=>{ e.stopPropagation(); if(isAdmin) openProjectEditor(item); });
+          article.querySelector('[data-action="delete"]')?.addEventListener("click", (e)=>{ e.stopPropagation(); if(isAdmin) queueDelete(item.id); });
 
           projectsGrid.appendChild(article);
         });
@@ -959,9 +953,7 @@
         window.location.reload();
       }
 
-      function renderSavePublishBar(){ renderSavePublishBar(); } // keep name stable
-
-      // === Listeners with error callbacks (so you never get stuck on loading) ===
+      // LISTENERS (with error callbacks)
       onSnapshot(
         PAGE_DOC_REF,
         (snap)=>{
@@ -997,7 +989,6 @@
         (err)=> showFirestoreError("Kunde inte läsa projekt (projects) — kontrollera Firestore rules", err)
       );
 
-      // Admin/auth detection (with explicit error reporting)
       onAuthStateChanged(auth, async (user)=>{
         currentUser = user;
         isAdmin = false;
@@ -1016,15 +1007,15 @@
         renderSavePublishBar();
       });
 
-      // Watchdog: if still loading after 6s -> show readable message
+      // WATCHDOG
       setTimeout(() => {
         const stillLoading = document.getElementById("projectsLoading");
         if(stillLoading){
-          showRuntimeError("Fastnade på 'Laddar projekt…'", new Error("JavaScript körs men Firestore svarar inte. Vanligtvis Firestore rules (permission-denied) eller nätverksblockering."));
+          showRuntimeError("Fastnade på 'Laddar projekt…'", new Error("JavaScript körs men Firestore svarar inte. Vanligtvis rules (permission-denied) eller nätverksblockering."));
         }
       }, 6000);
 
-      // Initial paint
+      // INITIAL
       renderPage();
       renderProjects();
       renderSavePublishBar();
