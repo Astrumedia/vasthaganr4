@@ -18,8 +18,8 @@
     body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
     .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
-    /* HEADER (match styrelseninformerar.html) */
-    header{
+    /* HEADER (copied style from styrelseninformerar.html) */
+    header {
       position: fixed;
       top: 0; left: 0;
       width: 100%;
@@ -49,10 +49,7 @@
       white-space: nowrap;
       font-weight:500;
     }
-    nav > ul > li > a:hover{
-      background:var(--accent);
-      color:#fff !important;
-    }
+    nav > ul > li > a:hover{background:var(--accent);color:#fff !important;}
 
     .dropdown{position:relative}
     .dropdown-content{
@@ -74,12 +71,9 @@
       display:block;
       border-radius:8px;
     }
-    .dropdown-content a:hover{
-      background:var(--accent);
-      color:#fff !important;
-    }
+    .dropdown-content a:hover{background:var(--accent);color:#fff !important;}
 
-    /* hamburger (match styrelseninformerar.html) */
+    /* hamburger (copied style from styrelseninformerar.html) */
     .hamburger{
       display:none;
       font-size:1.8rem;
@@ -154,25 +148,27 @@
       cursor:pointer;
     }
     .mobile-close-btn:active{transform:translateY(1px)}
-    @media (min-width: 769px){
-      .mobile-close-wrap{display:none}
-    }
+    @media (min-width: 769px){.mobile-close-wrap{display:none}}
 
     .hero-spacer{height:88px}
     .page-shell{padding-top:36px;padding-bottom:10px}
 
-    /* PAGE HEAD: center title+subtitle, keep settings button on right */
+    /* ===== PAGE HEAD (center title/subtitle, keep button on right) ===== */
     .page-head{
       display:grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr auto 1fr;
       align-items:flex-start;
       gap:16px;
       flex-wrap:wrap;
     }
     .page-head-left{
-      justify-self:center;
+      grid-column:2;
       max-width:840px;
       text-align:center;
+    }
+    .page-head-right{
+      grid-column:3;
+      justify-self:end;
     }
     h1{margin:0;font-size:2.5rem;line-height:1.05;letter-spacing:-0.02em}
     .subheader{margin:10px 0 0 0;color:var(--muted);font-size:1.08rem;line-height:1.45;font-weight:700}
@@ -180,15 +176,10 @@
     .mini-edit{
       display:none;padding:10px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer;
       font-weight:950;box-shadow:0 10px 24px rgba(11,18,32,0.06);white-space:nowrap;
-      justify-self:end;
     }
     .mini-edit:hover{border-color:rgba(240,154,15,0.45)}
     .mini-edit span{color:var(--accent)}
     .is-admin .mini-edit{display:inline-flex;align-items:center;gap:8px}
-
-    /* button under cards */
-    .below-grid-actions{display:none;justify-content:center;margin-top:18px}
-    .is-admin .below-grid-actions{display:flex}
 
     .btn{
       padding:12px 14px;border-radius:14px;border:0;cursor:pointer;font-weight:950;font-size:1rem;
@@ -197,9 +188,12 @@
     .btn-primary{background:var(--accent);color:#fff}
     .btn-secondary{background:#fff;color:var(--accent);border:1px solid rgba(0,0,0,0.10);box-shadow:none}
     .btn-cancel{background:#eef2f6;color:#111;box-shadow:none}
-    .danger-btn{background:#fff1f2;color:#be123c;border:1px solid #fecdd3;box-shadow:none}
 
-    /* PROJECT GRID (use same card style/animation as news) */
+    /* Under-grid admin button */
+    .below-grid-actions{display:none;justify-content:center;margin-top:18px}
+    .is-admin .below-grid-actions{display:flex}
+
+    /* Cards (same layout/animation as news cards) */
     .news-grid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:22px}
 
     .news-card{
@@ -219,12 +213,10 @@
       animation:cardIn .55s cubic-bezier(.22,1,.36,1) both;
       cursor:pointer;
     }
-
     .news-card:hover{
       transform:translateY(-3px);
       box-shadow:0 18px 38px rgba(11,18,32,0.12);
     }
-
     .news-card img{
       width:220px;
       height:auto;
@@ -239,13 +231,11 @@
         filter .40s ease;
       will-change: width, flex-basis, transform;
     }
-
     .news-card.expanded img{
       width:260px;
       flex-basis:260px;
       transform:scale(1.015);
     }
-
     .news-card-content{
       padding:18px 20px 18px 18px;
       display:flex;
@@ -258,10 +248,7 @@
         padding .45s cubic-bezier(.22,1,.36,1),
         transform .45s cubic-bezier(.22,1,.36,1);
     }
-
-    .news-card.expanded .news-card-content{
-      transform:translateY(-1px);
-    }
+    .news-card.expanded .news-card-content{transform:translateY(-1px);}
 
     .news-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .news-badge{
@@ -273,7 +260,6 @@
       border-radius:999px
     }
     .news-card h3{margin:0;font-size:1.45rem;line-height:1.14;color:#111}
-
     .short-desc{
       margin:0;
       color:var(--muted);
@@ -284,12 +270,7 @@
         opacity .28s ease,
         transform .38s cubic-bezier(.22,1,.36,1);
     }
-
-    .news-card.expanded .short-desc{
-      opacity:.92;
-      transform:translateY(-1px);
-    }
-
+    .news-card.expanded .short-desc{opacity:.92;transform:translateY(-1px);}
     .full-text{
       max-height:0;
       opacity:0;
@@ -309,7 +290,6 @@
       transform:translateY(0);
       margin-top:8px;
     }
-
     .read-more{
       margin-top:2px;
       font-size:.92rem;
@@ -319,10 +299,7 @@
         opacity .28s ease,
         transform .38s cubic-bezier(.22,1,.36,1);
     }
-    .news-card.expanded .read-more{
-      opacity:.78;
-      transform:translateY(2px);
-    }
+    .news-card.expanded .read-more{opacity:.78;transform:translateY(2px);}
 
     .news-card-actions{position:absolute;top:12px;right:12px;display:none;gap:8px}
     .is-admin .news-card-actions{display:flex}
@@ -333,46 +310,23 @@
 
     .empty-state{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:28px;color:var(--muted);font-weight:800;text-align:center}
 
-    /* Overlays (match styrelseninformerar.html) */
+    /* Overlays/editor (copied from styrelseninformerar.html) */
     .edit-overlay{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.45);
-      display:none;justify-content:center;align-items:center;
-      z-index:200;padding:12px;
+      position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);display:none;
+      justify-content:center;align-items:center;z-index:200;padding:12px;
     }
     .editor{
-      background:#fff;
-      padding:18px;
-      border-radius:18px;
-      max-width:840px;
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      box-shadow:0 18px 46px rgba(0,0,0,0.25);
-      max-height:min(92vh,1000px);
-      overflow:auto;
+      background:#fff;padding:18px;border-radius:18px;max-width:840px;width:100%;display:flex;flex-direction:column;gap:12px;
+      box-shadow:0 18px 46px rgba(0,0,0,0.25);max-height:min(92vh,1000px);overflow:auto;
     }
     .editor.editor-compact{max-width:760px}
     .editor h3{margin:0}
     .editor h4{margin:0;font-size:1.02rem}
     .editor-section{
-      padding:14px;
-      border:1px solid #e9eef5;
-      border-radius:16px;
-      background:#fbfcfe;
-      display:flex;
-      flex-direction:column;
-      gap:12px
+      padding:14px;border:1px solid #e9eef5;border-radius:16px;background:#fbfcfe;display:flex;flex-direction:column;gap:12px
     }
     .editor input,.editor textarea{
-      width:100%;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid #e6eef2;
-      font-size:1rem;
-      outline:none;
-      font-weight:750
+      width:100%;padding:12px;border-radius:14px;border:1px solid #e6eef2;font-size:1rem;outline:none;font-weight:750
     }
     .editor textarea{min-height:120px;resize:vertical;font-family:inherit}
     .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -387,17 +341,10 @@
     .progress-track{height:10px;background:rgba(0,0,0,.10);border-radius:999px;overflow:hidden;margin-top:8px}
     .progress-bar{height:100%;width:0%;background:rgba(0,0,0,.35)}
 
-    /* Save publish (EXACT style concept) */
+    /* Save/publish bar (EXACT markup+style pattern from styrelseninformerar.html) */
     .save-publish{
-      position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
-      display:none;align-items:center;gap:10px;
-      padding:12px 14px;
-      background:rgba(11,18,32,0.92);
-      color:#fff;
-      border-radius:18px;
-      box-shadow:0 18px 40px rgba(0,0,0,0.22);
-      z-index:250;
-      flex-wrap:wrap
+      position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:none;align-items:center;gap:10px;
+      padding:12px 14px;background:rgba(11,18,32,0.92);color:#fff;border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,0.22);z-index:250;flex-wrap:wrap
     }
     .save-publish.show{display:flex}
     .save-publish-text{font-weight:900;font-size:.95rem}
@@ -417,8 +364,9 @@
         transform:none;
       }
       h1{font-size:2rem}
-      .page-head{grid-template-columns: 1fr}
-      .mini-edit{justify-self:center}
+      .page-head{grid-template-columns:1fr}
+      .page-head-left{grid-column:1}
+      .page-head-right{grid-column:1;justify-self:center}
     }
 
     @keyframes cardIn{
@@ -454,7 +402,9 @@
       <h1 id="pageTitle">Framtida projekt</h1>
       <p class="subheader" id="pageSubtitle">Projekt som planeras eller är på gång i föreningen.</p>
     </div>
-    <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
+    <div class="page-head-right">
+      <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
+    </div>
   </div>
 
   <div class="news-grid" id="projectsGrid" aria-live="polite"></div>
@@ -466,13 +416,11 @@
 
 <div class="save-publish" id="savePublish" aria-live="polite"></div>
 
-<!-- Project editor overlay -->
+<!-- Project editor overlay (EXACT structure like newsOverlay) -->
 <div class="edit-overlay" id="projectOverlay" role="dialog" aria-modal="true" aria-label="Redigera projekt">
   <div class="editor">
     <h3 id="projectEditorHeading">Nytt projekt</h3>
-    <p class="helptext">
-      Fyll i fälten nedan. Ändringarna sparas först lokalt för dig. När du är nöjd trycker du på <strong>Spara och publicera</strong> längst ner.
-    </p>
+    <p class="helptext">Fyll i fälten nedan. Ändringarna sparas först lokalt för dig. När du är nöjd trycker du på <strong>Spara och publicera</strong> längst ner.</p>
 
     <div class="editor-section">
       <h4>1. Rubrik och ingress</h4>
@@ -480,7 +428,6 @@
         <label class="field-label" for="projTitleInput">Rubrik</label>
         <input type="text" id="projTitleInput" placeholder="Till exempel: Renovering av trapphuset på gång">
       </div>
-
       <div>
         <label class="field-label" for="projShortInput">Kort ingress</label>
         <textarea id="projShortInput" rows="3" placeholder="En kort sammanfattning som syns direkt i kortet."></textarea>
@@ -499,7 +446,7 @@
       <h4>3. Bild</h4>
       <div>
         <label class="field-label" for="projImageInput">Bild</label>
-        <input type="text" id="projImageInput" placeholder="Lämna tomt för standardbild">
+        <input type="text" id="projImageInput" placeholder="Bildlänk eller uppladdad bild (tomt = standardbild)">
       </div>
 
       <div id="projImagePreviewWrap" class="preview-wrap">
@@ -535,7 +482,7 @@
   </div>
 </div>
 
-<!-- Page settings overlay -->
+<!-- Page settings overlay (same style as pageOverlay) -->
 <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera sidinställningar">
   <div class="editor editor-compact">
     <h3>Redigera sidan</h3>
@@ -620,12 +567,11 @@
   const PROJECTS_COL = collection(db, "projects");
   const FEED_COL = collection(db, "latestFeed");
 
-  const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_v3:${STATUS}`;
-  const PAGE_DRAFT_KEY = `vasthaga_projects_page_draft_v3:${STATUS}`;
-
   const SOURCE_LABEL = STATUS === "done" ? "Utförda projekt" : "Framtida projekt";
   const SOURCE_URL = STATUS === "done" ? "utfordaplaner.html" : "pagaendeplaner.html";
+  const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_like_news_v1:${STATUS}`;
 
+  // DOM
   const body = document.body;
   const mainNav = document.getElementById("mainNav");
   const hamburger = document.getElementById("hamburger");
@@ -639,9 +585,11 @@
   const footerTextEl = document.getElementById("footerText");
   const projectsGrid = document.getElementById("projectsGrid");
   const savePublish = document.getElementById("savePublish");
+
   const addProjectBtn = document.getElementById("addProjectBtn");
   const editPageBtn = document.getElementById("editPageBtn");
 
+  // Project overlay
   const projectOverlay = document.getElementById("projectOverlay");
   const projectEditorHeading = document.getElementById("projectEditorHeading");
   const projTitleInput = document.getElementById("projTitleInput");
@@ -659,6 +607,7 @@
   const cancelProjEditBtn = document.getElementById("cancelProjEditBtn");
   const defaultImgLabel = document.getElementById("defaultImgLabel");
 
+  // Page overlay
   const pageOverlay = document.getElementById("pageOverlay");
   const pageTitleInput = document.getElementById("pageTitleInput");
   const pageSubtitleInput = document.getElementById("pageSubtitleInput");
@@ -669,7 +618,6 @@
 
   let currentUser = null;
   let isAdmin = false;
-
   let navData = null;
 
   let pageData = {
@@ -684,23 +632,52 @@
     defaultImageUrl: "husbild.jpg"
   };
 
-  // Published
-  let serverItems = []; // projects
-  // Visible (merged)
-  let visibleItems = [];
+  let serverItems = []; // from projects
+  let visibleItems = []; // merged with drafts
+  let editingItemId = null;
+  let uploadInProgress = false;
 
-  // Drafts
-  // drafts[id] = { title, short, body, image, order, status, __delete?:true, __new?:true }
-  let drafts = safeParse(localStorage.getItem(DRAFT_STORAGE_KEY), {});
-  let pageDraft = safeParse(localStorage.getItem(PAGE_DRAFT_KEY), null);
-
-  // Editor state
-  let editingId = null;
-  let uploadBusy = false;
-
-  function safeParse(str, fallback){
-    try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }
+  // drafts in EXACT same structure as styrelseninformerar: { page, items, deletedIds }
+  function loadDrafts(){
+    try{
+      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return {
+        page: parsed.page || null,
+        items: parsed.items || {},
+        deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : []
+      };
+    }catch{
+      return { page:null, items:{}, deletedIds:[] };
+    }
   }
+  let pendingDrafts = loadDrafts();
+
+  function persistDrafts(){
+    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(pendingDrafts));
+    renderSavePublishBar();
+  }
+
+  function hasPendingDrafts(){
+    return Boolean(
+      pendingDrafts.page ||
+      Object.keys(pendingDrafts.items || {}).length ||
+      (pendingDrafts.deletedIds || []).length
+    );
+  }
+
+  function countPendingDrafts(){
+    let total = 0;
+    if(pendingDrafts.page) total += 1;
+    total += Object.keys(pendingDrafts.items || {}).length;
+    total += (pendingDrafts.deletedIds || []).length;
+    return total;
+  }
+
+  function requireAdmin(){
+    if(!isAdmin) throw new Error("Du behöver vara admin för att göra detta.");
+  }
+
   function escapeHtml(str=''){
     return String(str)
       .replaceAll('&','&amp;')
@@ -709,15 +686,18 @@
       .replaceAll('"','&quot;')
       .replaceAll("'",'&#039;');
   }
-  function requireAdmin(){
-    if(!isAdmin) throw new Error('Du behöver vara admin för att göra detta.');
-  }
+
   function setOverlayOpen(overlay, open){
     overlay.style.display = open ? 'flex' : 'none';
   }
 
+  function formatDate(ts){
+    if(!ts || typeof ts !== 'number') return 'Nyhet';
+    return new Date(ts).toLocaleDateString('sv-SE', { year:'numeric', month:'short', day:'numeric' });
+  }
+
   function effectivePage(){
-    return pageDraft ? { ...pageData, ...pageDraft } : pageData;
+    return pendingDrafts.page ? { ...pageData, ...pendingDrafts.page } : pageData;
   }
 
   function withDefaultImage(url){
@@ -726,35 +706,17 @@
     return clean || def;
   }
 
-  function hasPendingDrafts(){
-    return Boolean(pageDraft || Object.keys(drafts).length);
-  }
-
-  function countPendingDrafts(){
-    let total = 0;
-    if(pageDraft) total += 1;
-    total += Object.keys(drafts || {}).length;
-    return total;
-  }
-
-  function persistDrafts(){
-    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(drafts));
-    renderSavePublishBar();
-  }
-  function persistPageDraft(){
-    localStorage.setItem(PAGE_DRAFT_KEY, JSON.stringify(pageDraft));
+  function updateAdminVisibility(){
+    body.classList.toggle('is-admin', isAdmin);
     renderSavePublishBar();
   }
 
-  // hamburger open/close (back arrow)
   function setNavOpen(open){
     mainNav.classList.toggle('show', open);
     hamburger.textContent = open ? '➤' : '☰';
     hamburger.classList.toggle('is-open', open);
     hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
-  hamburger.setAttribute('aria-expanded','false');
-  hamburger.addEventListener('click', ()=> setNavOpen(!mainNav.classList.contains('show')));
 
   function wireMobileDropdowns(){
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
@@ -788,7 +750,7 @@
     mainNav.appendChild(li);
   }
 
-  // NAV fallback with renamed dropdown
+  // Fallback nav with renamed dropdown
   const fallbackNav = {
     items: [
       { type:'link', label:'Hem', url:'index.html', order:0 },
@@ -821,11 +783,11 @@
     const data = navData || fallbackNav;
     const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
       .slice()
-      .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+      .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
 
     mainNav.innerHTML = '';
 
-    items.forEach(item=>{
+    items.forEach(item => {
       if(item.adminOnly && !isAdmin) return;
       if(item.restricted && !currentUser) return;
 
@@ -844,7 +806,7 @@
           .slice()
           .sort((x,y)=>(x.order ?? 0)-(y.order ?? 0));
 
-        children.forEach(ch=>{
+        children.forEach(ch => {
           const ca = document.createElement('a');
           ca.href = ch.url || '#';
           ca.textContent = ch.label || '';
@@ -864,15 +826,14 @@
       a.href = item.url || '#';
       a.textContent = item.label || '';
       li.appendChild(a);
-
       mainNav.appendChild(li);
     });
 
     appendMobileCloseRow();
     wireMobileDropdowns();
 
-    // close on link click on mobile (except dropdown parent)
-    mainNav.querySelectorAll('a').forEach(a=>{
+    // close on link click (mobile) except dropdown parent
+    mainNav.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         if(window.matchMedia('(max-width: 768px)').matches){
           const parentDropdown = a.closest('.dropdown');
@@ -884,8 +845,8 @@
 
   function renderPage(){
     const p = effectivePage();
-    document.title = `${p.title || SOURCE_LABEL} — Västhaga Nr4`;
 
+    document.title = `${p.title || SOURCE_LABEL} — Västhaga Nr4`;
     pageTitleEl.textContent = p.title || SOURCE_LABEL;
     pageSubtitleEl.textContent = p.subtitle || '';
     footerTextEl.textContent = p.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
@@ -894,44 +855,36 @@
     brandTagline.textContent = p.brandTagline || 'Bostadsrättsförening';
     if((p.logoUrl || '').trim()) brandLogo.src = p.logoUrl.trim();
 
-    pageTitleInput.value = p.title || '';
-    pageSubtitleInput.value = p.subtitle || '';
-    pageFooterInput.value = p.footerText || '';
-    pageDefaultImageInput.value = (p.defaultImageUrl || 'husbild.jpg').trim();
     defaultImgLabel.textContent = (p.defaultImageUrl || 'husbild.jpg').trim();
   }
 
   function applyLocalDrafts(){
-    const deleted = new Set(Object.entries(drafts).filter(([,d])=>d?.__delete).map(([id])=>id));
+    if(pendingDrafts.page){
+      pageData = { ...pageData, ...pendingDrafts.page };
+    }
 
+    const deletedSet = new Set(pendingDrafts.deletedIds || []);
     const merged = serverItems
-      .filter(item => !deleted.has(item.id))
+      .filter(item => !deletedSet.has(item.id))
       .map(item => ({ ...item }));
 
-    Object.entries(drafts).forEach(([id, d])=>{
-      if(!d || d.__delete) return;
-      const idx = merged.findIndex(x => x.id === id);
-      const next = { ...(idx >= 0 ? merged[idx] : { id, createdAt: Date.now(), updatedAt: Date.now() }), ...d, id };
-      if(idx >= 0) merged[idx] = next;
-      else merged.push(next);
+    Object.entries(pendingDrafts.items || {}).forEach(([id, payload]) => {
+      const idx = merged.findIndex(item => item.id === id);
+      const nextItem = { ...(idx >= 0 ? merged[idx] : { id, createdAt: Date.now() }), ...payload, id };
+      if(idx >= 0) merged[idx] = nextItem;
+      else merged.push(nextItem);
     });
 
     visibleItems = merged
-      .filter(x => x.status === STATUS)
-      .sort((a,b)=> (Number(a.order ?? 0) - Number(b.order ?? 0)));
+      .filter(item => item.status === STATUS)
+      .map(item => ({ ...item, image: withDefaultImage(item.image) }))
+      .sort((a,b)=>(b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
   }
 
-  function formatDate(ms){
-    if(!ms || typeof ms !== 'number') return 'Nyhet';
-    return new Date(ms).toLocaleDateString('sv-SE', { year:'numeric', month:'short', day:'numeric' });
-  }
-
-  // expanded state: only one at a time
   let expandedId = null;
 
   function renderProjects(){
     applyLocalDrafts();
-
     projectsGrid.innerHTML = '';
 
     if(!visibleItems.length){
@@ -939,27 +892,23 @@
       return;
     }
 
-    visibleItems.forEach((item, idx) => {
+    visibleItems.forEach(item => {
       const article = document.createElement('article');
-      article.className = 'news-card';
+      article.className = 'news-card' + (expandedId === item.id ? ' expanded' : '');
       article.dataset.id = item.id;
 
-      const img = withDefaultImage(item.image);
-      const created = item.createdAt || item.updatedAt || Date.now();
-
-      const isExpanded = expandedId === item.id;
-      if(isExpanded) article.classList.add('expanded');
+      const imageUrl = withDefaultImage(item.image);
 
       article.innerHTML = `
-        <img src="${escapeHtml(img)}" alt="${escapeHtml(item.title || 'Projektbild')}">
+        <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title || 'Projektbild')}">
         <div class="news-card-content">
           <div class="news-meta">
-            <span class="news-badge">${escapeHtml(formatDate(created))}</span>
+            <span class="news-badge">${escapeHtml(formatDate(item.updatedAt || item.createdAt))}</span>
             <span class="news-badge">${escapeHtml(SOURCE_LABEL)}</span>
           </div>
           <h3>${escapeHtml(item.title || 'Utan rubrik')}</h3>
           <p class="short-desc">${escapeHtml(item.short || '')}</p>
-          <div class="full-text"><p>${escapeHtml(item.body || item.short || '')}</p></div>
+          <div class="full-text"><p>${escapeHtml(item.body || '')}</p></div>
           <div class="read-more">Klicka för att läsa mer</div>
         </div>
         <div class="news-card-actions">
@@ -968,18 +917,10 @@
         </div>
       `;
 
-      // click to expand, only one open
       article.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-action]');
         if(btn) return;
-
-        const next = (expandedId === item.id) ? null : item.id;
-        expandedId = next;
-
-        // keep hash in sync
-        if(next) history.replaceState(null, "", `#project-${encodeURIComponent(item.id)}`);
-        else history.replaceState(null, "", location.pathname + location.search);
-
+        expandedId = (expandedId === item.id) ? null : item.id;
         renderProjects();
       });
 
@@ -1000,16 +941,13 @@
     });
   }
 
-  // Save/publish bar (exact style)
   function renderSavePublishBar(){
     if(!savePublish) return;
-
     if(!isAdmin || !hasPendingDrafts()){
       savePublish.classList.remove('show');
       savePublish.innerHTML = '';
       return;
     }
-
     const count = countPendingDrafts();
     savePublish.classList.add('show');
     savePublish.innerHTML = `
@@ -1017,17 +955,16 @@
       <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
       <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
     `;
-
     document.getElementById('publishDraftsBtn')?.addEventListener('click', publishPendingDrafts);
     document.getElementById('discardDraftsBtn')?.addEventListener('click', discardPendingDrafts);
   }
 
-  // Editor helpers
+  // ===== Editor logic (same behavior as news) =====
   function setProjImagePreview(url){
-    const clean = withDefaultImage(url);
-    projImagePreview.src = clean;
+    projImagePreview.src = withDefaultImage(url);
     projImagePreviewWrap.style.display = 'block';
   }
+
   function setProjImageProgress(percent){
     if(percent == null){
       projImageProgressWrap.style.display = 'none';
@@ -1040,8 +977,9 @@
     projImageProgressBar.style.width = `${p}%`;
     projImageProgressText.textContent = `${p}%`;
   }
+
   function setUploadBusy(busy){
-    uploadBusy = busy;
+    uploadInProgress = busy;
     projImageUpload.disabled = busy;
     projImageInput.disabled = busy;
     removeProjImageBtn.disabled = busy;
@@ -1051,32 +989,30 @@
 
   function openProjectEditor(item = null){
     requireAdmin();
-
-    editingId = item?.id || doc(PROJECTS_COL).id;
+    editingItemId = item?.id || doc(PROJECTS_COL).id;
     projectEditorHeading.textContent = item ? 'Redigera projekt' : 'Nytt projekt';
 
     projTitleInput.value = item?.title || '';
     projShortInput.value = item?.short || '';
     projBodyInput.value = item?.body || '';
-    projImageInput.value = (item?.image || '').trim();
+    projImageInput.value = (item?.image && item.image !== withDefaultImage('')) ? item.image.trim() : '';
 
     setProjImagePreview(projImageInput.value);
     setProjImageProgress(null);
     setUploadBusy(false);
-
     setOverlayOpen(projectOverlay, true);
   }
 
   function queueDelete(id){
     requireAdmin();
-    if(!confirm('Vill du ta bort projektet? Det försvinner offentligt när du trycker på Spara och publicera.')) return;
-    drafts[id] = { ...(drafts[id] || {}), __delete: true };
-    if(expandedId === id) expandedId = null;
+    if(!confirm('Vill du ta bort projektet? Det försvinner först när du trycker på Spara och publicera.')) return;
+    pendingDrafts.deletedIds = Array.from(new Set([...(pendingDrafts.deletedIds || []), id]));
+    if(pendingDrafts.items && pendingDrafts.items[id]) delete pendingDrafts.items[id];
     persistDrafts();
+    if(expandedId === id) expandedId = null;
     renderProjects();
   }
 
-  // Upload helpers (same pattern)
   function getStoragePathForUpload(file){
     const safeName = (file.name || 'image').trim().replace(/[^\w.\-]+/g, '_').slice(0, 80);
     const stamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -1110,52 +1046,52 @@
     });
   }
 
-  // Add new project (draft) - under grid
-  addProjectBtn.addEventListener('click', () => {
-    if(!isAdmin) return;
-    openProjectEditor(null);
-  });
+  // Button under cards
+  addProjectBtn.addEventListener('click', () => openProjectEditor());
 
-  // Project overlay wiring
   cancelProjEditBtn.addEventListener('click', () => setOverlayOpen(projectOverlay, false));
+
   saveProjDraftBtn.addEventListener('click', () => {
     requireAdmin();
-    if(uploadBusy) return alert('Vänta tills bilduppladdningen är klar.');
+    if(uploadInProgress) return alert('Vänta tills bilduppladdningen är klar först.');
 
     const title = projTitleInput.value.trim();
     const short = projShortInput.value.trim();
     const bodyText = projBodyInput.value.trim();
+
     if(!title) return alert('Skriv en rubrik.');
     if(!short) return alert('Skriv en kort ingress.');
     if(!bodyText) return alert('Skriv den fullständiga texten.');
 
-    const existing = serverItems.find(x => x.id === editingId) || visibleItems.find(x => x.id === editingId);
+    const existing = serverItems.find(x => x.id === editingItemId) || visibleItems.find(x => x.id === editingItemId);
 
-    drafts[editingId] = {
-      title,
-      short,
-      body: bodyText,
-      image: projImageInput.value.trim(),
-      status: STATUS,
-      order: existing?.order ?? visibleItems.length,
-      createdAt: existing?.createdAt ?? Date.now(),
-      updatedAt: Date.now(),
-      sourceLabel: SOURCE_LABEL,
-      sourceUrl: SOURCE_URL,
-      sourceType: 'project',
-      published: true
+    // IMPORTANT: date is automatic (createdAt/updatedAt are timestamps)
+    pendingDrafts.deletedIds = (pendingDrafts.deletedIds || []).filter(x => x !== editingItemId);
+    pendingDrafts.items = {
+      ...(pendingDrafts.items || {}),
+      [editingItemId]: {
+        title,
+        short,
+        body: bodyText,
+        image: projImageInput.value.trim(),
+        status: STATUS,
+        published: true,
+        createdAt: existing?.createdAt || Date.now(),
+        updatedAt: Date.now()
+      }
     };
 
     persistDrafts();
-    renderProjects();
     setOverlayOpen(projectOverlay, false);
+    renderProjects();
   });
 
   projImageInput.addEventListener('input', () => setProjImagePreview(projImageInput.value));
+
   removeProjImageBtn.addEventListener('click', () => {
     projImageInput.value = '';
     projImageUpload.value = '';
-    setProjImagePreview(''); // will fall back to default
+    setProjImagePreview('');
   });
 
   projImageUpload.addEventListener('change', async (e) => {
@@ -1180,28 +1116,34 @@
     }
   });
 
-  // Page settings overlay
+  // Page settings (same pattern)
   editPageBtn.addEventListener('click', () => {
     if(!isAdmin) return;
-    renderPage();
+    const p = effectivePage();
+    pageTitleInput.value = p.title || '';
+    pageSubtitleInput.value = p.subtitle || '';
+    pageFooterInput.value = p.footerText || '';
+    pageDefaultImageInput.value = (p.defaultImageUrl || 'husbild.jpg').trim();
     setOverlayOpen(pageOverlay, true);
   });
+
   cancelPageEditBtn.addEventListener('click', () => setOverlayOpen(pageOverlay, false));
+
   savePageDraftBtn.addEventListener('click', () => {
     requireAdmin();
-    pageDraft = {
+    pendingDrafts.page = {
       title: pageTitleInput.value.trim(),
       subtitle: pageSubtitleInput.value.trim(),
       footerText: pageFooterInput.value.trim(),
       defaultImageUrl: (pageDefaultImageInput.value.trim() || 'husbild.jpg')
     };
-    persistPageDraft();
+    pageData = { ...pageData, ...pendingDrafts.page };
+    persistDrafts();
     renderPage();
     renderProjects();
     setOverlayOpen(pageOverlay, false);
   });
 
-  // overlay click outside close
   document.querySelectorAll('.edit-overlay').forEach(overlay => {
     overlay.addEventListener('click', e => {
       if(e.target === overlay) overlay.style.display = 'none';
@@ -1216,76 +1158,92 @@
     }
   });
 
-  // Publish / discard
+  // Publish/discard (projects + latestFeed mirror)
   async function publishPendingDrafts(){
     requireAdmin();
 
-    // publish page doc
-    if(pageDraft){
-      await setDoc(PAGE_DOC_REF, pageDraft, { merge:true });
+    const jobs = [];
+
+    if(pendingDrafts.page){
+      jobs.push(setDoc(PAGE_DOC_REF, pendingDrafts.page, { merge:true }));
     }
 
     // deletes
-    for(const [id, d] of Object.entries(drafts)){
-      if(d?.__delete){
-        await deleteDoc(doc(db, "projects", id));
-        await deleteDoc(doc(db, "latestFeed", id)); // keep feed clean
-      }
-    }
+    (pendingDrafts.deletedIds || []).forEach(id => {
+      jobs.push(deleteDoc(doc(db, 'projects', id)));
+      jobs.push(deleteDoc(doc(db, 'latestFeed', id)));
+    });
 
-    // upserts to projects + latestFeed
-    for(const [id, d] of Object.entries(drafts)){
-      if(!d || d.__delete) continue;
-
-      const payloadProject = {
-        title: d.title,
-        short: d.short,
-        body: d.body,
-        image: d.image,
-        status: STATUS,
-        order: Number.isFinite(Number(d.order)) ? Number(d.order) : 0,
-        createdAt: Number.isFinite(Number(d.createdAt)) ? Number(d.createdAt) : Date.now(),
+    // upserts
+    Object.entries(pendingDrafts.items || {}).forEach(([id, payload]) => {
+      const projPayload = {
+        title: payload.title,
+        short: payload.short,
+        body: payload.body,
+        image: payload.image,
+        status: payload.status || STATUS,
+        published: true,
+        createdAt: payload.createdAt || Date.now(),
         updatedAt: Date.now()
       };
 
-      await setDoc(doc(db, "projects", id), payloadProject, { merge:true });
+      // Save to projects
+      jobs.push(setDoc(doc(db, 'projects', id), projPayload, { merge:true }));
 
-      // feed-compatible item
-      const payloadFeed = {
-        title: d.title,
-        shortText: d.short,
-        text: d.body,
-        image: withDefaultImage(d.image),
+      // Mirror to latestFeed for index feed (same “news-like” shape)
+      const feedPayload = {
+        title: projPayload.title,
+        shortText: projPayload.short,
+        text: projPayload.body,
+        image: withDefaultImage(projPayload.image),
         sourceLabel: SOURCE_LABEL,
         sourceUrl: SOURCE_URL,
-        sourceType: "project",
+        sourceType: 'project',
         published: true,
-        createdAt: payloadProject.createdAt,
-        updatedAt: payloadProject.updatedAt
+        createdAt: projPayload.createdAt,
+        updatedAt: projPayload.updatedAt
       };
-      await setDoc(doc(db, "latestFeed", id), payloadFeed, { merge:true });
-    }
+      jobs.push(setDoc(doc(db, 'latestFeed', id), feedPayload, { merge:true }));
+    });
 
-    drafts = {};
-    pageDraft = null;
+    await Promise.all(jobs);
+
+    pendingDrafts = { page:null, items:{}, deletedIds:[] };
     localStorage.removeItem(DRAFT_STORAGE_KEY);
-    localStorage.removeItem(PAGE_DRAFT_KEY);
 
     renderSavePublishBar();
     alert('Ändringarna är nu publicerade.');
   }
 
-  function discardDrafts(){
-    drafts = {};
-    pageDraft = null;
+  function discardPendingDrafts(){
+    pendingDrafts = { page:null, items:{}, deletedIds:[] };
     localStorage.removeItem(DRAFT_STORAGE_KEY);
-    localStorage.removeItem(PAGE_DRAFT_KEY);
     window.location.reload();
   }
 
-  // Live data
+  // Save bar wiring
+  function renderSavePublishBar(){
+    if(!savePublish) return;
+    if(!isAdmin || !hasPendingDrafts()){
+      savePublish.classList.remove('show');
+      savePublish.innerHTML = '';
+      return;
+    }
+    const count = countPendingDrafts();
+    savePublish.classList.add('show');
+    savePublish.innerHTML = `
+      <div class="save-publish-text">${count} osparade ändring${count === 1 ? '' : 'ar'}</div>
+      <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
+      <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
+    `;
+    document.getElementById('publishDraftsBtn')?.addEventListener('click', publishPendingDrafts);
+    document.getElementById('discardDraftsBtn')?.addEventListener('click', discardPendingDrafts);
+  }
+
+  // Realtime
   onSnapshot(PAGE_DOC_REF, snap => {
     if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+    if(pendingDrafts.page) pageData = { ...pageData, ...pendingDrafts.page };
     renderPage();
     renderProjects();
   });
@@ -1297,7 +1255,7 @@
 
   onSnapshot(query(PROJECTS_COL, where('status','==',STATUS)), snap => {
     serverItems = [];
-    snap.forEach(d=>{
+    snap.forEach(d => {
       const data = d.data() || {};
       serverItems.push({
         id: d.id,
@@ -1306,17 +1264,15 @@
         body: String(data.body ?? ''),
         image: String(data.image ?? ''),
         status: String(data.status ?? STATUS),
-        order: Number.isFinite(Number(data.order)) ? Number(data.order) : 0,
+        published: data.published !== false,
         createdAt: Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now(),
-        updatedAt: Number.isFinite(Number(data.updatedAt)) ? Number(data.updatedAt) : Date.now()
+        updatedAt: Number.isFinite(Number(data.updatedAt)) ? Number(data.updatedAt) : (Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now())
       });
     });
-
     renderProjects();
-    maybeScrollToHash();
+    renderSavePublishBar();
   });
 
-  // admin
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     isAdmin = false;
@@ -1327,63 +1283,24 @@
       isAdmin = role === 'admin' || role === 'ordforande';
     }
 
-    body.classList.toggle('is-admin', isAdmin);
+    updateAdminVisibility();
     renderNav();
     renderSavePublishBar();
   });
 
-  // initial
+  // Init UI
+  hamburger.setAttribute('aria-expanded', 'false');
+  hamburger.addEventListener('click', () => setNavOpen(!mainNav.classList.contains('show')));
+  window.addEventListener('resize', () => {
+    wireMobileDropdowns();
+    appendMobileCloseRow();
+    if(window.matchMedia('(min-width: 769px)').matches) setNavOpen(false);
+  });
+
   renderPage();
   renderNav();
+  renderProjects();
   renderSavePublishBar();
-
-  // save-publish bar
-  function renderSavePublishBar(){
-    if(!savePublish) return;
-
-    if(!isAdmin || (!hasPendingDrafts())){
-      savePublish.classList.remove('show');
-      savePublish.innerHTML = '';
-      return;
-    }
-
-    const count = countPendingDrafts();
-    savePublish.classList.add('show');
-    savePublish.innerHTML = `
-      <div class="save-publish-text">${count} osparade ändring${count === 1 ? '' : 'ar'}</div>
-      <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
-      <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
-    `;
-
-    document.getElementById('publishDraftsBtn')?.addEventListener('click', publishPendingDrafts);
-    document.getElementById('discardDraftsBtn')?.addEventListener('click', discardDrafts);
-  }
-
-  // hash scroll
-  function maybeScrollToHash(){
-    const hash = (location.hash || '').trim();
-    if(!hash.startsWith('#project-')) return;
-    const id = decodeURIComponent(hash.slice('#project-'.length));
-    if(!id) return;
-
-    const el = document.querySelector(`[data-id="${CSS.escape(id)}"]`);
-    if(!el) return;
-
-    expandedId = id;
-    renderProjects();
-
-    requestAnimationFrame(()=>{
-      const card = document.querySelector(`[data-id="${CSS.escape(id)}"]`);
-      if(!card) return;
-      const y = card.getBoundingClientRect().top + window.scrollY - 96;
-      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-      card.style.outline = '2px solid rgba(240,154,15,0.55)';
-      card.style.outlineOffset = '4px';
-      setTimeout(()=>{ card.style.outline=''; card.style.outlineOffset=''; }, 1800);
-    });
-  }
-  window.addEventListener('hashchange', maybeScrollToHash);
-
 </script>
 </body>
 </html>
