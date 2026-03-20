@@ -12,11 +12,12 @@
       --accent:#f09a0f;
       --muted:#6b7280;
       --maxw:1200px;
+      --shadow:0 10px 24px rgba(11,18,32,0.06);
     }
     *{box-sizing:border-box}
     body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
 
-    /* ===== Header (same pattern as standardized) ===== */
+    /* ===== Header (indexNY style) ===== */
     header{
       position:fixed;top:0;left:0;width:100%;
       padding:22px 32px;
@@ -36,7 +37,7 @@
 
     nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
     nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition:all .2s;white-space:nowrap}
-    nav a:hover{background:rgba(240,154,15,0.95);color:#fff !important}
+    nav a:hover{background:rgba(240,154,15,0.95);color:#fff}
     .dropdown{position:relative}
     .dropdown-content{
       position:absolute;top:36px;left:0;background:#fff;
@@ -45,27 +46,30 @@
     }
     .dropdown:hover .dropdown-content{display:block}
     .dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
-    .dropdown-content a:hover{background:rgba(240,154,15,0.95);color:#fff !important}
-
-    /* header text color over hero-spacer */
-    header.is-hero nav a{ color:#0b1220; }
-    header.is-hero nav > ul > li > a:hover{ background:rgba(240,154,15,0.95); color:#fff !important; }
-    header.is-solid nav a{ color:#0b1220; }
-    header.is-solid nav > ul > li > a:hover{ background:rgba(240,154,15,0.95); color:#fff !important; }
-    header.is-hero .brand-title strong,
-    header.is-hero .brand-title span{ color:#0b1220 !important; }
-    header.is-solid .brand-title strong,
-    header.is-solid .brand-title span{ color:inherit !important; }
+    .dropdown-content a:hover{background:rgba(240,154,15,0.95);color:#fff}
 
     /* Mobile drawer */
-    .hamburger{display:none;font-size:1.8rem;cursor:pointer;user-select:none;z-index:70;color:var(--accent);position:relative;transition:transform .2s ease;}
+    .hamburger{
+      display:none;
+      font-size:1.8rem;
+      cursor:pointer;
+      user-select:none;
+      z-index:130;
+      color:var(--accent);
+      position:relative;
+      transition:transform .2s ease;
+      padding:6px 10px;
+      border-radius:999px;
+    }
     @media (max-width: 768px){
       .hamburger{display:block;}
       nav ul{
         flex-direction:column;
         position:fixed;top:0;right:0;width:260px;height:100%;
-        background:#fff;padding-top:72px;padding-left:12px;
-        transform:translateX(100%);transition:transform .28s ease;
+        background:#fff;
+        padding-top:72px;padding-left:12px;
+        transform:translateX(100%);
+        transition:transform .28s ease;
         box-shadow:-6px 0 20px rgba(0,0,0,0.08);
         z-index:120;text-align:left;align-items:flex-start;overflow-y:auto;
         display:flex;
@@ -77,6 +81,7 @@
       .dropdown.active .dropdown-content{display:block;}
       .dropdown:hover .dropdown-content{display:none;}
 
+      /* thumb close button */
       .mobile-close-wrap{margin-top:auto;width:100%;padding:12px 12px 18px 12px;}
       .mobile-close-btn{
         width:100%;
@@ -88,9 +93,11 @@
         font-weight:800;
         cursor:pointer;
       }
+
       .hamburger.is-open{
-        background:#fff;border-radius:999px;padding:6px 10px;
+        background:#fff;
         box-shadow:0 10px 22px rgba(11,18,32,0.12);
+        color: var(--accent);
       }
     }
     @media (min-width: 769px){
@@ -98,20 +105,27 @@
     }
 
     .hero-spacer{height:92px;}
-
     .container{max-width:var(--maxw);margin:24px auto;padding:16px}
-    .page-shell{padding-top:0}
 
-    /* Centered page head */
+    /* ===== Page head (title centered; settings button to the RIGHT) ===== */
     .page-head{
-      display:flex;align-items:flex-start;justify-content:center;
-      gap:12px;flex-wrap:wrap;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
       margin-top:6px;
-      text-align:center;
     }
-    .page-head-left{min-width:0;max-width:820px}
+    .page-head-left{
+      flex:1 1 auto;
+      min-width:0;
+      text-align:center;
+      margin-left:auto;
+      margin-right:auto;
+      max-width:820px;
+    }
     .page-head h1{margin:0;font-size:2.15rem;letter-spacing:-0.02em;}
     .subheader{margin:10px 0 0 0;color:var(--muted);font-size:1.05rem;line-height:1.35;}
+
     .mini-edit{
       display:none;
       padding:10px 12px;border-radius:12px;
@@ -120,16 +134,18 @@
       font-weight:900;
       box-shadow:0 10px 24px rgba(11,18,32,0.06);
       white-space:nowrap;
+      flex:0 0 auto;
     }
     .mini-edit span{color:var(--accent)}
     body.is-admin .mini-edit{display:inline-flex;align-items:center;gap:8px}
 
     .admin-tools{
       display:none;
-      margin-top:14px;
       justify-content:center;
+      margin-top:14px;
     }
     body.is-admin .admin-tools{display:flex;}
+
     .btn{
       padding:12px 14px;border-radius:12px;border:0;cursor:pointer;
       font-weight:900;font-size:1rem;
@@ -139,7 +155,7 @@
     .btn-secondary{background:#fff;color:var(--accent);border:1px solid rgba(0,0,0,0.10);box-shadow:none}
     .btn-cancel{background:#eef2f6;color:#111;box-shadow:none}
 
-    /* Grid */
+    /* ===== Cards grid ===== */
     .projects-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -150,34 +166,28 @@
     @media (max-width: 992px){ .projects-grid{grid-template-columns:repeat(2,1fr);} }
     @media (max-width: 768px){ .projects-grid{grid-template-columns:1fr;} }
 
-    @keyframes cardIn{
-      from{opacity:0;transform:translateY(16px) scale(.985);}
-      to{opacity:1;transform:translateY(0) scale(1);}
-    }
-
     .project-card{
       background:var(--card);
       border-radius:14px;
-      box-shadow:0 10px 24px rgba(11,18,32,0.06);
+      box-shadow:var(--shadow);
       padding:16px;
       position:relative;
       overflow:hidden;
       display:flex;
       flex-direction:column;
       gap:8px;
-      animation: cardIn .28s ease both;
       cursor:pointer;
+      transform-origin: center top;
       will-change: transform;
     }
-    .project-card img{
-      width:100%;
-      height:170px;
-      border-radius:12px;
-      object-fit:cover;
+
+    .card-topline{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
     }
-    .project-card h3{margin:0;font-size:1.12rem}
-    .project-card p{margin:0;color:var(--muted);white-space:pre-line;line-height:1.35}
-    .project-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
     .badge{
       display:inline-flex;
       padding:4px 10px;border-radius:999px;
@@ -185,17 +195,63 @@
       background:rgba(240,154,15,0.14);
       color:#a86405;
     }
+    .date{
+      font-size:12px;
+      font-weight:900;
+      color: var(--muted);
+    }
 
-    /* expanded in-grid */
+    .project-card img{
+      width:100%;
+      height:170px;
+      border-radius:12px;
+      object-fit:cover;
+    }
+    .project-card h3{margin:0;font-size:1.12rem}
+
+    .short-body,
+    .full-body{
+      margin:0;
+      color:var(--muted);
+      white-space:pre-line;
+      line-height:1.35;
+    }
+
+    /* === smoother expand/collapse === */
+    .project-card .expand-wrap{
+      overflow:hidden;
+      max-height: 220px; /* default collapsed height budget */
+      transition: max-height 360ms cubic-bezier(.2,.8,.2,1);
+    }
     .project-card.expanded{
       grid-column:1 / -1;
       cursor:default;
     }
-    .project-card .full-body{display:none;}
-    .project-card.expanded .full-body{display:block;}
-    .project-card.expanded .short-body{display:none;}
+    .project-card.expanded .expand-wrap{
+      max-height: 1400px; /* enough for big text */
+    }
+    .project-card .full-body{
+      opacity:0;
+      transform: translateY(6px);
+      transition: opacity 240ms ease, transform 240ms ease;
+      display:block;
+    }
+    .project-card.expanded .full-body{
+      opacity:1;
+      transform: translateY(0);
+    }
+    .project-card .short-body{
+      opacity:1;
+      transition: opacity 200ms ease;
+      display:block;
+    }
+    .project-card.expanded .short-body{
+      opacity:0;
+      height:0;
+      overflow:hidden;
+    }
 
-    /* edit/delete */
+    /* edit/delete buttons */
     .edit-btn,.delete-btn{
       position:absolute;top:10px;right:10px;
       background: rgba(255,255,255,0.94);
@@ -205,10 +261,17 @@
       box-shadow:0 10px 22px rgba(11,18,32,0.08);
     }
     .delete-btn{top:auto;bottom:10px;}
-    .edit-btn{right:10px;}
-    .delete-btn{right:10px;}
 
-    /* Save/publish bar (same concept as standardized, centered) */
+    /* "Nytt projekt" under cards */
+    .below-grid-actions{
+      display:none;
+      justify-content:center;
+      margin-top:16px;
+      padding-bottom:24px;
+    }
+    body.is-admin .below-grid-actions{display:flex;}
+
+    /* Save/publish bar */
     .save-publish{
       position:fixed;
       left:50%;
@@ -239,7 +302,7 @@
     }
     .save-publish .btn{box-shadow:none;}
 
-    /* Overlays like standardized */
+    /* Overlays */
     .edit-overlay{
       position:fixed;top:0;left:0;width:100%;height:100%;
       background:rgba(0,0,0,0.45);
@@ -247,18 +310,29 @@
       z-index:300;padding:12px;
     }
     .edit-overlay.show{display:flex;}
+
+    /* Editor: responsive height, scroll inside */
     .editor{
       background:#fff;
       padding:18px;
       border-radius:16px;
       max-width:720px;
       width:100%;
+      max-height: min(92vh, 860px);
+      overflow:auto;
       display:flex;
       flex-direction:column;
       gap:12px;
       box-shadow:0 18px 46px rgba(0,0,0,0.25);
+      -webkit-overflow-scrolling: touch;
     }
-    .editor-compact{max-width:640px;}
+    @media (max-width: 768px){
+      .editor{
+        max-height: 94vh;
+        border-radius:16px;
+        padding:14px;
+      }
+    }
     .editor h3{margin:0;}
     .helptext{margin:0;color:var(--muted);line-height:1.35;}
     .editor-section{
@@ -327,20 +401,23 @@
 
 <div class="hero-spacer"></div>
 
-<div class="container page-shell">
+<div class="container">
   <div class="page-head">
     <div class="page-head-left">
       <h1 id="pageTitle">Pågående planer</h1>
       <p class="subheader" id="pageSubtitle">Projekt som pågår eller planeras i föreningen.</p>
     </div>
+
+    <!-- Right aligned like other pages -->
     <button class="mini-edit" id="editPageBtn" type="button"><span>✏️</span> Sidinställningar</button>
   </div>
 
-  <div class="admin-tools">
+  <div class="projects-grid" id="projectsGrid" aria-live="polite"></div>
+
+  <!-- Button under all cards -->
+  <div class="below-grid-actions">
     <button class="btn btn-primary" id="addProjectBtn" type="button">＋ Nytt projekt</button>
   </div>
-
-  <div class="projects-grid" id="projectsGrid" aria-live="polite"></div>
 </div>
 
 <div class="save-publish" id="savePublish" aria-live="polite"></div>
@@ -350,35 +427,43 @@
   <div class="editor">
     <h3 id="projectEditorHeading">Nytt projekt</h3>
     <p class="helptext">
-      Fyll i fälten nedan. Ändringar sparas först lokalt för dig. När du är nöjd trycker du på
-      <strong>Spara och publicera</strong> längst ner.
+      Ändringar sparas först lokalt som utkast. Publicera med <strong>Spara och publicera</strong> längst ner.
     </p>
 
     <div class="editor-section">
-      <h4>1. Rubrik och ingress</h4>
+      <h4>1. Rubrik och datum</h4>
       <div>
         <label class="field-label" for="projTitleInput">Rubrik</label>
         <input type="text" id="projTitleInput" placeholder="Till exempel: Renovering av trapphuset">
       </div>
       <div>
-        <label class="field-label" for="projShortInput">Kort text (syns i kortet)</label>
+        <label class="field-label" for="projCreatedInput">Skapad (YYYY-MM-DD)</label>
+        <input type="text" id="projCreatedInput" placeholder="2026-03-16">
+      </div>
+      <p class="helptext">Om tomt används dagens datum vid publicering.</p>
+    </div>
+
+    <div class="editor-section">
+      <h4>2. Kort text (syns i kortet)</h4>
+      <div>
+        <label class="field-label" for="projShortInput">Kort text</label>
         <textarea id="projShortInput" rows="3" placeholder="Kort sammanfattning..."></textarea>
       </div>
     </div>
 
     <div class="editor-section">
-      <h4>2. Full text</h4>
+      <h4>3. Full text (syns när kortet fälls ut)</h4>
       <div>
-        <label class="field-label" for="projBodyInput">Fullständig text (syns när kortet fälls ut)</label>
+        <label class="field-label" for="projBodyInput">Fullständig text</label>
         <textarea id="projBodyInput" rows="8" placeholder="Här skriver ni hela informationen."></textarea>
       </div>
     </div>
 
     <div class="editor-section">
-      <h4>3. Bild</h4>
+      <h4>4. Bild</h4>
       <div>
-        <label class="field-label" for="projImageInput">Bild</label>
-        <input type="text" id="projImageInput" placeholder="Bildlänk eller uppladdad bild">
+        <label class="field-label" for="projImageInput">Bild (valfritt)</label>
+        <input type="text" id="projImageInput" placeholder="Lämna tomt för standardbild">
       </div>
 
       <div id="projImagePreviewWrap" class="preview-wrap">
@@ -401,10 +486,10 @@
           <input id="projImageUpload" type="file" accept="image/*" style="display:none;">
           Ladda upp bild
         </label>
-        <button id="removeProjImageBtn" class="btn btn-secondary" type="button">Återgå till standardbild</button>
+        <button id="useDefaultImageBtn" class="btn btn-secondary" type="button">Använd standardbild</button>
       </div>
 
-      <p class="helptext">Om du inte väljer en egen bild används ingen bild för kortet.</p>
+      <p class="helptext">Standardbild styrs i Sidinställningar.</p>
     </div>
 
     <div class="row">
@@ -416,8 +501,8 @@
 
 <!-- Page settings overlay -->
 <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera sidinställningar">
-  <div class="editor editor-compact">
-    <h3>Redigera sidan</h3>
+  <div class="editor">
+    <h3>Sidinställningar</h3>
     <p class="helptext">Ändringar sparas som utkast tills de publiceras via <strong>Spara och publicera</strong>.</p>
 
     <div class="editor-section">
@@ -437,9 +522,18 @@
     </div>
 
     <div class="editor-section">
-      <h4>3. Sidfot</h4>
+      <h4>3. Standardbild (alla kort)</h4>
       <div>
-        <label class="field-label" for="pageFooterInput">Text längst ner på sidan</label>
+        <label class="field-label" for="defaultImageInput">Standardbild URL</label>
+        <input type="text" id="defaultImageInput" placeholder="husbild.jpg">
+      </div>
+      <p class="helptext">Om ett projekt saknar egen bild används denna. Standard: <strong>husbild.jpg</strong></p>
+    </div>
+
+    <div class="editor-section">
+      <h4>4. Sidfot</h4>
+      <div>
+        <label class="field-label" for="pageFooterInput">Footer-text</label>
         <input type="text" id="pageFooterInput" placeholder="© Västhaga Nr4 — Bostadsrättsförening">
       </div>
     </div>
@@ -485,15 +579,14 @@
   const auth = getAuth(app);
   const storage = getStorage(app);
 
-  const SOURCE_LABEL = STATUS === "done" ? "Utförda planer" : "Pågående planer";
-  const SOURCE_URL = STATUS === "done" ? "utfordaplaner.html" : "pagaendeplaner.html";
-
-  const PAGE_DOC_REF = doc(db, "pages", STATUS === "done" ? "projectsDone" : "projectsOngoing");
   const NAV_DOC_REF = doc(db, "site", "navigation");
+  const PAGE_DOC_REF = doc(db, "pages", STATUS === "done" ? "projectsDone" : "projectsOngoing");
   const PROJECTS_COL = collection(db, "projects");
 
-  const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_v1:${STATUS}`;
-  const PAGE_DRAFT_KEY = `vasthaga_projects_page_draft_v1:${STATUS}`;
+  const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_v2:${STATUS}`;
+  const PAGE_DRAFT_KEY = `vasthaga_projects_page_draft_v2:${STATUS}`;
+
+  const SOURCE_LABEL = STATUS === "done" ? "Utförda planer" : "Pågående planer";
 
   // DOM
   const body = document.body;
@@ -514,14 +607,16 @@
   const addProjectBtn = document.getElementById("addProjectBtn");
   const editPageBtn = document.getElementById("editPageBtn");
 
+  // Project overlay
   const projectOverlay = document.getElementById("projectOverlay");
   const projectEditorHeading = document.getElementById("projectEditorHeading");
   const projTitleInput = document.getElementById("projTitleInput");
+  const projCreatedInput = document.getElementById("projCreatedInput");
   const projShortInput = document.getElementById("projShortInput");
   const projBodyInput = document.getElementById("projBodyInput");
   const projImageInput = document.getElementById("projImageInput");
   const projImageUpload = document.getElementById("projImageUpload");
-  const removeProjImageBtn = document.getElementById("removeProjImageBtn");
+  const useDefaultImageBtn = document.getElementById("useDefaultImageBtn");
   const projImagePreviewWrap = document.getElementById("projImagePreviewWrap");
   const projImagePreview = document.getElementById("projImagePreview");
   const projImageProgressWrap = document.getElementById("projImageProgressWrap");
@@ -530,9 +625,11 @@
   const saveProjDraftBtn = document.getElementById("saveProjDraftBtn");
   const cancelProjEditBtn = document.getElementById("cancelProjEditBtn");
 
+  // Page overlay
   const pageOverlay = document.getElementById("pageOverlay");
   const pageTitleInput = document.getElementById("pageTitleInput");
   const pageSubtitleInput = document.getElementById("pageSubtitleInput");
+  const defaultImageInput = document.getElementById("defaultImageInput");
   const pageFooterInput = document.getElementById("pageFooterInput");
   const savePageDraftBtn = document.getElementById("savePageDraftBtn");
   const cancelPageEditBtn = document.getElementById("cancelPageEditBtn");
@@ -550,24 +647,25 @@
     subtitle: STATUS === "done"
       ? "Projekt som är genomförda i föreningen."
       : "Projekt som pågår eller planeras i föreningen.",
-    footerText: "© Västhaga Nr4 — Bostadsrättsförening"
+    footerText: "© Västhaga Nr4 — Bostadsrättsförening",
+    defaultImageUrl: "husbild.jpg"
   };
 
-  // Published projects from Firestore
+  // Published projects
   let published = [];
 
-  // Drafts (local)
-  // drafts[id] = { title, short, body, image, order, status, __delete?:true }
+  // Drafts
+  // drafts[id] = { title, short, body, image, order, status, createdAtISO, __delete?:true }
   let drafts = safeParse(localStorage.getItem(DRAFT_STORAGE_KEY), {});
   let pageDraft = safeParse(localStorage.getItem(PAGE_DRAFT_KEY), null);
 
   // Editor state
   let editingId = null;
 
-  // Expanded card state (only one)
+  // Expand state (only one)
   let expandedId = null;
 
-  // ---- Utilities
+  // ---- Utils
   function safeParse(str, fallback){
     try { return str ? JSON.parse(str) : fallback; } catch { return fallback; }
   }
@@ -582,6 +680,9 @@
   function requireAdmin(){
     if(!isAdmin) throw new Error("Inte behörig (admin krävs).");
   }
+  function hasDrafts(){
+    return Object.keys(drafts).length > 0 || !!pageDraft;
+  }
   function persistDrafts(){
     localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(drafts));
     renderSavePublish();
@@ -590,32 +691,22 @@
     localStorage.setItem(PAGE_DRAFT_KEY, JSON.stringify(pageDraft));
     renderSavePublish();
   }
-  function hasDrafts(){
-    return Object.keys(drafts).length > 0 || !!pageDraft;
-  }
 
-  // ---- Header scroll style
+  // ---- Header scroll
   function updateHeaderOnScroll(){
     const y = window.scrollY;
     const op = Math.min(1, y/240);
     header.style.background = `rgba(255,255,255,${op})`;
     header.style.boxShadow = op>0 ? `0 4px 12px rgba(0,0,0,${op*0.08})` : 'none';
-
-    if(op < 0.15){
-      header.classList.add('is-hero');
-      header.classList.remove('is-solid');
-    }else{
-      header.classList.remove('is-hero');
-      header.classList.add('is-solid');
-    }
+    header.classList.toggle("is-solid", op >= 0.15);
   }
   window.addEventListener("scroll", updateHeaderOnScroll);
   window.addEventListener("load", updateHeaderOnScroll);
 
-  // ---- Mobile nav open/close + close row
+  // ---- Mobile nav open/close + back arrow
   function setNavOpen(open){
     mainNav.classList.toggle("show", open);
-    hamburger.textContent = open ? "➤" : "☰";
+    hamburger.textContent = open ? "➤" : "☰";   // back arrow (orange) when open
     hamburger.classList.toggle("is-open", open);
   }
   hamburger.addEventListener("click", ()=> setNavOpen(!mainNav.classList.contains("show")));
@@ -630,7 +721,7 @@
       a.addEventListener("click", (e)=>{
         const li = a.closest(".dropdown");
         if(!li) return;
-        e.preventDefault();
+        e.preventDefault(); // keep menu open; reveal children
         li.classList.toggle("active");
       });
     });
@@ -641,13 +732,11 @@
   function appendMobileCloseRow(){
     const li = document.createElement("li");
     li.className = "mobile-close-wrap";
-
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "mobile-close-btn";
     btn.textContent = "Stäng meny";
     btn.addEventListener("click", ()=> setNavOpen(false));
-
     li.appendChild(btn);
     mainNav.appendChild(li);
   }
@@ -669,7 +758,7 @@
     renderProjects(); // re-render edit buttons
   });
 
-  // ---- Nav from Firestore (fallback included)
+  // ---- Nav from Firestore (fallback)
   const fallbackNav = {
     items: [
       { type:'link', label:'Hem', url:'index.html', order:0 },
@@ -685,12 +774,12 @@
           { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
         ]
       },
-{
-  type:'dropdown', label:'Projekt', order:3, children:[
-    { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
-    { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
-  ]
-}, 
+      {
+        type:'dropdown', label:'Planeringsprojekt', order:3, children:[
+          { label:'Pågående planer', url:'pagaendeplaner.html', order:0 },
+          { label:'Utförda planer', url:'utfordaplaner.html', order:1 }
+        ]
+      },
       { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
       { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
       { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
@@ -742,7 +831,6 @@
 
       const li = document.createElement("li");
       if(item.id) li.id = item.id;
-
       const a = document.createElement("a");
       a.href = item.url || "#";
       a.textContent = item.label || "";
@@ -754,7 +842,7 @@
     wireMobileDropdowns();
   }
 
-  // ---- Page data from Firestore + apply draft overlay
+  // ---- Page data from Firestore + apply draft
   onSnapshot(PAGE_DOC_REF, (snap)=>{
     if(snap.exists()) pageData = { ...pageData, ...snap.data() };
     applyPage();
@@ -766,7 +854,6 @@
 
   function applyPage(){
     const p = effectivePage();
-
     brandName.textContent = p.brandName || "Västhaga Nr4";
     brandTagline.textContent = p.brandTagline || "Bostadsrättsförening";
     brandLogo.src = (p.logoUrl || "logga.png").trim();
@@ -775,11 +862,12 @@
     pageSubtitleEl.textContent = p.subtitle || "";
     footerTextEl.textContent = p.footerText || "© Västhaga Nr4 — Bostadsrättsförening";
 
+    defaultImageInput.value = (p.defaultImageUrl || "husbild.jpg").trim();
     document.title = `${p.title || SOURCE_LABEL} — Västhaga Nr4`;
   }
   applyPage();
 
-  // ---- Projects from Firestore (no composite index; sort client-side)
+  // ---- Projects from Firestore
   onSnapshot(query(PROJECTS_COL, where("status","==",STATUS)), (snap)=>{
     const arr = [];
     snap.forEach(d=>{
@@ -787,11 +875,19 @@
       arr.push({
         id: d.id,
         title: String(data.title ?? ""),
-        short: String(data.short ?? data.desc ?? ""), // backward compatible
+        short: String(data.short ?? data.desc ?? ""),
         body: String(data.body ?? ""),
         image: String(data.image ?? ""),
         status: String(data.status ?? STATUS),
-        order: Number.isFinite(Number(data.order)) ? Number(data.order) : 0
+        order: Number.isFinite(Number(data.order)) ? Number(data.order) : 0,
+
+        // createdAt supports:
+        // - createdAtISO: "YYYY-MM-DD"
+        // - createdAt: Firestore Timestamp
+        // - fallback: updatedAt
+        createdAtISO: String(data.createdAtISO ?? ""),
+        createdAt: data.createdAt ?? null,
+        updatedAt: data.updatedAt ?? null
       });
     });
     published = arr;
@@ -804,7 +900,10 @@
     const byId = new Map(published.map(p=>[p.id,{...p}]));
     for(const [id,d] of Object.entries(drafts)){
       if(d?.__delete){ byId.delete(id); continue; }
-      const base = byId.get(id) || { id, title:"", short:"", body:"", image:"", status:STATUS, order:0 };
+      const base = byId.get(id) || {
+        id, title:"", short:"", body:"", image:"", status:STATUS, order:0,
+        createdAtISO:"", createdAt:null, updatedAt:null
+      };
       byId.set(id, {
         ...base,
         ...(d.title != null ? {title:d.title} : {}),
@@ -812,7 +911,8 @@
         ...(d.body != null ? {body:d.body} : {}),
         ...(d.image != null ? {image:d.image} : {}),
         ...(d.order != null ? {order:d.order} : {}),
-        ...(d.status != null ? {status:d.status} : {})
+        ...(d.status != null ? {status:d.status} : {}),
+        ...(d.createdAtISO != null ? {createdAtISO:d.createdAtISO} : {})
       });
     }
     const list = Array.from(byId.values()).filter(x=>x.status===STATUS);
@@ -825,76 +925,100 @@
     return list;
   }
 
-  // ---- Smooth FLIP animation for expand/collapse
-  function flipAnimate(container, mutate){
-    const cards = [...container.querySelectorAll(".project-card")];
+  // ---- Better FLIP-like animation when expanding/collapsing
+  function flipAnimate(mutate){
+    const cards = [...projectsGrid.querySelectorAll(".project-card")];
     const first = new Map(cards.map(el => [el.dataset.id, el.getBoundingClientRect()]));
     mutate();
-    const afterCards = [...container.querySelectorAll(".project-card")];
+    const lastCards = [...projectsGrid.querySelectorAll(".project-card")];
 
-    afterCards.forEach(el=>{
+    lastCards.forEach(el=>{
       const id = el.dataset.id;
-      const a = el.getBoundingClientRect();
       const f = first.get(id);
       if(!f) return;
-      const dx = f.left - a.left;
-      const dy = f.top - a.top;
+      const l = el.getBoundingClientRect();
+      const dx = f.left - l.left;
+      const dy = f.top - l.top;
       if(dx === 0 && dy === 0) return;
 
-      el.style.transform = `translate(${dx}px, ${dy}px)`;
-      el.style.transition = "transform 0s";
-      requestAnimationFrame(()=>{
-        el.style.transition = "transform 260ms ease";
-        el.style.transform = "";
-      });
+      el.animate(
+        [
+          { transform: `translate(${dx}px, ${dy}px)` },
+          { transform: "translate(0, 0)" }
+        ],
+        { duration: 320, easing: "cubic-bezier(.2,.8,.2,1)" }
+      );
     });
+  }
 
-    // cleanup transition after
-    setTimeout(()=>{
-      afterCards.forEach(el=>{
-        el.style.transition = "";
-        el.style.transform = "";
-      });
-    }, 320);
+  function formatDateFromProject(p){
+    // Priority:
+    // 1) createdAtISO (YYYY-MM-DD)
+    // 2) createdAt timestamp
+    // 3) updatedAt timestamp
+    const iso = (p.createdAtISO || "").trim();
+    if(iso) return iso;
+
+    const ts = p.createdAt || p.updatedAt;
+    if(ts && typeof ts.toDate === "function"){
+      const d = ts.toDate();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+    return "";
+  }
+
+  function resolveImage(p){
+    const own = (p.image || "").trim();
+    if(own) return own;
+    const def = (effectivePage().defaultImageUrl || "husbild.jpg").trim();
+    return def || "";
   }
 
   function renderProjects(){
     const list = merged();
     projectsGrid.innerHTML = "";
 
-    list.forEach((p, idx)=>{
+    list.forEach((p)=>{
       const el = document.createElement("article");
       el.className = "project-card" + (expandedId === p.id ? " expanded" : "");
       el.dataset.id = p.id;
       el.id = `project-${p.id}`;
       el.draggable = isAdmin;
 
-      const img = (p.image||"").trim();
-      const shortText = (p.short||"").trim();
-      const bodyText = (p.body||"").trim();
+      const img = resolveImage(p);
+      const dateStr = formatDateFromProject(p);
+
+      const shortText = (p.short || "").trim();
+      const bodyText = (p.body || "").trim();
       const fullText = bodyText || shortText;
 
       el.innerHTML = `
-        ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(p.title)}">` : ``}
-        <div class="project-meta">
+        <div class="card-topline">
           <span class="badge">${escapeHtml(SOURCE_LABEL)}</span>
+          ${dateStr ? `<span class="date">${escapeHtml(dateStr)}</span>` : ``}
         </div>
+        ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(p.title)}">` : ``}
         <h3>${escapeHtml(p.title)}</h3>
-        <p class="short-body">${escapeHtml(shortText)}</p>
-        <p class="full-body">${escapeHtml(fullText)}</p>
+        <div class="expand-wrap">
+          <p class="short-body">${escapeHtml(shortText)}</p>
+          <p class="full-body">${escapeHtml(fullText)}</p>
+        </div>
       `;
 
-      // Expand/collapse by clicking card (but not buttons)
+      // expand/collapse
       el.addEventListener("click", (ev)=>{
         if(ev.target.closest("button")) return;
-        const next = expandedId === p.id ? null : p.id;
-        flipAnimate(projectsGrid, ()=>{
-          expandedId = next;
-          renderProjectsNoRebuild(); // toggle classes without rebuilding DOM
+        flipAnimate(()=>{
+          expandedId = (expandedId === p.id) ? null : p.id;
+          // Update hash for deep links
+          if(expandedId) history.replaceState(null, "", `#project-${p.id}`);
+          else history.replaceState(null, "", location.pathname + location.search);
+          // Rerender toggles
+          renderProjects();
         });
-        // update hash to keep deep link
-        if(next) history.replaceState(null, "", `#project-${p.id}`);
-        else history.replaceState(null, "", location.pathname + location.search);
       });
 
       if(isAdmin){
@@ -913,7 +1037,7 @@
         el.appendChild(eBtn);
         el.appendChild(dBtn);
 
-        // drag & drop ordering => write draft orders
+        // Drag & drop ordering (write draft orders after drag end)
         el.addEventListener("dragstart", ()=>{
           el.classList.add("dragging");
           el.dataset.dragging = "1";
@@ -921,7 +1045,6 @@
         el.addEventListener("dragend", ()=>{
           el.classList.remove("dragging");
           el.dataset.dragging = "";
-          // after drag ends, renumber order drafts from current DOM order
           const ids = [...projectsGrid.querySelectorAll(".project-card")].map(x=>x.dataset.id);
           ids.forEach((id, i)=>{
             drafts[id] = { ...(drafts[id]||{}), order:i, status:STATUS };
@@ -944,20 +1067,6 @@
     renderSavePublish();
   }
 
-  // Toggle expanded class without rebuilding (for FLIP)
-  function renderProjectsNoRebuild(){
-    [...projectsGrid.querySelectorAll(".project-card")].forEach(el=>{
-      el.classList.toggle("expanded", expandedId === el.dataset.id);
-      const full = el.querySelector(".full-body");
-      const short = el.querySelector(".short-body");
-      if(full && short){
-        const isExp = expandedId === el.dataset.id;
-        full.style.display = isExp ? "block" : "none";
-        short.style.display = isExp ? "none" : "block";
-      }
-    });
-  }
-
   function getDragAfterElement(container, y){
     const els = [...container.querySelectorAll(".project-card:not(.dragging)")];
     return els.reduce((closest, child)=>{
@@ -975,13 +1084,12 @@
     requireAdmin();
     if(!confirm("Ta bort projektet?")) return;
     drafts[id] = { ...(drafts[id]||{}), __delete:true };
-    persistDrafts();
-    // close expanded if deleting that
     if(expandedId === id) expandedId = null;
+    persistDrafts();
     renderProjects();
   }
 
-  // ---- Save/publish bar (centered)
+  // ---- Save/publish bar
   function renderSavePublish(){
     if(!isAdmin || !hasDrafts()){
       savePublish.classList.remove("show");
@@ -1023,16 +1131,21 @@
       }
 
       // Upserts
+      const todayISO = new Date().toISOString().slice(0,10);
       for(const [id, d] of Object.entries(drafts)){
         if(!d || d.__delete) continue;
+
+        const createdISO = (d.createdAtISO || "").trim() || todayISO;
         const payload = {
           title: String(d.title ?? ""),
           short: String(d.short ?? ""),
           body: String(d.body ?? ""),
           image: String(d.image ?? ""),
           status: STATUS,
-          order: Number.isFinite(Number(d.order)) ? Number(d.order) : 0
+          order: Number.isFinite(Number(d.order)) ? Number(d.order) : 0,
+          createdAtISO: createdISO
         };
+
         await setDoc(doc(db, "projects", id), payload, { merge:true });
       }
 
@@ -1067,6 +1180,7 @@
     pageTitleInput.value = p.title || "";
     pageSubtitleInput.value = p.subtitle || "";
     pageFooterInput.value = p.footerText || "";
+    defaultImageInput.value = (p.defaultImageUrl || "husbild.jpg").trim();
     pageOverlay.classList.add("show");
   });
 
@@ -1078,15 +1192,17 @@
     pageDraft = {
       title: pageTitleInput.value.trim(),
       subtitle: pageSubtitleInput.value.trim(),
-      footerText: pageFooterInput.value.trim()
+      footerText: pageFooterInput.value.trim(),
+      defaultImageUrl: (defaultImageInput.value.trim() || "husbild.jpg")
     };
     persistPageDraft();
     applyPage();
     pageOverlay.classList.remove("show");
+    renderProjects();
   };
 
   // ---- Project editor overlay
-  addProjectBtn?.addEventListener("click", ()=>{
+  addProjectBtn.addEventListener("click", ()=>{
     if(!isAdmin) return;
 
     const id = `draft_${Date.now().toString(36)}_${Math.random().toString(16).slice(2,8)}`;
@@ -1098,7 +1214,8 @@
       body: "",
       image: "",
       status: STATUS,
-      order
+      order,
+      createdAtISO: new Date().toISOString().slice(0,10)
     };
     persistDrafts();
     renderProjects();
@@ -1109,15 +1226,19 @@
     requireAdmin();
     editingId = id;
 
-    const p = merged().find(x=>x.id===id) || { title:"", short:"", body:"", image:"" };
+    const p = merged().find(x=>x.id===id) || { title:"", short:"", body:"", image:"", createdAtISO:"" };
     projectEditorHeading.textContent = id.startsWith("draft_") ? "Nytt projekt" : "Redigera projekt";
 
     projTitleInput.value = p.title || "";
     projShortInput.value = p.short || "";
     projBodyInput.value = p.body || "";
-    projImageInput.value = p.image || "";
 
-    setProjPreview(projImageInput.value);
+    const dateStr = (p.createdAtISO || "").trim() || "";
+    projCreatedInput.value = dateStr;
+
+    // Image: if project image empty, keep input empty (means default)
+    projImageInput.value = (p.image || "").trim();
+    setProjPreview(projImageInput.value || resolveImage(p));
     setProjProgress(null);
 
     projectOverlay.classList.add("show");
@@ -1131,13 +1252,16 @@
     requireAdmin();
     if(!editingId) return;
 
+    const createdISO = (projCreatedInput.value || "").trim();
+
     drafts[editingId] = {
       ...(drafts[editingId] || {}),
       title: projTitleInput.value.trim(),
       short: projShortInput.value.trim(),
       body: projBodyInput.value.trim(),
-      image: projImageInput.value.trim(),
+      image: projImageInput.value.trim(), // empty => default
       status: STATUS,
+      createdAtISO: createdISO,
       order: (drafts[editingId]?.order ?? (merged().findIndex(x=>x.id===editingId) >= 0 ? merged().findIndex(x=>x.id===editingId) : 0))
     };
     persistDrafts();
@@ -1145,7 +1269,6 @@
     projectOverlay.classList.remove("show");
   };
 
-  // Image preview + upload
   function setProjPreview(url){
     const clean = (url || "").trim();
     if(!clean){
@@ -1170,12 +1293,12 @@
     projImageProgressText.textContent = `${p}%`;
   }
 
-  projImageInput.addEventListener("input", ()=> setProjPreview(projImageInput.value));
+  projImageInput.addEventListener("input", ()=> setProjPreview(projImageInput.value.trim() || resolveImage({image:""})));
 
-  removeProjImageBtn.onclick = ()=>{
+  useDefaultImageBtn.onclick = ()=>{
     requireAdmin();
     projImageInput.value = "";
-    setProjPreview("");
+    setProjPreview(resolveImage({image:""}));
   };
 
   projImageUpload.addEventListener("change", async ()=>{
@@ -1184,13 +1307,14 @@
       if(!editingId) return;
       const file = projImageUpload.files?.[0];
       if(!file) return;
+
       if(!file.type?.startsWith("image/")) throw new Error("Endast bildfiler är tillåtna.");
       const maxBytes = 6 * 1024 * 1024;
       if(file.size > maxBytes) throw new Error("Filen är för stor (max 6 MB).");
 
       setProjProgress(0);
-
       const url = await uploadToStorage(file, (pct)=>setProjProgress(pct));
+
       projImageInput.value = url;
       setProjPreview(url);
       setProjProgress(null);
@@ -1225,7 +1349,7 @@
     });
   }
 
-  // ---- Hash-scroll
+  // ---- Hash-scroll: expand + scroll
   function maybeScrollToHash(){
     const hash = (location.hash || "").trim();
     if(!hash.startsWith("#project-")) return;
@@ -1235,23 +1359,38 @@
     const el = document.getElementById(`project-${CSS.escape(id)}`);
     if(!el) return;
 
-    // expand it and scroll
     expandedId = id;
     renderProjects();
+
     requestAnimationFrame(()=>{
-      const y = el.getBoundingClientRect().top + window.scrollY - 96;
+      const target = document.getElementById(`project-${CSS.escape(id)}`);
+      if(!target) return;
+      const y = target.getBoundingClientRect().top + window.scrollY - 96;
       window.scrollTo({ top: Math.max(0, y), behavior:"smooth" });
-      el.style.outline = "2px solid rgba(240,154,15,0.55)";
-      el.style.outlineOffset = "4px";
-      setTimeout(()=>{ el.style.outline=""; el.style.outlineOffset=""; }, 1800);
+      target.style.outline = "2px solid rgba(240,154,15,0.55)";
+      target.style.outlineOffset = "4px";
+      setTimeout(()=>{ target.style.outline=""; target.style.outlineOffset=""; }, 1800);
     });
   }
   window.addEventListener("hashchange", maybeScrollToHash);
   setTimeout(maybeScrollToHash, 400);
 
-  // initial render
-  applyPage();
-  renderSavePublish();
+  // ---- Admin role
+  onAuthStateChanged(auth, async (user)=>{
+    currentUser = user;
+    isAdmin = false;
+
+    if(user){
+      const snap = await getDoc(doc(db, "users", user.uid));
+      const role = snap.exists() ? snap.data().role : null;
+      isAdmin = role === "admin" || role === "ordforande";
+    }
+
+    body.classList.toggle("is-admin", isAdmin);
+    renderNav();
+    renderSavePublish();
+    renderProjects();
+  });
 </script>
 </body>
 </html>
