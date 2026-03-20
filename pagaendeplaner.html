@@ -18,19 +18,12 @@
     body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
     .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
-    header {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      padding: 22px 32px;
-      z-index: 10;
-      background: rgba(255,255,255,0.98);
-      box-shadow: 0 8px 24px rgba(11,18,32,0.08);
-      transition: background 0.35s ease, box-shadow 0.35s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap:12px;
+    header{
+      position:fixed;top:0;left:0;width:100%;
+      padding:22px 32px;z-index:10;
+      background:rgba(255,255,255,0.98);
+      box-shadow:0 8px 24px rgba(11,18,32,0.08);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
     .brand{display:flex;align-items:center;gap:12px}
     .logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
@@ -41,87 +34,43 @@
 
     nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
     nav a{
-      padding:8px 12px;
-      border-radius:8px;
-      text-decoration:none;
-      color:#0b1220;
-      transition: all 0.22s ease;
-      white-space: nowrap;
-      font-weight:500;
+      padding:8px 12px;border-radius:8px;text-decoration:none;color:#0b1220;
+      transition:all .22s ease;white-space:nowrap;font-weight:500;
     }
     nav > ul > li > a:hover{background:var(--accent);color:#fff !important;}
 
     .dropdown{position:relative}
     .dropdown-content{
-      position: absolute; top: 28px; left: 0;
-      background: #fff;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.10);
-      padding: 8px;
-      border-radius: 10px;
-      display: none;
-      min-width: 180px;
-      z-index: 10;
+      position:absolute;top:28px;left:0;background:#fff;
+      box-shadow:0 10px 24px rgba(0,0,0,0.10);
+      padding:8px;border-radius:10px;display:none;min-width:180px;z-index:10;
     }
     .dropdown:hover .dropdown-content{display:block}
     .dropdown-content a{
-      color:var(--accent);
-      background:#fff;
-      margin:2px 0;
-      padding:8px 10px;
-      display:block;
-      border-radius:8px;
+      color:var(--accent);background:#fff;margin:2px 0;padding:8px 10px;display:block;border-radius:8px;
     }
     .dropdown-content a:hover{background:var(--accent);color:#fff !important;}
 
     .hamburger{
-      display:none;
-      font-size:1.8rem;
-      cursor:pointer;
-      user-select:none;
-      z-index:70;
-      color: var(--accent);
-      position: relative;
-      transition:
-        transform .35s cubic-bezier(.22,1,.36,1),
-        background .22s ease,
-        box-shadow .22s ease;
-      font-weight:700;
-      line-height:1;
+      display:none;font-size:1.8rem;cursor:pointer;user-select:none;z-index:70;color:var(--accent);
+      position:relative;font-weight:700;line-height:1;
+      transition:transform .35s cubic-bezier(.22,1,.36,1), background .22s ease, box-shadow .22s ease;
     }
     .hamburger.is-open{
-      background:#fff;
-      border-radius:999px;
-      padding:6px 10px;
+      background:#fff;border-radius:999px;padding:6px 10px;
       box-shadow:0 10px 22px rgba(11,18,32,0.10);
       transform:translateX(-2px) scale(1.02);
     }
-    @media (max-width: 768px) {
-      .hamburger{
-        display:block;
-        position: fixed;
-        top: 18px;
-        right: 16px;
-        z-index: 130;
-      }
+    @media (max-width:768px){
+      .hamburger{display:block;position:fixed;top:18px;right:16px;z-index:130}
       header{padding:18px 14px}
       .brand-title span{display:none}
       nav ul{
-        flex-direction:column;
-        position:fixed;
-        top:0;
-        right:0;
-        width:260px;
-        height:100%;
-        background:#fff;
-        padding-top:72px;
-        padding-left:12px;
-        transform:translateX(100%);
-        transition:transform .42s cubic-bezier(.22,1,.36,1);
+        flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;
+        background:#fff;padding-top:72px;padding-left:12px;
+        transform:translateX(100%);transition:transform .42s cubic-bezier(.22,1,.36,1);
         box-shadow:-10px 0 28px rgba(0,0,0,0.10);
-        z-index:120;
-        text-align:left;
-        align-items:flex-start;
-        overflow-y:auto
+        z-index:120;text-align:left;align-items:flex-start;overflow-y:auto;
       }
       nav ul.show{transform:translateX(0)}
       nav ul li{margin-bottom:10px;width:100%}
@@ -131,57 +80,31 @@
       .dropdown:hover .dropdown-content{display:none}
     }
 
-    .mobile-close-wrap{
-      margin-top:auto;
-      padding:12px 12px 18px 12px;
-      width:100%;
-    }
+    .mobile-close-wrap{margin-top:auto;padding:12px 12px 18px 12px;width:100%}
     .mobile-close-btn{
-      width:100%;
-      padding:14px 14px;
-      border-radius:12px;
-      border:0;
-      background:rgba(240,154,15,0.16);
-      color:#a86405;
-      font-weight:700;
-      cursor:pointer;
+      width:100%;padding:14px 14px;border-radius:12px;border:0;
+      background:rgba(240,154,15,0.16);color:#a86405;font-weight:700;cursor:pointer;
     }
     .mobile-close-btn:active{transform:translateY(1px)}
-    @media (min-width: 769px){.mobile-close-wrap{display:none}}
+    @media (min-width:769px){.mobile-close-wrap{display:none}}
 
     .hero-spacer{height:88px}
     .page-shell{padding-top:36px;padding-bottom:10px}
 
-    .page-head{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:flex-start;
-      gap:16px;
-    }
-    .page-head-left{
-      grid-column:2;
-      max-width:840px;
-      text-align:center;
-    }
-    .page-head-right{
-      grid-column:3;
-      justify-self:end;
-    }
+    .page-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:flex-start;gap:16px}
+    .page-head-left{grid-column:2;max-width:840px;text-align:center}
+    .page-head-right{grid-column:3;justify-self:end}
     h1{margin:0;font-size:2.5rem;line-height:1.05;letter-spacing:-0.02em}
     .subheader{margin:10px 0 0 0;color:var(--muted);font-size:1.08rem;line-height:1.45;font-weight:700}
 
     .mini-edit{
-      display:none;padding:10px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer;
-      font-weight:950;box-shadow:0 10px 24px rgba(11,18,32,0.06);white-space:nowrap;
+      display:none;padding:10px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#fff;
+      cursor:pointer;font-weight:950;box-shadow:0 10px 24px rgba(11,18,32,0.06);white-space:nowrap;
     }
-    .mini-edit:hover{border-color:rgba(240,154,15,0.45)}
     .mini-edit span{color:var(--accent)}
     body.is-admin .mini-edit{display:inline-flex;align-items:center;gap:8px}
 
-    .btn{
-      padding:12px 14px;border-radius:14px;border:0;cursor:pointer;font-weight:950;font-size:1rem;
-      box-shadow:0 10px 22px rgba(11,18,32,0.06)
-    }
+    .btn{padding:12px 14px;border-radius:14px;border:0;cursor:pointer;font-weight:950;font-size:1rem;box-shadow:0 10px 22px rgba(11,18,32,0.06)}
     .btn-primary{background:var(--accent);color:#fff}
     .btn-secondary{background:#fff;color:var(--accent);border:1px solid rgba(0,0,0,0.10);box-shadow:none}
     .btn-cancel{background:#eef2f6;color:#111;box-shadow:none}
@@ -190,139 +113,59 @@
     body.is-admin .below-grid-actions{display:flex}
 
     .news-grid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:22px}
-
     .news-card{
-      background:var(--card);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      position:relative;
-      display:flex;
-      flex-direction:row;
-      min-height:200px;
-      transition:
-        transform .38s cubic-bezier(.22,1,.36,1),
-        box-shadow .38s cubic-bezier(.22,1,.36,1),
-        border-radius .38s cubic-bezier(.22,1,.36,1);
-      will-change: transform, box-shadow;
+      background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;position:relative;
+      display:flex;flex-direction:row;min-height:200px;
+      transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1);
+      will-change: transform, box-shadow;cursor:pointer;
       animation:cardIn .55s cubic-bezier(.22,1,.36,1) both;
-      cursor:pointer;
     }
-    .news-card:hover{
-      transform:translateY(-3px);
-      box-shadow:0 18px 38px rgba(11,18,32,0.12);
-    }
+    .news-card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(11,18,32,0.12)}
     .news-card img{
-      width:220px;
-      min-height:200px;
-      object-fit:cover;
-      background:#eef2f6;
-      flex:0 0 220px;
-      transition:
-        width .55s cubic-bezier(.22,1,.36,1),
-        flex-basis .55s cubic-bezier(.22,1,.36,1),
-        transform .55s cubic-bezier(.22,1,.36,1);
-      will-change: width, flex-basis, transform;
+      width:220px;min-height:200px;object-fit:cover;background:#eef2f6;flex:0 0 220px;
+      transition:width .55s cubic-bezier(.22,1,.36,1), flex-basis .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
     }
-    .news-card.expanded img{
-      width:260px;
-      flex-basis:260px;
-      transform:scale(1.015);
-    }
-    .news-card-content{
-      padding:18px 20px 18px 18px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      flex:1;
-      justify-content:center;
-      min-width:0;
-    }
+    .news-card.expanded img{width:260px;flex-basis:260px;transform:scale(1.015)}
+    .news-card-content{padding:18px 20px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1;justify-content:center;min-width:0}
     .news-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .news-badge{
-      font-size:.84rem;
-      font-weight:900;
-      color:#a86405;
-      background:rgba(240,154,15,0.14);
-      padding:6px 10px;
-      border-radius:999px
-    }
+    .news-badge{font-size:.84rem;font-weight:900;color:#a86405;background:rgba(240,154,15,0.14);padding:6px 10px;border-radius:999px}
     .news-card h3{margin:0;font-size:1.45rem;line-height:1.14;color:#111}
-    .short-desc{
-      margin:0;
-      color:var(--muted);
-      font-size:1rem;
-      line-height:1.45;
-      font-weight:700;
-    }
+    .short-desc{margin:0;color:var(--muted);font-size:1rem;line-height:1.45;font-weight:700}
     .full-text{
-      max-height:0;
-      opacity:0;
-      overflow:hidden;
-      transform:translateY(10px);
-      transition:
-        max-height .68s cubic-bezier(.22,1,.36,1),
-        opacity .34s ease,
-        transform .48s cubic-bezier(.22,1,.36,1),
-        margin-top .48s cubic-bezier(.22,1,.36,1);
+      max-height:0;opacity:0;overflow:hidden;transform:translateY(10px);
+      transition:max-height .68s cubic-bezier(.22,1,.36,1), opacity .34s ease, transform .48s cubic-bezier(.22,1,.36,1), margin-top .48s cubic-bezier(.22,1,.36,1);
       margin-top:0;
     }
     .full-text p{margin:0;color:#0b1220;line-height:1.6;font-weight:650;white-space:pre-line}
-    .news-card.expanded .full-text{
-      max-height:2200px;
-      opacity:1;
-      transform:translateY(0);
-      margin-top:8px;
-    }
-    .read-more{
-      margin-top:2px;
-      font-size:.92rem;
-      font-weight:900;
-      color:#a86405;
-    }
+    .news-card.expanded .full-text{max-height:2200px;opacity:1;transform:translateY(0);margin-top:8px}
+    .read-more{margin-top:2px;font-size:.92rem;font-weight:900;color:#a86405}
 
     .news-card-actions{position:absolute;top:12px;right:12px;display:none;gap:8px}
     body.is-admin .news-card-actions{display:flex}
     .icon-btn{
-      width:42px;height:42px;border-radius:12px;border:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,.96);
-      box-shadow:0 10px 22px rgba(11,18,32,0.08);cursor:pointer;font-size:18px
+      width:42px;height:42px;border-radius:12px;border:1px solid rgba(0,0,0,0.08);
+      background:rgba(255,255,255,.96);box-shadow:0 10px 22px rgba(11,18,32,0.08);
+      cursor:pointer;font-size:18px;
     }
 
-    .empty-state{
-      background:#fff;border-radius:18px;box-shadow:var(--shadow);
-      padding:28px;color:var(--muted);font-weight:800;text-align:center
-    }
+    .empty-state{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:28px;color:var(--muted);font-weight:800;text-align:center}
 
     .runtime-error{
-      display:none;
-      margin:14px auto 0 auto;
-      max-width: min(var(--maxw), calc(100vw - 32px));
-      background:#fff1f2;
-      border:1px solid #fecdd3;
-      color:#9f1239;
-      border-radius:16px;
-      padding:14px 14px;
-      font-weight:900;
-      box-shadow:0 12px 28px rgba(11,18,32,0.08);
+      display:none;margin:14px auto 0 auto;max-width:min(var(--maxw), calc(100vw - 32px));
+      background:#fff1f2;border:1px solid #fecdd3;color:#9f1239;border-radius:16px;padding:14px 14px;
+      font-weight:900;box-shadow:0 12px 28px rgba(11,18,32,0.08);
     }
     .runtime-error small{display:block;margin-top:6px;font-weight:750;opacity:.9;line-height:1.35}
 
-    .edit-overlay{
-      position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);display:none;
-      justify-content:center;align-items:center;z-index:200;padding:12px;
-    }
+    .edit-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);display:none;justify-content:center;align-items:center;z-index:200;padding:12px}
     .editor{
       background:#fff;padding:18px;border-radius:18px;max-width:840px;width:100%;display:flex;flex-direction:column;gap:12px;
       box-shadow:0 18px 46px rgba(0,0,0,0.25);max-height:min(92vh,1000px);overflow:auto;
     }
     .editor h3{margin:0}
     .editor h4{margin:0;font-size:1.02rem}
-    .editor-section{
-      padding:14px;border:1px solid #e9eef5;border-radius:16px;background:#fbfcfe;display:flex;flex-direction:column;gap:12px
-    }
-    .editor input,.editor textarea{
-      width:100%;padding:12px;border-radius:14px;border:1px solid #e6eef2;font-size:1rem;outline:none;font-weight:750
-    }
+    .editor-section{padding:14px;border:1px solid #e9eef5;border-radius:16px;background:#fbfcfe;display:flex;flex-direction:column;gap:12px}
+    .editor input,.editor textarea{width:100%;padding:12px;border-radius:14px;border:1px solid #e6eef2;font-size:1rem;outline:none;font-weight:750}
     .editor textarea{min-height:120px;resize:vertical;font-family:inherit}
     .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
     .row > *{flex:1 1 auto}
@@ -347,31 +190,25 @@
     .save-publish .btn-primary{background:var(--accent)}
     .save-publish .btn-cancel{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.22)}
 
-    /* checkbox row */
     .check-row{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid #e6eef2;
-      background:#fff;
+      display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;border:1px solid #e6eef2;background:#fff;
     }
     .check-row input{width:22px;height:22px;flex:0 0 auto;margin-top:2px}
     .check-row strong{display:block}
     .check-row small{display:block;color:var(--muted);font-weight:750;line-height:1.35;margin-top:3px}
 
+    .status-hint{
+      padding:10px 12px;border-radius:14px;border:1px dashed rgba(0,0,0,0.18);
+      background:rgba(0,0,0,0.02);
+      font-weight:900;color:#0b1220;
+    }
+    .status-hint span{color:#a86405}
+
     footer{margin-top:28px;text-align:center;color:var(--muted);font-size:.98rem;padding:20px 14px 30px 14px;font-weight:800}
 
     @media (max-width: 900px){
       .news-card{flex-direction:column}
-      .news-card img,
-      .news-card.expanded img{
-        width:100%;
-        min-height:220px;
-        flex-basis:auto;
-        transform:none;
-      }
+      .news-card img,.news-card.expanded img{width:100%;min-height:220px;flex-basis:auto;transform:none}
       h1{font-size:2rem}
       .page-head{grid-template-columns:1fr}
       .page-head-left{grid-column:1}
@@ -471,22 +308,26 @@
 <div class="edit-overlay" id="projectOverlay" role="dialog" aria-modal="true" aria-label="Redigera projekt">
   <div class="editor">
     <h3 id="projectEditorHeading">Nytt projekt</h3>
-    <p class="helptext">Fyll i fälten nedan. Ändringarna sparas först lokalt för dig. När du är nöjd trycker du på <strong>Spara och publicera</strong> längst ner.</p>
+    <p class="helptext">Ändringarna sparas först lokalt. Flytt mellan Framtida/Utförda sker när du trycker <strong>Spara och publicera</strong>.</p>
 
     <div class="editor-section">
       <h4>1. Rubrik och status</h4>
 
       <div>
         <label class="field-label" for="projTitleInput">Rubrik</label>
-        <input type="text" id="projTitleInput" placeholder="Till exempel: Renovering av trapphuset på gång">
+        <input type="text" id="projTitleInput" placeholder="Till exempel: Renovering av trapphuset">
       </div>
 
       <div class="check-row">
         <input id="projDoneCheckbox" type="checkbox" />
         <div>
           <strong>Projektet är utfört</strong>
-          <small>När du publicerar flyttas det till sidan “Utförda projekt”.</small>
+          <small>Kryssa i för att flytta till “Utförda projekt”.</small>
         </div>
+      </div>
+
+      <div class="status-hint" id="statusHint">
+        Flyttas till: <span id="statusHintTarget">Framtida projekt</span>
       </div>
     </div>
 
@@ -494,7 +335,7 @@
       <h4>2. Kort ingress</h4>
       <div>
         <label class="field-label" for="projShortInput">Kort ingress</label>
-        <textarea id="projShortInput" rows="3" placeholder="En kort sammanfattning som syns direkt i kortet."></textarea>
+        <textarea id="projShortInput" rows="3" placeholder="Kort sammanfattning..."></textarea>
       </div>
     </div>
 
@@ -502,7 +343,7 @@
       <h4>3. Full text</h4>
       <div>
         <label class="field-label" for="projBodyInput">Fullständig text</label>
-        <textarea id="projBodyInput" rows="8" placeholder="Här skriver ni hela informationen som visas när man klickar på kortet."></textarea>
+        <textarea id="projBodyInput" rows="8" placeholder="Hela texten som visas när kortet fälls ut..."></textarea>
       </div>
     </div>
 
@@ -510,7 +351,7 @@
       <h4>4. Bild</h4>
       <div>
         <label class="field-label" for="projImageInput">Bild</label>
-        <input type="text" id="projImageInput" placeholder="Bildlänk eller uppladdad bild (tomt = standardbild)">
+        <input type="text" id="projImageInput" placeholder="Lämna tomt för standardbild">
       </div>
 
       <div id="projImagePreviewWrap" class="preview-wrap">
@@ -635,13 +476,12 @@
   (async () => {
     try{
       const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js");
-      const {
-        getFirestore, collection, doc, setDoc, getDoc, onSnapshot, query, where, deleteDoc
-      } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js");
-      const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js");
-      const {
-        getStorage, ref: storageRef, uploadBytesResumable, getDownloadURL
-      } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js");
+      const { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, query, where, deleteDoc } =
+        await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js");
+      const { getAuth, onAuthStateChanged } =
+        await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js");
+      const { getStorage, ref: storageRef, uploadBytesResumable, getDownloadURL } =
+        await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js");
 
       const app = initializeApp({
         apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
@@ -659,7 +499,7 @@
       const PAGE_DOC_REF = doc(db, "pages", "projectsOngoing");
       const PROJECTS_COL = collection(db, "projects");
       const FEED_COL = collection(db, "latestFeed");
-      const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_like_news_v2:${STATUS}`;
+      const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_like_news_v3:${STATUS}`;
 
       const pageTitleEl = document.getElementById("pageTitle");
       const pageSubtitleEl = document.getElementById("pageSubtitle");
@@ -669,7 +509,6 @@
       const brandTagline = document.getElementById("brandTagline");
 
       const projectsGrid = document.getElementById("projectsGrid");
-      const projectsLoading = document.getElementById("projectsLoading");
       const savePublish = document.getElementById("savePublish");
       const addProjectBtn = document.getElementById("addProjectBtn");
       const editPageBtn = document.getElementById("editPageBtn");
@@ -678,6 +517,7 @@
       const projectEditorHeading = document.getElementById("projectEditorHeading");
       const projTitleInput = document.getElementById("projTitleInput");
       const projDoneCheckbox = document.getElementById("projDoneCheckbox");
+      const statusHintTarget = document.getElementById("statusHintTarget");
       const projShortInput = document.getElementById("projShortInput");
       const projBodyInput = document.getElementById("projBodyInput");
       const projImageInput = document.getElementById("projImageInput");
@@ -699,15 +539,20 @@
       const savePageDraftBtn = document.getElementById("savePageDraftBtn");
       const cancelPageEditBtn = document.getElementById("cancelPageEditBtn");
 
+      function clearLoading(){
+        const el = document.getElementById("projectsLoading");
+        if(el) el.remove();
+      }
+      function showFirestoreError(context, err){
+        clearLoading();
+        showRuntimeError(context, err);
+      }
+
       function loadDrafts(){
         try{
           const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
           const parsed = raw ? JSON.parse(raw) : {};
-          return {
-            page: parsed.page || null,
-            items: parsed.items || {},
-            deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : []
-          };
+          return { page: parsed.page || null, items: parsed.items || {}, deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : [] };
         }catch{
           return { page:null, items:{}, deletedIds:[] };
         }
@@ -765,12 +610,20 @@
         if(!ts || typeof ts !== "number") return "Nyhet";
         return new Date(ts).toLocaleDateString("sv-SE", { year:"numeric", month:"short", day:"numeric" });
       }
-      function setOverlayOpen(ov, open){
-        ov.style.display = open ? "flex" : "none";
+      function setOverlayOpen(ov, open){ ov.style.display = open ? "flex" : "none"; }
+      function requireAdmin(){ if(!isAdmin) throw new Error("Admin krävs."); }
+
+      function statusLabel(status){
+        return status === "done" ? "Utförda projekt" : "Framtida projekt";
       }
-      function requireAdmin(){
-        if(!isAdmin) throw new Error("Du behöver vara admin.");
+      function statusUrl(status){
+        return status === "done" ? "utfordaplaner.html" : "pagaendeplaner.html";
       }
+      function syncStatusHint(){
+        if(!statusHintTarget) return;
+        statusHintTarget.textContent = projDoneCheckbox.checked ? "Utförda projekt" : "Framtida projekt";
+      }
+      projDoneCheckbox?.addEventListener("change", syncStatusHint);
 
       function renderPage(){
         const p = effectivePage();
@@ -800,7 +653,7 @@
 
       function renderProjects(){
         applyLocalDrafts();
-        projectsLoading?.remove();
+        clearLoading();
         projectsGrid.innerHTML = "";
 
         if(!visibleItems.length){
@@ -814,13 +667,14 @@
           article.dataset.id = item.id;
 
           const imageUrl = withDefaultImage(item.image);
+          const badgeLabel = statusLabel(item.status);
 
           article.innerHTML = `
             <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title || "Projekt")}">
             <div class="news-card-content">
               <div class="news-meta">
                 <span class="news-badge">${escapeHtml(formatDate(item.updatedAt || item.createdAt))}</span>
-                <span class="news-badge">Framtida projekt</span>
+                <span class="news-badge">${escapeHtml(badgeLabel)}</span>
               </div>
               <h3>${escapeHtml(item.title || "Utan rubrik")}</h3>
               <p class="short-desc">${escapeHtml(item.short || "")}</p>
@@ -899,11 +753,15 @@
         requireAdmin();
         editingItemId = item?.id || doc(PROJECTS_COL).id;
         projectEditorHeading.textContent = item ? "Redigera projekt" : "Nytt projekt";
+
         projTitleInput.value = item?.title || "";
         projShortInput.value = item?.short || "";
         projBodyInput.value = item?.body || "";
         projImageInput.value = (item?.image || "").trim();
+
         projDoneCheckbox.checked = (item?.status === "done");
+        syncStatusHint();
+
         setProjImagePreview(projImageInput.value);
         setProjImageProgress(null);
         setUploadBusy(false);
@@ -936,10 +794,7 @@
 
         const objRef = storageRef(storage, getStoragePathForUpload(file));
         return await new Promise((resolve, reject)=>{
-          const task = uploadBytesResumable(objRef, file, {
-            contentType: file.type,
-            cacheControl: "public, max-age=31536000"
-          });
+          const task = uploadBytesResumable(objRef, file, { contentType: file.type, cacheControl: "public, max-age=31536000" });
           task.on("state_changed",
             (snap)=>{
               const pct = snap.totalBytes > 0 ? (snap.bytesTransferred / snap.totalBytes) * 100 : 0;
@@ -987,13 +842,11 @@
         const title = projTitleInput.value.trim();
         const short = projShortInput.value.trim();
         const bodyText = projBodyInput.value.trim();
-
         if(!title) return alert("Skriv en rubrik.");
         if(!short) return alert("Skriv en kort ingress.");
         if(!bodyText) return alert("Skriv den fullständiga texten.");
 
         const existing = serverItems.find(x => x.id === editingItemId) || visibleItems.find(x => x.id === editingItemId);
-
         const nextStatus = projDoneCheckbox.checked ? "done" : "ongoing";
 
         pendingDrafts.deletedIds = (pendingDrafts.deletedIds || []).filter(x => x !== editingItemId);
@@ -1013,11 +866,6 @@
 
         persistDrafts();
         setOverlayOpen(projectOverlay, false);
-
-        if(nextStatus === "done"){
-          alert("Projektet markeras som utfört och flyttas till “Utförda projekt” när du publicerar.");
-        }
-
         renderProjects();
       });
 
@@ -1081,14 +929,13 @@
           };
           jobs.push(setDoc(doc(db, "projects", id), projPayload, { merge:true }));
 
-          const isDone = (projPayload.status === "done");
           const feedPayload = {
             title: projPayload.title,
             shortText: projPayload.short,
             text: projPayload.body,
             image: withDefaultImage(projPayload.image),
-            sourceLabel: isDone ? "Utförda projekt" : "Framtida projekt",
-            sourceUrl: isDone ? "utfordaplaner.html" : "pagaendeplaner.html",
+            sourceLabel: statusLabel(projPayload.status),
+            sourceUrl: statusUrl(projPayload.status),
             sourceType: "project",
             published: true,
             createdAt: projPayload.createdAt,
@@ -1112,62 +959,72 @@
         window.location.reload();
       }
 
-      function renderSavePublishBar(){
-        if(!savePublish) return;
-        if(!isAdmin || !hasPendingDrafts()){
-          savePublish.classList.remove("show");
-          savePublish.innerHTML = "";
-          return;
-        }
-        const count = countPendingDrafts();
-        savePublish.classList.add("show");
-        savePublish.innerHTML = `
-          <div class="save-publish-text">${count} osparade ändring${count === 1 ? '' : 'ar'}</div>
-          <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
-          <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
-        `;
-        document.getElementById("publishDraftsBtn")?.addEventListener("click", publishPendingDrafts);
-        document.getElementById("discardDraftsBtn")?.addEventListener("click", discardPendingDrafts);
-      }
+      function renderSavePublishBar(){ renderSavePublishBar(); } // keep name stable
 
-      onSnapshot(PAGE_DOC_REF, (snap)=>{
-        if(snap.exists()) pageData = { ...pageData, ...snap.data() };
-        renderPage();
-        renderProjects();
-      });
+      // === Listeners with error callbacks (so you never get stuck on loading) ===
+      onSnapshot(
+        PAGE_DOC_REF,
+        (snap)=>{
+          if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+          renderPage();
+          renderProjects();
+        },
+        (err)=> showFirestoreError("Kunde inte läsa sidinställningar (pages)", err)
+      );
 
-      // IMPORTANT: this page only renders ongoing projects
-      onSnapshot(query(PROJECTS_COL, where("status","==",STATUS)), (snap)=>{
-        serverItems = [];
-        snap.forEach(d=>{
-          const data = d.data() || {};
-          serverItems.push({
-            id: d.id,
-            title: String(data.title ?? ""),
-            short: String(data.short ?? data.desc ?? ""),
-            body: String(data.body ?? ""),
-            image: String(data.image ?? ""),
-            status: String(data.status ?? STATUS),
-            createdAt: Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now(),
-            updatedAt: Number.isFinite(Number(data.updatedAt)) ? Number(data.updatedAt) : (Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now())
+      onSnapshot(
+        query(PROJECTS_COL, where("status","==",STATUS)),
+        (snap)=>{
+          serverItems = [];
+          snap.forEach(d=>{
+            const data = d.data() || {};
+            serverItems.push({
+              id: d.id,
+              title: String(data.title ?? ""),
+              short: String(data.short ?? data.desc ?? ""),
+              body: String(data.body ?? ""),
+              image: String(data.image ?? ""),
+              status: String(data.status ?? STATUS),
+              createdAt: Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now(),
+              updatedAt: Number.isFinite(Number(data.updatedAt)) ? Number(data.updatedAt) :
+                (Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now())
+            });
           });
-        });
-        renderProjects();
-        renderSavePublishBar();
-      });
+          clearLoading();
+          renderProjects();
+          renderSavePublishBar();
+        },
+        (err)=> showFirestoreError("Kunde inte läsa projekt (projects) — kontrollera Firestore rules", err)
+      );
 
+      // Admin/auth detection (with explicit error reporting)
       onAuthStateChanged(auth, async (user)=>{
         currentUser = user;
         isAdmin = false;
+
         if(user){
-          const snap = await getDoc(doc(db, "users", user.uid));
-          const role = snap.exists() ? snap.data().role : null;
-          isAdmin = role === "admin" || role === "ordforande";
+          try{
+            const snap = await getDoc(doc(db, "users", user.uid));
+            const role = snap.exists() ? snap.data().role : null;
+            isAdmin = role === "admin" || role === "ordforande";
+          }catch(err){
+            showFirestoreError("Kunde inte läsa din user-roll (users/<uid>)", err);
+          }
         }
+
         document.body.classList.toggle("is-admin", isAdmin);
         renderSavePublishBar();
       });
 
+      // Watchdog: if still loading after 6s -> show readable message
+      setTimeout(() => {
+        const stillLoading = document.getElementById("projectsLoading");
+        if(stillLoading){
+          showRuntimeError("Fastnade på 'Laddar projekt…'", new Error("JavaScript körs men Firestore svarar inte. Vanligtvis Firestore rules (permission-denied) eller nätverksblockering."));
+        }
+      }, 6000);
+
+      // Initial paint
       renderPage();
       renderProjects();
       renderSavePublishBar();
