@@ -861,8 +861,12 @@ header.is-solid nav a {
           ]
         },
         
-{ type:'link', label:'Planeringsprojekt', url:'planeringsprojekt.html', order:3 },
-        
+{
+  type:'dropdown', label:'Projekt', order:3, children:[
+    { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
+    { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
+  ]
+},      
         { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
         { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
         { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
