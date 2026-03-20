@@ -386,6 +386,7 @@
   <nav>
     <div class="hamburger" id="hamburger">☰</div>
 
+    <!-- Static menu fallback -->
     <ul id="mainNav">
       <li><a href="index.html">Hem</a></li>
 
@@ -454,7 +455,7 @@
 
 <div class="save-publish" id="savePublish" aria-live="polite"></div>
 
-<!-- overlays are the same as future page; JS will wire -->
+<!-- overlays (wired by JS when admin) -->
 <div class="edit-overlay" id="projectOverlay" role="dialog" aria-modal="true" aria-label="Redigera projekt">
   <div class="editor">
     <h3 id="projectEditorHeading">Nytt projekt</h3>
@@ -564,6 +565,9 @@
 <footer id="footerText">© Västhaga Nr4 — Bostadsrättsförening</footer>
 
 <script type="module">
+  const STATUS = "done";
+
+  // FAILSAFE runtime errors on page
   const runtimeError = document.getElementById("runtimeError");
   const runtimeErrorDetails = document.getElementById("runtimeErrorDetails");
   function showRuntimeError(msg, err){
@@ -575,6 +579,7 @@
   window.addEventListener("error", (e)=> showRuntimeError("JavaScript-fel", e.error || e.message));
   window.addEventListener("unhandledrejection", (e)=> showRuntimeError("Ohanterat Promise-fel", e.reason));
 
+  // mobile dropdowns clickable
   function wireMobileDropdowns(){
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     document.querySelectorAll(".dropdown").forEach(dd => dd.classList.remove("active"));
@@ -591,6 +596,7 @@
   wireMobileDropdowns();
   window.addEventListener("resize", wireMobileDropdowns);
 
+  // hamburger open/close
   const mainNav = document.getElementById("mainNav");
   const hamburger = document.getElementById("hamburger");
   const closeMenuBtn = document.getElementById("closeMenuBtn");
@@ -600,10 +606,11 @@
     hamburger.textContent = open ? "➤" : "☰";
     hamburger.classList.toggle("is-open", open);
   }
-  if(hamburger) hamburger.addEventListener("click", ()=> setNavOpen(!mainNav.classList.contains("show")));
-  if(closeMenuBtn) closeMenuBtn.addEventListener("click", ()=> setNavOpen(false));
+  hamburger?.addEventListener("click", ()=> setNavOpen(!mainNav.classList.contains("show")));
+  closeMenuBtn?.addEventListener("click", ()=> setNavOpen(false));
   document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") setNavOpen(false); });
 
+  // Firebase init
   (async () => {
     try{
       const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js");
@@ -614,8 +621,6 @@
       const {
         getStorage, ref: storageRef, uploadBytesResumable, getDownloadURL
       } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js");
-
-      const STATUS = "done";
 
       const app = initializeApp({
         apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
@@ -632,16 +637,27 @@
 
       const SOURCE_LABEL = "Utförda projekt";
       const SOURCE_URL = "utfordaplaner.html";
+
       const PAGE_DOC_REF = doc(db, "pages", "projectsDone");
       const PROJECTS_COL = collection(db, "projects");
       const FEED_COL = collection(db, "latestFeed");
       const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_like_news_v1:${STATUS}`;
 
+      // DOM refs
       const body = document.body;
+
+      const brandLogo = document.getElementById("brandLogo");
+      const brandName = document.getElementById("brandName");
+      const brandTagline = document.getElementById("brandTagline");
+
+      const pageTitleEl = document.getElementById("pageTitle");
+      const pageSubtitleEl = document.getElementById("pageSubtitle");
+      const footerTextEl = document.getElementById("footerText");
+
       const projectsGrid = document.getElementById("projectsGrid");
       const projectsLoading = document.getElementById("projectsLoading");
-      const savePublish = document.getElementById("savePublish");
 
+      const savePublish = document.getElementById("savePublish");
       const addProjectBtn = document.getElementById("addProjectBtn");
       const editPageBtn = document.getElementById("editPageBtn");
 
@@ -689,26 +705,46 @@
         renderSavePublishBar();
       }
       function hasPendingDrafts(){
-        return Boolean(pendingDrafts.page || Object.keys(pendingDrafts.items||{}).length || (pendingDrafts.deletedIds||[]).length);
+        return Boolean(
+          pendingDrafts.page ||
+          Object.keys(pendingDrafts.items || {}).length ||
+          (pendingDrafts.deletedIds || []).length
+        );
       }
       function countPendingDrafts(){
         let c = 0;
         if(pendingDrafts.page) c += 1;
-        c += Object.keys(pendingDrafts.items||{}).length;
-        c += (pendingDrafts.deletedIds||[]).length;
+        c += Object.keys(pendingDrafts.items || {}).length;
+        c += (pendingDrafts.deletedIds || []).length;
         return c;
       }
-      function requireAdmin(){
-        if(!isAdmin) throw new Error("Du behöver vara admin.");
+
+      function escapeHtml(str=""){
+        return String(str)
+          .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;").replaceAll("'","&#039;");
       }
       function formatDate(ts){
         if(!ts || typeof ts !== "number") return "Nyhet";
         return new Date(ts).toLocaleDateString("sv-SE", { year:"numeric", month:"short", day:"numeric" });
       }
+      function setOverlayOpen(ov, open){
+        ov.style.display = open ? "flex" : "none";
+      }
 
       let currentUser = null;
       let isAdmin = false;
-      let pageData = { defaultImageUrl:"husbild.jpg" };
+
+      let pageData = {
+        title: "Utförda projekt",
+        subtitle: "Projekt som är genomförda i föreningen.",
+        footerText: "© Västhaga Nr4 — Bostadsrättsförening",
+        brandName: "Västhaga Nr4",
+        brandTagline: "Bostadsrättsförening",
+        logoUrl: "logga.png",
+        defaultImageUrl: "husbild.jpg"
+      };
+
       let serverItems = [];
       let visibleItems = [];
       let expandedId = null;
@@ -723,16 +759,28 @@
         const def = (effectivePage().defaultImageUrl || "husbild.jpg").trim();
         return clean || def;
       }
-      function setOverlayOpen(ov, open){ ov.style.display = open ? "flex" : "none"; }
+
+      function renderPage(){
+        const p = effectivePage();
+        document.title = `${p.title || "Utförda projekt"} — Västhaga Nr4`;
+        pageTitleEl.textContent = p.title || "Utförda projekt";
+        pageSubtitleEl.textContent = p.subtitle || "";
+        footerTextEl.textContent = p.footerText || "© Västhaga Nr4 — Bostadsrättsförening";
+        brandName.textContent = p.brandName || "Västhaga Nr4";
+        brandTagline.textContent = p.brandTagline || "Bostadsrättsförening";
+        if((p.logoUrl || "").trim()) brandLogo.src = p.logoUrl.trim();
+      }
 
       function applyLocalDrafts(){
         const deletedSet = new Set(pendingDrafts.deletedIds || []);
         const merged = serverItems.filter(x => !deletedSet.has(x.id)).map(x => ({...x}));
         Object.entries(pendingDrafts.items || {}).forEach(([id, payload])=>{
           const idx = merged.findIndex(x => x.id === id);
-          const next = { ...(idx>=0?merged[idx]:{id, createdAt: Date.now()}), ...payload, id };
-          if(idx>=0) merged[idx]=next; else merged.push(next);
+          const next = { ...(idx>=0 ? merged[idx] : { id, createdAt: Date.now() }), ...payload, id };
+          if(idx>=0) merged[idx] = next;
+          else merged.push(next);
         });
+
         visibleItems = merged
           .filter(x => x.status === STATUS)
           .map(x => ({...x, image: withDefaultImage(x.image)}))
@@ -741,7 +789,7 @@
 
       function renderProjects(){
         applyLocalDrafts();
-        if(projectsLoading) projectsLoading.remove();
+        projectsLoading?.remove();
         projectsGrid.innerHTML = "";
 
         if(!visibleItems.length){
@@ -755,16 +803,17 @@
           article.dataset.id = item.id;
 
           const imageUrl = withDefaultImage(item.image);
+
           article.innerHTML = `
-            <img src="${imageUrl.replaceAll('"','&quot;')}" alt="">
+            <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title || "Projekt")}">
             <div class="news-card-content">
               <div class="news-meta">
-                <span class="news-badge">${formatDate(item.updatedAt || item.createdAt)}</span>
-                <span class="news-badge">${SOURCE_LABEL}</span>
+                <span class="news-badge">${escapeHtml(formatDate(item.updatedAt || item.createdAt))}</span>
+                <span class="news-badge">${escapeHtml(SOURCE_LABEL)}</span>
               </div>
-              <h3>${String(item.title||"")}</h3>
-              <p class="short-desc">${String(item.short||"")}</p>
-              <div class="full-text"><p>${String(item.body||"")}</p></div>
+              <h3>${escapeHtml(item.title || "Utan rubrik")}</h3>
+              <p class="short-desc">${escapeHtml(item.short || "")}</p>
+              <div class="full-text"><p>${escapeHtml(item.body || "")}</p></div>
               <div class="read-more">Klicka för att läsa mer</div>
             </div>
             <div class="news-card-actions">
@@ -782,6 +831,20 @@
           const actions = article.querySelector(".news-card-actions");
           if(!isAdmin && actions) actions.style.display = "none";
 
+          const editBtn = article.querySelector('[data-action="edit"]');
+          const delBtn = article.querySelector('[data-action="delete"]');
+
+          editBtn?.addEventListener("click", (e)=>{
+            e.stopPropagation();
+            if(!isAdmin) return;
+            openProjectEditor(item);
+          });
+          delBtn?.addEventListener("click", (e)=>{
+            e.stopPropagation();
+            if(!isAdmin) return;
+            queueDelete(item.id);
+          });
+
           projectsGrid.appendChild(article);
         });
       }
@@ -796,14 +859,254 @@
         const count = countPendingDrafts();
         savePublish.classList.add("show");
         savePublish.innerHTML = `
-          <div class="save-publish-text">${count} osparade ändring${count === 1 ? '' : 'ar'}</div>
+          <div class="save-publish-text">${count} osparade ändring${count === 1 ? "" : "ar"}</div>
           <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
           <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
         `;
+        document.getElementById("publishDraftsBtn")?.addEventListener("click", publishPendingDrafts);
+        document.getElementById("discardDraftsBtn")?.addEventListener("click", discardPendingDrafts);
       }
 
+      function setProjImagePreview(url){
+        projImagePreview.src = withDefaultImage(url);
+        projImagePreviewWrap.style.display = "block";
+      }
+      function setProjImageProgress(percent){
+        if(percent == null){
+          projImageProgressWrap.style.display = "none";
+          projImageProgressBar.style.width = "0%";
+          projImageProgressText.textContent = "0%";
+          return;
+        }
+        projImageProgressWrap.style.display = "block";
+        const p = Math.max(0, Math.min(100, Math.round(percent)));
+        projImageProgressBar.style.width = `${p}%`;
+        projImageProgressText.textContent = `${p}%`;
+      }
+      function setUploadBusy(busy){
+        uploadInProgress = busy;
+        projImageUpload.disabled = busy;
+        projImageInput.disabled = busy;
+        removeProjImageBtn.disabled = busy;
+        saveProjDraftBtn.disabled = busy;
+        saveProjDraftBtn.textContent = busy ? "Laddar upp bild…" : "Spara lokalt";
+      }
+
+      function openProjectEditor(item=null){
+        if(!isAdmin) return;
+        editingItemId = item?.id || doc(PROJECTS_COL).id;
+        projectEditorHeading.textContent = item ? "Redigera projekt" : "Nytt projekt";
+        projTitleInput.value = item?.title || "";
+        projShortInput.value = item?.short || "";
+        projBodyInput.value = item?.body || "";
+        projImageInput.value = (item?.image || "").trim();
+        setProjImagePreview(projImageInput.value);
+        setProjImageProgress(null);
+        setUploadBusy(false);
+        setOverlayOpen(projectOverlay, true);
+      }
+
+      function queueDelete(id){
+        if(!isAdmin) return;
+        if(!confirm("Vill du ta bort projektet? Det tas bort när du publicerar.")) return;
+        pendingDrafts.deletedIds = Array.from(new Set([...(pendingDrafts.deletedIds || []), id]));
+        if(pendingDrafts.items && pendingDrafts.items[id]) delete pendingDrafts.items[id];
+        persistDrafts();
+        if(expandedId === id) expandedId = null;
+        renderProjects();
+      }
+
+      function getStoragePathForUpload(file){
+        const safeName = (file.name || "image").trim().replace(/[^\w.\-]+/g, "_").slice(0, 80);
+        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const rand = Math.random().toString(16).slice(2, 10);
+        return `uploads/projects/${stamp}_${rand}_${safeName}`;
+      }
+
+      async function uploadImageFileToStorageWithProgress(file, onProgress){
+        if(!isAdmin) throw new Error("Admin krävs.");
+        if(!file) throw new Error("Ingen fil vald.");
+        if(!file.type?.startsWith("image/")) throw new Error("Endast bildfiler är tillåtna.");
+        const maxBytes = 6 * 1024 * 1024;
+        if(file.size > maxBytes) throw new Error("Filen är för stor (max 6 MB).");
+
+        const objRef = storageRef(storage, getStoragePathForUpload(file));
+        return await new Promise((resolve, reject)=>{
+          const task = uploadBytesResumable(objRef, file, {
+            contentType: file.type,
+            cacheControl: "public, max-age=31536000"
+          });
+          task.on("state_changed",
+            (snap)=>{
+              const pct = snap.totalBytes > 0 ? (snap.bytesTransferred / snap.totalBytes) * 100 : 0;
+              onProgress?.(pct);
+            },
+            reject,
+            async ()=>resolve(await getDownloadURL(task.snapshot.ref))
+          );
+        });
+      }
+
+      // wire overlay buttons
+      addProjectBtn.addEventListener("click", ()=> openProjectEditor(null));
+      cancelProjEditBtn.addEventListener("click", ()=> setOverlayOpen(projectOverlay, false));
+
+      projImageInput.addEventListener("input", ()=> setProjImagePreview(projImageInput.value));
+      removeProjImageBtn.addEventListener("click", ()=>{
+        projImageInput.value = "";
+        projImageUpload.value = "";
+        setProjImagePreview("");
+      });
+      projImageUpload.addEventListener("change", async (e)=>{
+        try{
+          if(!isAdmin) return alert("Admin krävs.");
+          const file = e.target.files?.[0];
+          if(!file) return;
+          setUploadBusy(true);
+          setProjImageProgress(0);
+          const url = await uploadImageFileToStorageWithProgress(file, pct => setProjImageProgress(pct));
+          projImageInput.value = url;
+          setProjImagePreview(url);
+          setProjImageProgress(null);
+        }catch(err){
+          setProjImageProgress(null);
+          alert(err?.message || "Uppladdningen misslyckades.");
+        }finally{
+          setUploadBusy(false);
+          projImageUpload.value = "";
+        }
+      });
+
+      saveProjDraftBtn.addEventListener("click", ()=>{
+        if(!isAdmin) return alert("Admin krävs.");
+        if(uploadInProgress) return alert("Vänta tills bilduppladdningen är klar först.");
+
+        const title = projTitleInput.value.trim();
+        const short = projShortInput.value.trim();
+        const bodyText = projBodyInput.value.trim();
+
+        if(!title) return alert("Skriv en rubrik.");
+        if(!short) return alert("Skriv en kort ingress.");
+        if(!bodyText) return alert("Skriv den fullständiga texten.");
+
+        const existing = serverItems.find(x => x.id === editingItemId) || visibleItems.find(x => x.id === editingItemId);
+
+        pendingDrafts.deletedIds = (pendingDrafts.deletedIds || []).filter(x => x !== editingItemId);
+        pendingDrafts.items = {
+          ...(pendingDrafts.items || {}),
+          [editingItemId]: {
+            title,
+            short,
+            body: bodyText,
+            image: projImageInput.value.trim(),
+            status: STATUS,
+            published: true,
+            createdAt: existing?.createdAt || Date.now(),
+            updatedAt: Date.now()
+          }
+        };
+
+        persistDrafts();
+        setOverlayOpen(projectOverlay, false);
+        renderProjects();
+      });
+
+      // page overlay
+      editPageBtn.addEventListener("click", ()=>{
+        if(!isAdmin) return;
+        const p = effectivePage();
+        pageTitleInput.value = p.title || "";
+        pageSubtitleInput.value = p.subtitle || "";
+        pageFooterInput.value = p.footerText || "";
+        pageDefaultImageInput.value = (p.defaultImageUrl || "husbild.jpg").trim();
+        setOverlayOpen(pageOverlay, true);
+      });
+      cancelPageEditBtn.addEventListener("click", ()=> setOverlayOpen(pageOverlay, false));
+      savePageDraftBtn.addEventListener("click", ()=>{
+        if(!isAdmin) return;
+        pendingDrafts.page = {
+          title: pageTitleInput.value.trim(),
+          subtitle: pageSubtitleInput.value.trim(),
+          footerText: pageFooterInput.value.trim(),
+          defaultImageUrl: (pageDefaultImageInput.value.trim() || "husbild.jpg")
+        };
+        persistDrafts();
+        renderPage();
+        renderProjects();
+        setOverlayOpen(pageOverlay, false);
+      });
+
+      document.querySelectorAll(".edit-overlay").forEach(ov=>{
+        ov.addEventListener("click", (e)=>{ if(e.target === ov) ov.style.display = "none"; });
+      });
+      document.addEventListener("keydown", (e)=>{
+        if(e.key === "Escape"){
+          setOverlayOpen(projectOverlay, false);
+          setOverlayOpen(pageOverlay, false);
+        }
+      });
+
+      async function publishPendingDrafts(){
+        if(!isAdmin) return;
+
+        const jobs = [];
+
+        if(pendingDrafts.page){
+          jobs.push(setDoc(PAGE_DOC_REF, pendingDrafts.page, { merge:true }));
+        }
+
+        (pendingDrafts.deletedIds || []).forEach(id=>{
+          jobs.push(deleteDoc(doc(db, "projects", id)));
+          jobs.push(deleteDoc(doc(db, "latestFeed", id)));
+        });
+
+        Object.entries(pendingDrafts.items || {}).forEach(([id, payload])=>{
+          const projPayload = {
+            title: payload.title,
+            short: payload.short,
+            body: payload.body,
+            image: payload.image,
+            status: payload.status || STATUS,
+            published: true,
+            createdAt: payload.createdAt || Date.now(),
+            updatedAt: Date.now()
+          };
+          jobs.push(setDoc(doc(db, "projects", id), projPayload, { merge:true }));
+
+          const feedPayload = {
+            title: projPayload.title,
+            shortText: projPayload.short,
+            text: projPayload.body,
+            image: withDefaultImage(projPayload.image),
+            sourceLabel: SOURCE_LABEL,
+            sourceUrl: SOURCE_URL,
+            sourceType: "project",
+            published: true,
+            createdAt: projPayload.createdAt,
+            updatedAt: projPayload.updatedAt
+          };
+          jobs.push(setDoc(doc(db, "latestFeed", id), feedPayload, { merge:true }));
+        });
+
+        await Promise.all(jobs);
+
+        pendingDrafts = { page:null, items:{}, deletedIds:[] };
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+
+        renderSavePublishBar();
+        alert("Ändringarna är nu publicerade.");
+      }
+
+      function discardPendingDrafts(){
+        pendingDrafts = { page:null, items:{}, deletedIds:[] };
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+        window.location.reload();
+      }
+
+      // Realtime + auth
       onSnapshot(PAGE_DOC_REF, (snap)=>{
         if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+        renderPage();
         renderProjects();
       });
 
@@ -818,11 +1121,13 @@
             body: String(data.body ?? ""),
             image: String(data.image ?? ""),
             status: String(data.status ?? STATUS),
+            published: data.published !== false,
             createdAt: Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now(),
             updatedAt: Number.isFinite(Number(data.updatedAt)) ? Number(data.updatedAt) : (Number.isFinite(Number(data.createdAt)) ? Number(data.createdAt) : Date.now())
           });
         });
         renderProjects();
+        renderSavePublishBar();
       });
 
       onAuthStateChanged(auth, async (user)=>{
@@ -836,6 +1141,29 @@
         body.classList.toggle("is-admin", isAdmin);
         renderSavePublishBar();
       });
+
+      function renderSavePublishBar(){
+        if(!savePublish) return;
+        if(!isAdmin || !hasPendingDrafts()){
+          savePublish.classList.remove("show");
+          savePublish.innerHTML = "";
+          return;
+        }
+        const count = countPendingDrafts();
+        savePublish.classList.add("show");
+        savePublish.innerHTML = `
+          <div class="save-publish-text">${count} osparade ändring${count === 1 ? "" : "ar"}</div>
+          <button id="publishDraftsBtn" class="btn btn-primary" type="button">Spara och publicera</button>
+          <button id="discardDraftsBtn" class="btn btn-cancel" type="button">Ångra lokala ändringar</button>
+        `;
+        document.getElementById("publishDraftsBtn")?.addEventListener("click", publishPendingDrafts);
+        document.getElementById("discardDraftsBtn")?.addEventListener("click", discardPendingDrafts);
+      }
+
+      // initial paint
+      renderPage();
+      renderProjects();
+      renderSavePublishBar();
 
     }catch(err){
       showRuntimeError("Initiering misslyckades", err);
