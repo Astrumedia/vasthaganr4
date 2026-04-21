@@ -3,14 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Adminpanel — Västhaga Nr4</title>
+  <title>Adminpanel | Västhaga Nr4</title>
   <style>
-    :root {
+    :root{
       --bg:#f7f9fc;
       --card:#ffffff;
       --accent:#f09a0f;
       --muted:#6b7280;
       --maxw:1200px;
+      --shadow:0 10px 24px rgba(11,18,32,0.06);
+      --line:#e9eef5;
+      --soft:#fbfcfe;
+      --success:#166534;
+      --success-bg:#ecfdf5;
+      --danger:#be123c;
+      --danger-bg:#fff1f2;
     }
     *{box-sizing:border-box}
     body{
@@ -19,76 +26,430 @@
       background:var(--bg);
       color:#0b1220;
     }
-    .container{
-      max-width:var(--maxw);
-      margin:120px auto;
-      padding:16px;
-    }
+    .container{max-width:var(--maxw);margin:0 auto;padding:16px}
+
     header{
-      position:fixed;top:0;left:0;width:100%;
-      background:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      position:fixed;
+      top:0; left:0;
+      width:100%;
       padding:22px 32px;
-      display:flex;align-items:center;justify-content:space-between;
-      z-index:10;
+      z-index:40;
+      background:rgba(255,255,255,0.98);
+      box-shadow:0 8px 24px rgba(11,18,32,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;}
-    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
-    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center;}
-    nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition:all 0.2s;white-space:nowrap;}
-    nav a:hover{background:var(--accent);color:#fff;}
-    .dropdown{position:relative;}
-    .dropdown-content{
-      position:absolute;top:36px;left:0;background:#fff;display:none;
-      border-radius:8px;padding:8px;min-width:180px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.08);z-index:10;
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .logo{
+      width:44px;height:44px;border-radius:8px;background:var(--accent);
+      display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex:0 0 auto;
     }
-    .dropdown:hover .dropdown-content{display:block;}
-    .dropdown-content a{color:var(--accent);display:block;padding:6px 10px;border-radius:6px;}
-    .dropdown-content a:hover{background:var(--accent);color:#fff;}
-    .hamburger{display:none;font-size:1.8rem;cursor:pointer;user-select:none;color:var(--accent);}
-    @media(max-width:768px){
-      .hamburger{display:block;}
-      nav ul{flex-direction:column;position:fixed;top:0;right:0;width:220px;height:100%;
-        background:#fff;padding-top:80px;padding-left:20px;
-        transform:translateX(100%);transition:transform 0.3s ease;
-        box-shadow:-4px 0 12px rgba(0,0,0,0.08);
-        z-index:20;text-align:left;align-items:flex-start;}
-      nav ul.show{transform:translateX(0);}
-      nav ul li{margin-bottom:12px;width:100%;}
-      nav ul li a{width:100%;text-align:left;padding-left:16px;}
-      .dropdown-content{position:static;box-shadow:none;padding-left:12px;}
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .brand-title{display:flex;flex-direction:column;justify-content:center;min-width:0}
+    .brand-title strong{font-weight:700;font-size:1.3rem;line-height:1.1}
+    .brand-title span{font-size:.95rem;color:var(--muted)}
+
+    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+    nav a{
+      padding:8px 12px;
+      border-radius:8px;
+      text-decoration:none;
+      color:#0b1220;
+      transition:all .2s ease;
+      white-space:nowrap;
+      font-weight:500;
+    }
+    nav > ul > li > a:hover{background:var(--accent);color:#fff !important}
+    .nav-current{
+      color:var(--accent) !important;
+      font-weight:800;
     }
 
-    h1{text-align:center;color:var(--accent);}
+    .dropdown{position:relative}
+    .dropdown-content{
+      position:absolute;
+      top:28px; left:0;
+      background:#fff;
+      box-shadow:0 8px 22px rgba(0,0,0,0.10);
+      padding:8px;
+      border-radius:10px;
+      display:none;
+      min-width:190px;
+      z-index:80;
+    }
+    .dropdown:hover .dropdown-content{display:block}
+    .dropdown-content a{
+      color:var(--accent);
+      background:#fff;
+      margin:2px 0;
+      padding:8px 10px;
+      display:block;
+      border-radius:8px;
+      font-weight:600;
+    }
+    .dropdown-content a:hover{background:var(--accent);color:#fff !important}
+
+    .hamburger{
+      display:none;
+      font-size:1.8rem;
+      cursor:pointer;
+      user-select:none;
+      z-index:70;
+      color:var(--accent);
+      position:relative;
+      transition:
+        transform .35s cubic-bezier(.22,1,.36,1),
+        background .22s ease,
+        box-shadow .22s ease;
+      line-height:1;
+    }
+    .hamburger.is-open{
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      box-shadow:0 10px 22px rgba(11,18,32,0.10);
+      transform:translateX(-2px) scale(1.02);
+    }
+
+    .hero-spacer{height:98px}
+    .page-shell{padding-top:8px;padding-bottom:22px}
+    .page-head{display:block;margin-bottom:10px}
+    .page-head-left{max-width:860px;margin:0 auto;text-align:center}
+    h1{text-align:center;margin:26px 0 0 0;font-size:2.2rem}
+    .page-subtitle{
+      text-align:center;
+      margin:10px auto 0 auto;
+      color:var(--muted);
+      font-size:1.02rem;
+      line-height:1.5;
+      font-weight:700;
+      max-width:820px;
+    }
+
+    .status-bar{
+      margin:24px auto 0 auto;
+      max-width:760px;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:16px 18px;
+      text-align:center;
+      font-weight:900;
+    }
+    .status-bar .muted{display:block;margin-top:6px;font-weight:700}
+
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+      margin-top:24px;
+      align-items:start;
+    }
+    .span-2{grid-column:span 2}
+
     .card{
       background:var(--card);
+      border-radius:18px;
+      box-shadow:var(--shadow);
       padding:20px;
-      border-radius:12px;
-      box-shadow:0 6px 18px rgba(11,18,32,0.04);
-      margin-bottom:24px;
+      position:relative;
+      overflow:hidden;
     }
-    .card h2{color:var(--accent);margin-top:0;}
-    button{
-      background:var(--accent);
-      color:#fff;
-      border:none;
-      border-radius:8px;
-      padding:8px 14px;
-      cursor:pointer;
-      transition:.2s;
+    .card h2{
+      margin:0;
+      font-size:1.2rem;
+      line-height:1.2;
     }
-    button:hover{background:#d27c0c;}
-    .user-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #eee;}
-    .muted{color:var(--muted);}
-    footer{text-align:center;color:var(--muted);margin:40px 0 20px;font-size:.9rem;}
-  </style>
+    .card-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+    .card-desc{
+      margin:8px 0 0 0;
+      color:var(--muted);
+      line-height:1.45;
+      font-weight:700;
+      font-size:.96rem;
+    }
 
-  <!-- Firebase -->
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius:999px;
+      background:rgba(240,154,15,0.14);
+      color:#a86405;
+      font-weight:900;
+      font-size:.82rem;
+      padding:8px 12px;
+      white-space:nowrap;
+    }
+
+    .user-list{display:flex;flex-direction:column;gap:12px}
+    .user-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:var(--soft);
+      flex-wrap:wrap;
+    }
+    .user-main{min-width:0;display:flex;flex-direction:column;gap:6px}
+    .user-email{
+      font-weight:900;
+      word-break:break-word;
+    }
+    .user-meta{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-weight:700;
+      font-size:.94rem;
+    }
+    .role-badge{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      font-weight:900;
+      background:#eef2f6;
+      color:#334155;
+    }
+    .role-badge.admin{background:rgba(240,154,15,0.14);color:#a86405}
+    .role-badge.ordforande{background:var(--success-bg);color:var(--success)}
+    .role-badge.user{background:#eef2f6;color:#475569}
+
+    .user-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      padding:12px 14px;
+      border-radius:14px;
+      border:0;
+      cursor:pointer;
+      font-weight:950;
+      font-size:1rem;
+      box-shadow:0 10px 22px rgba(11,18,32,0.06);
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-secondary{background:#fff;color:var(--accent);border:1px solid rgba(0,0,0,0.10);box-shadow:none}
+    .btn-cancel{background:#eef2f6;color:#111;box-shadow:none}
+    .btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid #fecdd3;box-shadow:none}
+    .btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
+
+    .empty-state{
+      background:#fff;
+      border:1px dashed #d7dde6;
+      border-radius:16px;
+      padding:18px;
+      color:var(--muted);
+      font-weight:800;
+      text-align:center;
+    }
+
+    .log-box{
+      background:#fbfcfe;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+      color:var(--muted);
+      font-weight:800;
+      line-height:1.5;
+      min-height:140px;
+    }
+
+    .footer-actions{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:22px;
+    }
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      margin:10px 0 28px;
+      font-size:.95rem;
+      font-weight:800;
+      padding:0 16px;
+    }
+    .muted{color:var(--muted)}
+
+    .mobile-close-wrap{
+      margin-top:auto;
+      padding:12px 12px 18px 12px;
+      width:100%;
+    }
+    .mobile-close-btn{
+      width:100%;
+      padding:14px 14px;
+      border-radius:12px;
+      border:0;
+      background:rgba(240,154,15,0.16);
+      color:#a86405;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .mobile-close-btn:active{transform:translateY(1px)}
+    @media (min-width:769px){.mobile-close-wrap{display:none}}
+
+    @media (max-width:980px){
+      .dashboard-grid{grid-template-columns:1fr 1fr}
+      .span-2{grid-column:span 2}
+    }
+    @media (max-width:768px){
+      .hamburger{
+        display:block;
+        position:fixed;
+        top:18px;
+        right:16px;
+        z-index:130;
+      }
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+      nav ul{
+        flex-direction:column;
+        position:fixed;
+        top:0;
+        right:0;
+        width:260px;
+        height:100%;
+        background:#fff;
+        padding-top:72px;
+        padding-left:12px;
+        transform:translateX(100%);
+        transition:transform .42s cubic-bezier(.22,1,.36,1);
+        box-shadow:-10px 0 28px rgba(0,0,0,0.10);
+        z-index:120;
+        text-align:left;
+        align-items:flex-start;
+        overflow-y:auto;
+      }
+      nav ul.show{transform:translateX(0)}
+      nav ul li{margin-bottom:10px;width:100%}
+      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.02rem;font-weight:500}
+      .dropdown-content{position:static;box-shadow:none;padding-left:10px;display:none;min-width:unset}
+      .dropdown.active .dropdown-content{display:block}
+      .dropdown:hover .dropdown-content{display:none}
+      .dashboard-grid{grid-template-columns:1fr}
+      .span-2{grid-column:span 1}
+      .user-item{align-items:flex-start}
+      .user-actions{width:100%}
+      .user-actions .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <a href="index.html" class="logo" aria-label="Hem">
+        <img id="brandLogo" src="logga.png" alt="Logga">
+      </a>
+      <a href="index.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:center;min-width:0;">
+        <div class="brand-title">
+          <strong id="brandName">Västhaga Nr4</strong>
+          <span id="brandTagline">Bostadsrättsförening</span>
+        </div>
+      </a>
+    </div>
+
+    <nav>
+      <div class="hamburger" id="hamburger" aria-label="Meny" aria-expanded="false">☰</div>
+      <ul id="mainNav"></ul>
+    </nav>
+  </header>
+
+  <div class="hero-spacer"></div>
+
+  <div class="container page-shell">
+    <section class="page-head">
+      <div class="page-head-left">
+        <h1>Adminpanel</h1>
+        <p class="page-subtitle">Hantera användare och administratörer för Västhaga Nr4. Den här sidan är endast tillgänglig för admin och ordförande.</p>
+      </div>
+    </section>
+
+    <div class="status-bar" id="roleInfoWrap">
+      <span id="roleInfo">Kontrollerar behörighet...</span>
+      <span class="muted" id="roleHint">Du behöver vara inloggad med rätt roll för att använda sidan.</span>
+    </div>
+
+    <section class="dashboard-grid">
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <h2>Aktuella admins</h2>
+            <p class="card-desc">Visar alla konton som har rollen admin eller ordförande.</p>
+          </div>
+          <span class="pill" id="adminCountPill">0 st</span>
+        </div>
+        <div class="user-list" id="adminList">
+          <div class="empty-state">Inga admins hittades ännu.</div>
+        </div>
+      </article>
+
+      <article class="card span-2" id="userCard">
+        <div class="card-head">
+          <div>
+            <h2>Användare</h2>
+            <p class="card-desc">Ordförande kan ge eller ta bort adminbehörighet. Vanliga admins ser listan men kan inte ändra roller.</p>
+          </div>
+          <span class="pill" id="userCountPill">0 st</span>
+        </div>
+        <div class="user-list" id="userList">
+          <div class="empty-state">Laddar användare...</div>
+        </div>
+      </article>
+
+      <article class="card span-2">
+        <div class="card-head">
+          <div>
+            <h2>Senaste ändringar</h2>
+            <p class="card-desc">Plats för framtida loggar och historik från adminpanelen.</p>
+          </div>
+        </div>
+        <div class="log-box" id="logs">Här kommer loggar visas senare...</div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <h2>Snabbåtgärder</h2>
+            <p class="card-desc">Vanliga administrativa genvägar för den som är inloggad.</p>
+          </div>
+        </div>
+        <div class="footer-actions" style="margin-top:0;justify-content:flex-start;">
+          <a class="btn btn-secondary" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Till startsidan</a>
+          <a class="btn btn-secondary" href="styrelsen.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Styrelsen</a>
+          <a class="btn btn-secondary" href="styrelseninformerar.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Styrelsen informerar</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="footer-actions">
+      <button id="logoutBtn" class="btn btn-primary" type="button">Logga ut</button>
+    </div>
+  </div>
+
+  <footer>&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { getFirestore, collection, getDocs, updateDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, updateDoc, doc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
@@ -103,148 +464,315 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const userListDiv = document.getElementById("userList");
-    const adminListDiv = document.getElementById("adminList");
-    const logsDiv = document.getElementById("logs");
-    const roleInfo = document.getElementById("roleInfo");
+    const mainNav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburger');
+    const roleInfo = document.getElementById('roleInfo');
+    const roleHint = document.getElementById('roleHint');
+    const userListDiv = document.getElementById('userList');
+    const adminListDiv = document.getElementById('adminList');
+    const logsDiv = document.getElementById('logs');
+    const adminCountPill = document.getElementById('adminCountPill');
+    const userCountPill = document.getElementById('userCountPill');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const brandLogo = document.getElementById('brandLogo');
+    const brandName = document.getElementById('brandName');
+    const brandTagline = document.getElementById('brandTagline');
+
+    let currentFirebaseUser = null;
+    let currentUserRole = null;
+    let isAdmin = false;
+    let navData = null;
+
+    const fallbackNav = {
+      items: [
+        { type:'link', label:'Hem', url:'index.html', order:0 },
+        {
+          type:'dropdown', label:'Om föreningen', order:1, children:[
+            { label:'Om oss', url:'om.html', order:0 },
+            { label:'Stadgar', url:'stadgar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Styrelsen', order:2, children:[
+            { label:'Styrelsen', url:'styrelsen.html', order:0 },
+            { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Projekt', order:3, children:[
+            { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
+            { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
+          ]
+        },
+        { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
+        { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
+        { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
+        { type:'link', label:'Admin', url:'admin.html', order:92, id:'adminNav', adminOnly:true }
+      ]
+    };
+
+    function setNavOpen(open){
+      mainNav.classList.toggle('show', open);
+      hamburger.textContent = open ? '➤' : '☰';
+      hamburger.classList.toggle('is-open', open);
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    hamburger.addEventListener('click', ()=>setNavOpen(!mainNav.classList.contains('show')));
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') setNavOpen(false);
+    });
+
+    function wireMobileDropdowns(){
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
+      if(!isMobile) return;
+      document.querySelectorAll('nav .dropdown > a').forEach(a => {
+        a.onclick = (e) => {
+          const li = a.closest('.dropdown');
+          if(!li) return;
+          e.preventDefault();
+          li.classList.toggle('active');
+        };
+      });
+    }
+    window.addEventListener('resize', wireMobileDropdowns);
+
+    function appendMobileCloseRow(){
+      const li = document.createElement('li');
+      li.className = 'mobile-close-wrap';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-close-btn';
+      btn.textContent = 'Stäng meny';
+      btn.addEventListener('click', () => setNavOpen(false));
+      li.appendChild(btn);
+      mainNav.appendChild(li);
+    }
+
+    function renderNav(){
+      const data = navData || fallbackNav;
+      const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+        .slice()
+        .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+      mainNav.innerHTML = '';
+
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentFirebaseUser) return;
+        if(isAdmin && (item.id === 'loginNav' || item.id === 'kontoNav')) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'dropdown';
+
+          const a = document.createElement('a');
+          a.href = item.url || '#';
+          a.textContent = `${item.label || ''} ▾`;
+
+          const dd = document.createElement('div');
+          dd.className = 'dropdown-content';
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((x,y)=>(x.order ?? 0) - (y.order ?? 0));
+
+          children.forEach(ch => {
+            const ca = document.createElement('a');
+            ca.href = ch.url || '#';
+            ca.textContent = ch.label || '';
+            dd.appendChild(ca);
+          });
+
+          li.appendChild(a);
+          li.appendChild(dd);
+          mainNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        if(item.id === 'adminNav') a.classList.add('nav-current');
+        li.appendChild(a);
+        mainNav.appendChild(li);
+      });
+
+      appendMobileCloseRow();
+      wireMobileDropdowns();
+      mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+    }
+
+    function roleBadgeClass(role='user'){
+      return `role-badge ${role}`;
+    }
 
     function renderUserList(users, currentUser){
-      userListDiv.innerHTML="";
-      users.forEach(u=>{
-        const div=document.createElement('div');
-        div.className="user-item";
-        div.innerHTML=`<span>${u.email} — <span class="muted">${u.role}</span></span>`;
-        if(currentUser.role==="ordforande" && u.role!=="ordforande"){
-          const btn=document.createElement('button');
-          btn.textContent=(u.role==="admin")?"Ta bort admin":"Gör till admin";
-          btn.onclick=async()=>{
-            await updateDoc(doc(db,"users",u.id),{role:u.role==="admin"?"user":"admin"});
-            alert("Roll uppdaterad!");
-          };
-          div.appendChild(btn);
+      userCountPill.textContent = `${users.length} st`;
+      userListDiv.innerHTML = '';
+
+      if(!users.length){
+        userListDiv.innerHTML = '<div class="empty-state">Inga användare hittades.</div>';
+        return;
+      }
+
+      users.forEach(u => {
+        const item = document.createElement('div');
+        item.className = 'user-item';
+
+        const main = document.createElement('div');
+        main.className = 'user-main';
+        main.innerHTML = `
+          <div class="user-email">${u.email || 'Ingen e-post'}</div>
+          <div class="user-meta">
+            <span class="${roleBadgeClass(u.role || 'user')}">${u.role || 'user'}</span>
+            ${u.id === currentFirebaseUser?.uid ? '<span>Du är inloggad med detta konto</span>' : ''}
+          </div>
+        `;
+
+        item.appendChild(main);
+
+        if(currentUser?.role === 'ordforande' && u.role !== 'ordforande'){
+          const actions = document.createElement('div');
+          actions.className = 'user-actions';
+
+          const toggleBtn = document.createElement('button');
+          toggleBtn.className = u.role === 'admin' ? 'btn btn-danger' : 'btn btn-primary';
+          toggleBtn.textContent = u.role === 'admin' ? 'Ta bort admin' : 'Gör till admin';
+          toggleBtn.addEventListener('click', async () => {
+            toggleBtn.disabled = true;
+            try{
+              await updateDoc(doc(db, 'users', u.id), { role: u.role === 'admin' ? 'user' : 'admin' });
+              alert('Roll uppdaterad.');
+            }catch(err){
+              alert(err?.message || 'Kunde inte uppdatera rollen.');
+            }finally{
+              toggleBtn.disabled = false;
+            }
+          });
+
+          actions.appendChild(toggleBtn);
+          item.appendChild(actions);
         }
-        userListDiv.appendChild(div);
+
+        userListDiv.appendChild(item);
       });
     }
 
     function renderAdmins(users){
-      adminListDiv.innerHTML="";
-      users.filter(u=>u.role==="admin"||u.role==="ordforande").forEach(u=>{
-        const div=document.createElement('div');
-        div.className="user-item";
-        div.innerHTML=`<span>${u.email}</span>`;
-        adminListDiv.appendChild(div);
-      });
-    }
+      const admins = users.filter(u => u.role === 'admin' || u.role === 'ordforande');
+      adminCountPill.textContent = `${admins.length} st`;
+      adminListDiv.innerHTML = '';
 
-    onAuthStateChanged(auth, async(user)=>{
-      if(!user){
-        alert("Du måste vara inloggad för att se adminpanelen.");
-        window.location.href="loggain.html";
+      if(!admins.length){
+        adminListDiv.innerHTML = '<div class="empty-state">Inga admins hittades ännu.</div>';
         return;
       }
 
-      const snap=await getDocs(collection(db,"users"));
-      const users=snap.docs.map(d=>({id:d.id,...d.data()}));
-      const current=users.find(u=>u.id===user.uid);
-      if(!current){alert("Ingen användardata hittades.");return;}
-
-      roleInfo.textContent=`Inloggad som: ${user.email} (${current.role})`;
-
-      // Real-time updates
-      onSnapshot(collection(db,"users"),snap=>{
-        const updated=snap.docs.map(d=>({id:d.id,...d.data()}));
-        renderUserList(updated,current);
-        renderAdmins(updated);
+      admins.forEach(u => {
+        const item = document.createElement('div');
+        item.className = 'user-item';
+        item.innerHTML = `
+          <div class="user-main">
+            <div class="user-email">${u.email || 'Ingen e-post'}</div>
+            <div class="user-meta">
+              <span class="${roleBadgeClass(u.role || 'user')}">${u.role || 'user'}</span>
+            </div>
+          </div>
+        `;
+        adminListDiv.appendChild(item);
       });
+    }
 
-      if(current.role!=="ordforande" && current.role!=="admin"){
-        alert("Du har inte tillgång till denna sida.");
-        window.location.href="index.html";
+    async function loadBranding(){
+      try{
+        const pageSnap = await getDoc(doc(db, 'pages', 'home'));
+        if(pageSnap.exists()){
+          const data = pageSnap.data();
+          if(data.brandName) brandName.textContent = data.brandName;
+          if(data.brandTagline) brandTagline.textContent = data.brandTagline;
+          if(data.logoUrl) brandLogo.src = data.logoUrl;
+        }
+      }catch(err){
+        console.error('Kunde inte läsa branding:', err);
+      }
+    }
+
+    async function loadNavigation(){
+      try{
+        const navSnap = await getDoc(doc(db, 'site', 'navigation'));
+        navData = navSnap.exists() ? navSnap.data() : fallbackNav;
+      }catch(err){
+        navData = fallbackNav;
+      }
+      renderNav();
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      currentFirebaseUser = user;
+      renderNav();
+
+      if(!user){
+        alert('Du måste vara inloggad för att se adminpanelen.');
+        window.location.href = 'loggain.html';
+        return;
+      }
+
+      try{
+        const snap = await getDocs(collection(db, 'users'));
+        const users = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+        const current = users.find(u => u.id === user.uid);
+
+        if(!current){
+          alert('Ingen användardata hittades.');
+          window.location.href = 'index.html';
+          return;
+        }
+
+        currentUserRole = current.role || 'user';
+        isAdmin = current.role === 'admin' || current.role === 'ordforande';
+        renderNav();
+
+        roleInfo.textContent = `Inloggad som: ${user.email} (${current.role})`;
+        roleHint.textContent = current.role === 'ordforande'
+          ? 'Du kan ge eller ta bort adminbehörighet för andra användare.'
+          : current.role === 'admin'
+            ? 'Du kan se adminpanelen och aktuella admins.'
+            : 'Du saknar behörighet till adminpanelen.';
+
+        if(!isAdmin){
+          alert('Du har inte tillgång till denna sida.');
+          window.location.href = 'index.html';
+          return;
+        }
+
+        onSnapshot(collection(db, 'users'), snapShot => {
+          const updated = snapShot.docs.map(d => ({ id:d.id, ...d.data() }));
+          renderUserList(updated, current);
+          renderAdmins(updated);
+        });
+      }catch(err){
+        console.error(err);
+        alert('Ett fel uppstod när adminpanelen skulle laddas.');
+        window.location.href = 'index.html';
       }
     });
 
-    document.getElementById("logoutBtn").addEventListener("click",()=>{
-      signOut(auth).then(()=>window.location.href="index.html");
+    logoutBtn.addEventListener('click', async () => {
+      try{
+        await signOut(auth);
+        window.location.href = 'index.html';
+      }catch(err){
+        alert(err?.message || 'Kunde inte logga ut.');
+      }
     });
+
+    logsDiv.textContent = 'Här kommer loggar visas senare. Strukturen är nu uppdaterad till samma standard som övriga nya sidor.';
+
+    loadBranding();
+    loadNavigation();
+    renderNav();
   </script>
-</head>
-<body>
-
-<header>
-  <div class="brand">
-    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
-    <div style="display:flex;flex-direction:column;">
-      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
-      <div class="muted">Bostadsrättsförening</div>
-    </div>
-  </div>
-  <nav>
-    <div class="hamburger" id="hamburger">☰</div>
-    <ul id="mainNav">
-      <li><a href="index.html">Hem</a></li>
-      <li class="dropdown">
-        <a href="#">Om föreningen ▾</a>
-        <div class="dropdown-content">
-          <a href="om.html">Om oss</a>
-          <a href="stadgar.html">Stadgar</a>
-        </div>
-      </li>
-      <li class="dropdown">
-        <a href="#">Styrelsen ▾</a>
-        <div class="dropdown-content">
-          <a href="styrelsen.html">Styrelsen</a>
-          <a href="styrelseninformerar.html">Styrelsen informerar</a>
-        </div>
-      </li>
-      <li class="dropdown">
-        <a href="#">Planeringsprojekt ▾</a>
-        <div class="dropdown-content">
-          <a href="pagaendeplaner.html">Pågående planer</a>
-          <a href="utfordaplaner.html">Utförda planer</a>
-        </div>
-      </li>
-      <li><a href="felanmalan.html">Felanmälan</a></li>
-      <li><a href="konto.html">Konto</a></li>
-      <li><a href="admin.html" style="font-weight:600;color:var(--accent);">Admin</a></li>
-    </ul>
-  </nav>
-</header>
-
-<div class="container">
-  <h1>Adminpanel</h1>
-  <p id="roleInfo" style="text-align:center;font-weight:600;"></p>
-
-  <div class="card">
-    <h2>Aktuella admins</h2>
-    <div id="adminList"></div>
-  </div>
-
-  <div class="card" id="userCard">
-    <h2>Användare</h2>
-    <div id="userList"></div>
-  </div>
-
-  <div class="card">
-    <h2>Senaste ändringar</h2>
-    <div id="logs"><p class="muted">Här kommer loggar visas senare...</p></div>
-  </div>
-
-  <div style="text-align:center;margin-top:16px;">
-    <button id="logoutBtn">Logga ut</button>
-  </div>
-</div>
-
-<footer>&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
-
-<script>
-  const mainNav=document.getElementById("mainNav");
-  const hamburger=document.getElementById("hamburger");
-  hamburger.addEventListener("click",()=>{
-    mainNav.classList.toggle("show");
-    hamburger.textContent=mainNav.classList.contains("show")?"➤":"☰";
-  });
-</script>
-
 </body>
 </html>
