@@ -83,7 +83,7 @@
       padding:8px 10px;
       display:block;
       border-radius:8px;
-      font-weight:0;
+      font-weight:600;
     }
     .dropdown-content a:hover{
       background:var(--accent);
@@ -624,12 +624,12 @@ nav{
             { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
           ]
         },
-{
-  type:'dropdown', label:'Projekt', order:3, children:[
-    { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
-    { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
-  ]
-}, 
+        {
+          type:'dropdown', label:'Planeringsprojekt', order:3, children:[
+            { label:'Pågående planer', url:'pagaendeplaner.html', order:0 },
+            { label:'Utförda planer', url:'utfordaplaner.html', order:1 }
+          ]
+        },
         { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
         { type:'link', label:'Logga in', url:'loggain.html', order:90 },
         { type:'link', label:'Konto', url:'konto.html', order:91, restricted:true },
@@ -687,49 +687,132 @@ nav{
         .replaceAll("'",'&#039;');
     }
 
-    function setOverlayOpen(overlay, open){
-      if(!overlay) return;
-      overlay.style.display = open ? 'flex' : 'none';
-    }
 
-    function setNavOpen(open){
-      mainNav.classList.toggle('show', open);
-      hamburger.textContent = open ? '➤' : '☰';
-      hamburger.classList.toggle('is-open', open);
-      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
 
-    function wireMobileDropdowns(){
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
-      if (!isMobile) return;
+function isMobileMenu(){
+  return window.matchMedia('(max-width: 768px)').matches;
+}
 
-      document.querySelectorAll('nav .dropdown > a').forEach(a => {
-        a.onclick = (e) => {
-          const li = a.closest('.dropdown');
-          if(!li) return;
-          e.preventDefault();
-          li.classList.toggle('active');
-        };
-      });
-    }
+function setNavOpen(open){
+  mainNav.classList.toggle('show', open);
+  hamburger.textContent = open ? '➤' : '☰';
+  hamburger.classList.toggle('is-open', open);
+  hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.body.classList.toggle('menu-open', open);
+}
 
-    function appendMobileCloseRow(){
-      const existing = mainNav.querySelector('.mobile-close-wrap');
-      if(existing) existing.remove();
+function closeAllMobileDropdowns(){
+  mainNav.querySelectorAll('.dropdown').forEach(dd => {
+    dd.classList.remove('active');
+  });
+}
 
-      const li = document.createElement('li');
-      li.className = 'mobile-close-wrap';
+function wireMobileDropdowns(){
+  const dropdownLinks = mainNav.querySelectorAll('.dropdown > a');
 
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'mobile-close-btn';
-      btn.textContent = 'Stäng meny';
-      btn.addEventListener('click', () => setNavOpen(false));
+  dropdownLinks.forEach(a => {
+    a.onclick = null;
 
-      li.appendChild(btn);
-      mainNav.appendChild(li);
-    }
+    a.addEventListener('click', function(e){
+      if(!isMobileMenu()) return;
+
+      const li = this.closest('.dropdown');
+      if(!li) return;
+
+      e.preventDefault();
+
+      const wasOpen = li.classList.contains('active');
+      closeAllMobileDropdowns();
+
+      if(!wasOpen){
+        li.classList.add('active');
+      }
+    });
+  });
+}
+
+function appendMobileCloseRow(){
+  const existing = mainNav.querySelector('.mobile-close-wrap');
+  if(existing) existing.remove();
+
+  const li = document.createElement('li');
+  li.className = 'mobile-close-wrap';
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'mobile-close-btn';
+  btn.textContent = 'Stäng meny';
+  btn.addEventListener('click', () => setNavOpen(false));
+
+  li.appendChild(btn);
+  mainNav.appendChild(li);
+}
+
+function wireMobileLinkClose(){
+  mainNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      if(!isMobileMenu()) return;
+
+      const insideDropdownContent = a.closest('.dropdown-content');
+      const isTopDropdownLink = a.parentElement?.classList.contains('dropdown');
+
+      if(insideDropdownContent){
+        setNavOpen(false);
+        return;
+      }
+
+      if(!isTopDropdownLink){
+        setNavOpen(false);
+      }
+    });
+  });
+}
+
+/* ===== HEADER FADE-IN ===== */
+function updateHeaderFade(){
+  const header = document.getElementById('siteHeader');
+  if(!header) return;
+
+  const maxScroll = Math.max(window.innerHeight, 1);
+  const progress = Math.min(window.scrollY / maxScroll, 1);
+
+  const bgAlpha = 0.98 * progress;
+  const shadowAlpha = 0.08 * progress;
+
+  header.style.background = `rgba(255,255,255,${bgAlpha})`;
+  header.style.boxShadow = `0 8px 24px rgba(11,18,32,${shadowAlpha})`;
+}
+
+/* ===== INIT ===== */
+hamburger.setAttribute('aria-expanded', 'false');
+hamburger.addEventListener('click', () => {
+  setNavOpen(!mainNav.classList.contains('show'));
+});
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    closeAllMobileDropdowns();
+    setNavOpen(false);
+  }
+});
+
+window.addEventListener('resize', () => {
+  appendMobileCloseRow();
+  wireMobileDropdowns();
+  wireMobileLinkClose();
+
+  if(window.matchMedia('(min-width: 769px)').matches){
+    closeAllMobileDropdowns();
+    setNavOpen(false);
+  }
+
+  updateHeaderFade();
+});
+
+window.addEventListener('scroll', updateHeaderFade, { passive:true });
+
+updateHeaderFade();
+
 
     function renderNav(){
       const data = navData || fallbackNav;
@@ -780,8 +863,9 @@ nav{
         mainNav.appendChild(li);
       });
 
-      appendMobileCloseRow();
-      wireMobileDropdowns();
+appendMobileCloseRow();
+wireMobileDropdowns();
+wireMobileLinkClose();
 
       mainNav.querySelectorAll('a').forEach(a => {
         a.addEventListener('click', () => {
@@ -1003,8 +1087,6 @@ nav{
       }
     });
 
-    hamburger.setAttribute('aria-expanded', 'false');
-    hamburger.addEventListener('click', () => setNavOpen(!mainNav.classList.contains('show')));
 
     window.addEventListener('resize', () => {
       wireMobileDropdowns();
