@@ -160,11 +160,11 @@
       font-size:24px;
       flex:0 0 auto;
     }
-.action-text{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
+    .action-text{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
     .action-title{
       font-weight:950;
       font-size:1.10rem;
@@ -362,7 +362,18 @@
       }
       nav ul.show { transform: translateX(0); }
       nav ul li { margin-bottom: 10px; width: 100%; }
-      nav ul li a { width: 100%; text-align: left; padding:12px 14px; font-size:1.06rem; }
+      nav ul li a {
+        width: 100%;
+        text-align: left;
+        padding:12px 14px;
+        font-size:1.06rem;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      .dropdown > a{
+        display:block;
+        width:100%;
+      }
       .dropdown-content {
         position: static;
         top:auto;
@@ -370,13 +381,13 @@
         box-shadow: none;
         background:transparent;
         padding:6px 0 0 10px;
-        display: none;
+        display: none !important;
         min-width:unset;
         width:100%;
         border-radius:0;
       }
-      .dropdown.active .dropdown-content { display: block; }
-      .dropdown:hover .dropdown-content{display:none}
+      .dropdown.active > .dropdown-content { display: block !important; }
+      .dropdown:hover > .dropdown-content{display:none !important}
       .dropdown-content a{margin:4px 0;border-radius:10px;}
     }
 
@@ -1105,36 +1116,49 @@
       });
     }
 
-function handleMobileNavClick(e){
-  if(!isMobileMenu()) return;
+    function appendMobileCloseRow(){
+      const existing = mainNav.querySelector('.mobile-close-wrap');
+      if(existing) existing.remove();
 
-  const link = e.target.closest('a');
-  if(!link || !mainNav.contains(link)) return;
+      const li = document.createElement('li');
+      li.className = 'mobile-close-wrap';
 
-  const topDropdownLink = link.closest('.dropdown') && link.parentElement?.classList.contains('dropdown');
-  const insideDropdownContent = !!link.closest('.dropdown-content');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-close-btn';
+      btn.textContent = 'Stäng meny';
+      btn.addEventListener('click', () => setNavOpen(false));
 
-  if(topDropdownLink){
-    e.preventDefault();
-
-    const li = link.closest('.dropdown');
-    const wasOpen = li.classList.contains('active');
-
-    closeAllMobileDropdowns();
-
-    if(!wasOpen){
-      li.classList.add('active');
+      li.appendChild(btn);
+      mainNav.appendChild(li);
     }
-    return;
-  }
 
-  if(insideDropdownContent){
-    setNavOpen(false);
-    return;
-  }
+    function handleMobileNavClick(e){
+      if(!isMobileMenu()) return;
 
-  setNavOpen(false);
-}
+      const link = e.target.closest('a');
+      if(!link || !mainNav.contains(link)) return;
+
+      const li = link.parentElement?.classList.contains('dropdown') ? link.parentElement : null;
+      const insideDropdownContent = !!link.closest('.dropdown-content');
+
+      if(li){
+        e.preventDefault();
+        const wasOpen = li.classList.contains('active');
+        closeAllMobileDropdowns();
+        if(!wasOpen){
+          li.classList.add('active');
+        }
+        return;
+      }
+
+      if(insideDropdownContent){
+        setNavOpen(false);
+        return;
+      }
+
+      setNavOpen(false);
+    }
 
     hamburger.setAttribute('aria-expanded', 'false');
     hamburger.addEventListener('click', () => {
@@ -1153,16 +1177,16 @@ function handleMobileNavClick(e){
       }
     });
 
-window.addEventListener('resize', () => {
-  appendMobileCloseRow();
+    window.addEventListener('resize', () => {
+      appendMobileCloseRow();
 
-  if(window.matchMedia('(min-width: 769px)').matches){
-    closeAllMobileDropdowns();
-    setNavOpen(false);
-  }
+      if(window.matchMedia('(min-width: 769px)').matches){
+        closeAllMobileDropdowns();
+        setNavOpen(false);
+      }
 
-  updateHeaderState();
-});
+      updateHeaderState();
+    });
 
     function renderNav(){
       const data = navData || fallbackNav;
@@ -1175,7 +1199,6 @@ window.addEventListener('resize', () => {
         if(item.adminOnly && !isAdmin) return;
         if(item.restricted && !currentUser) return;
 
-        // Dölj "Logga in" och "Konto" för admin
         if(isAdmin && (item.id === 'loginNav' || item.id === 'kontoNav')) return;
 
         if(item.type === 'dropdown'){
@@ -1209,7 +1232,7 @@ window.addEventListener('resize', () => {
         mainNav.appendChild(li);
       });
 
-appendMobileCloseRow();
+      appendMobileCloseRow();
     }
 
     function renderQuickActions(){
