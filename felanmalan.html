@@ -1,333 +1,1178 @@
 <!doctype html>
 <html lang="sv">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Felanmälan — Västhaga Nr4</title>
-<style>
-:root{
-  --bg:#f7f9fc;
-  --card:#ffffff;
-  --accent:#f09a0f;
-  --muted:#6b7280;
-  --maxw:1200px;
-  --button-bg:#f09a0f;
-  --button-hover:#d27c0c;
-  --button-text:#fff;
-}
-*{box-sizing:border-box}
-body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
-.container{max-width:var(--maxw);margin:24px auto;padding:16px}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Felanmälan — Västhaga Nr4</title>
 
-/* Header (standard på alla sidor) */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 22px 32px;
-  background: rgba(255,255,255,0);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 10;
-}
-header.scrolled {
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.logo img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
-nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
-nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition: all 0.2s;white-space: nowrap;}
-nav a:hover{background:var(--accent);color:#fff;}
-.dropdown{position:relative;}
-.dropdown-content {position: absolute; top: 36px; left: 0; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 8px; border-radius: 8px; display: none; min-width: 180px; z-index: 10;}
-.dropdown:hover .dropdown-content{display:block}
-.dropdown-content a{color:var(--accent);background:#fff;margin:2px 0;padding:6px 10px;display:block;border-radius:6px;}
-.dropdown-content a:hover{background:var(--accent);color:#fff;}
+  <style>
+    :root{
+      --bg:#f7f9fc;
+      --card:#ffffff;
+      --accent:#f09a0f;
+      --muted:#6b7280;
+      --maxw:1200px;
+      --shadow:0 12px 28px rgba(11,18,32,0.08);
+      --line:#e9eef5;
+      --soft:#fbfcfe;
+      --danger:#b91c1c;
+      --danger-bg:#fef2f2;
+      --warn:#856404;
+      --warn-bg:#fff3cd;
+      --warn-border:#ffeeba;
+    }
 
-/* Page layout */
-.page-title { margin-top: 120px; text-align: center; font-weight:700; font-size:1.8rem; color:var(--accent); }
+    *{box-sizing:border-box}
 
-/* Form card */
-.form-card{
-  background:var(--card);
-  padding:28px;
-  border-radius:12px;
-  box-shadow:0 8px 22px rgba(0,0,0,0.06);
-  max-width:900px;
-  margin:24px auto;
-}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:768px){ .form-grid{grid-template-columns:1fr;} }
-.input, textarea { width:100%; padding:12px; border-radius:8px; border:1px solid #e6eef2; font-size:1rem; }
-label{display:block;font-weight:600;margin-bottom:6px;color:#333}
-.small-muted{font-size:0.95rem;color:#374151; margin-bottom:12px;}
-.alert-box {
-  background: #fff3cd;
-  border: 1px solid #ffeeba;
-  color: #856404;
-  border-radius: 8px;
-  padding: 14px;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
+    body{
+      font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      margin:0;
+      background:var(--bg);
+      color:#0b1220;
+    }
 
-/* attachments preview */
-.attachments { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-.att { width:80px; height:80px; background:#f3f4f6; border-radius:8px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; }
-.att img{width:100%;height:100%;object-fit:cover}
-.att .remove { position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.5); color:#fff; border-radius:6px; padding:2px 6px; cursor:pointer; font-size:12px; }
+    .container{
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:16px;
+    }
 
-/* Buttons */
-.row { display:flex; gap:12px; align-items:center; }
-.btn { padding:10px 14px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
-.btn-primary{ background:var(--accent); color:#fff; }
-.btn-secondary{ background:#fff; color:var(--accent); border:1px solid #eee; }
-.btn-cancel{ background:#e5e7eb; color:#111; }
+    /* ===== Header ===== */
+    header{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      padding:22px 32px;
+      z-index:40;
+      background:transparent;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      box-shadow:0 8px 24px rgba(11,18,32,0.05);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      transition:background .28s ease, box-shadow .28s ease;
+    }
+    header.is-solid{
+      background:rgba(255,255,255,0.98);
+      box-shadow:0 8px 24px rgba(11,18,32,0.08);
+    }
 
-/* popup */
-.popup-backdrop{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:300; background:rgba(0,0,0,0.35); opacity:0; transition:opacity .18s ease; }
-.popup{ background:#fff; padding:18px 20px; border-radius:10px; box-shadow:0 12px 40px rgba(0,0,0,0.18); max-width:420px; text-align:center; }
-.popup.show{ transform:translateY(0); opacity:1; }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .logo{
+      width:44px;height:44px;border-radius:8px;background:var(--accent);
+      display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex:0 0 auto;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .brand-title{display:flex;flex-direction:column;justify-content:center;min-width:0}
+    .brand-title strong{font-weight:700;font-size:1.3rem;line-height:1.1}
+    .brand-title span{font-size:.95rem;color:var(--muted)}
 
-/* footer */
-footer{margin-top:32px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:32px}
+    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
+    nav a{
+      padding:8px 12px;
+      border-radius:8px;
+      text-decoration:none;
+      color:#0b1220;
+      transition:all .2s ease;
+      white-space:nowrap;
+      font-weight:500;
+    }
+    nav > ul > li > a:hover,
+    nav > ul > li > a.is-active{
+      background:var(--accent);
+      color:#fff !important;
+    }
 
-/* hamburger mobile */
-.hamburger {display:none;font-size:1.8rem;cursor:pointer;user-select:none;z-index:70;color:var(--accent);position:relative;transition:transform 0.3s;}
-@media (max-width:768px){ .hamburger{display:block;} nav ul{flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;background:#fff;padding-top:72px;padding-left:12px;transform:translateX(100%);transition:transform .28s;box-shadow:-6px 0 20px rgba(0,0,0,0.08);z-index:120;text-align:left;align-items:flex-start;} nav ul.show{transform:translateX(0);} nav ul li{margin-bottom:12px;width:100%;} nav ul li a{width:100%;text-align:left;padding-left:16px;} .dropdown-content{position:static;box-shadow:none;padding-left:12px;display:none;} .dropdown.active .dropdown-content{display:block;} }
-</style>
+    .dropdown{position:relative}
+    .dropdown-content{
+      position:absolute;
+      top:28px; left:0;
+      background:#fff;
+      box-shadow:0 8px 22px rgba(0,0,0,0.10);
+      padding:8px;
+      border-radius:10px;
+      display:none;
+      min-width:190px;
+      z-index:80;
+    }
+    .dropdown:hover .dropdown-content{display:block}
+    .dropdown-content a{
+      color:var(--accent);
+      background:#fff;
+      margin:2px 0;
+      padding:8px 10px;
+      display:block;
+      border-radius:8px;
+      font-weight:600;
+    }
+    .dropdown-content a:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
+
+    .hamburger{
+      display:none;
+      font-size:1.8rem;
+      cursor:pointer;
+      user-select:none;
+      z-index:70;
+      color:var(--accent);
+      position:relative;
+      transition:
+        transform .35s cubic-bezier(.22,1,.36,1),
+        background .22s ease,
+        box-shadow .22s ease;
+      line-height:1;
+    }
+    .hamburger.is-open{
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      box-shadow:0 10px 22px rgba(11,18,32,0.10);
+      transform:translateX(-2px) scale(1.02);
+    }
+
+    @media (max-width: 768px){
+      .hamburger{
+        display:block;
+        position:fixed;
+        top:18px;
+        right:16px;
+        z-index:130;
+      }
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+      nav ul{
+        flex-direction:column;
+        position:fixed;
+        top:0;
+        right:0;
+        width:260px;
+        height:100%;
+        background:#fff;
+        padding-top:72px;
+        padding-left:12px;
+        transform:translateX(100%);
+        transition:transform .42s cubic-bezier(.22,1,.36,1);
+        box-shadow:-10px 0 28px rgba(0,0,0,0.10);
+        z-index:120;
+        text-align:left;
+        align-items:flex-start;
+        overflow-y:auto;
+      }
+      nav ul.show{transform:translateX(0)}
+      nav ul li{margin-bottom:10px;width:100%}
+      nav ul li a{
+        width:100%;
+        text-align:left;
+        padding:12px 14px;
+        font-size:1.02rem;
+        font-weight:500;
+      }
+      .dropdown-content{
+        position:static;
+        box-shadow:none;
+        padding-left:10px;
+        display:none;
+        min-width:unset;
+      }
+      .dropdown.active .dropdown-content{display:block}
+      .dropdown:hover .dropdown-content{display:none}
+    }
+
+    .mobile-close-wrap{
+      margin-top:auto;
+      padding:12px 12px 18px 12px;
+      width:100%;
+    }
+    .mobile-close-btn{
+      width:100%;
+      padding:14px 14px;
+      border-radius:12px;
+      border:0;
+      background:rgba(240,154,15,0.16);
+      color:#a86405;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .mobile-close-btn:active{transform:translateY(1px)}
+    @media (min-width: 769px){ .mobile-close-wrap{display:none} }
+
+    /* ===== Page ===== */
+    .hero-spacer{height:98px}
+    .page-shell{padding-top:8px;padding-bottom:10px}
+    .page-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .page-head-left{
+      max-width:860px;
+      margin:0 auto;
+      text-align:center;
+      flex:1 1 100%;
+    }
+    h1{
+      margin:26px 0 0 0;
+      font-size:2.2rem;
+      text-align:center;
+    }
+    .page-subtitle{
+      text-align:center;
+      margin:10px auto 0 auto;
+      color:var(--muted);
+      font-size:1.02rem;
+      line-height:1.5;
+      font-weight:700;
+      max-width:820px;
+      white-space:pre-line;
+    }
+
+    .mini-edit{
+      display:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,0.08);
+      background:#fff;
+      cursor:pointer;
+      font-weight:950;
+      box-shadow:0 10px 24px rgba(11,18,32,0.06);
+      white-space:nowrap;
+    }
+    .mini-edit:hover{border-color:rgba(240,154,15,0.45)}
+    .mini-edit span{color:var(--accent)}
+    .is-admin .mini-edit{display:inline-flex;align-items:center;gap:8px}
+
+    .admin-tools{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:12px 0 8px 0;
+    }
+
+    .form-card{
+      background:var(--card);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      max-width:920px;
+      margin:24px auto 0 auto;
+      padding:24px;
+    }
+
+    .alert-box{
+      background:var(--warn-bg);
+      border:1px solid var(--warn-border);
+      color:var(--warn);
+      border-radius:16px;
+      padding:16px 18px;
+      margin-bottom:18px;
+      font-weight:800;
+      line-height:1.5;
+    }
+    .alert-box strong{color:#6b4f00}
+    .alert-box a{
+      color:inherit;
+      font-weight:900;
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+
+    .small-muted{
+      font-size:1rem;
+      color:#374151;
+      margin-bottom:18px;
+      line-height:1.6;
+      font-weight:700;
+      white-space:pre-line;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width:768px){
+      .form-grid{grid-template-columns:1fr}
+      .form-card{padding:18px}
+    }
+
+    .field-full{grid-column:1 / -1}
+
+    label{
+      display:block;
+      font-weight:900;
+      margin-bottom:8px;
+      color:#111827;
+      font-size:.96rem;
+    }
+    .input, textarea{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid #e6eef2;
+      font-size:1rem;
+      outline:none;
+      background:#fff;
+      transition:border-color .18s ease, box-shadow .18s ease;
+    }
+    .input:focus, textarea:focus{
+      border-color:rgba(240,154,15,0.55);
+      box-shadow:0 0 0 4px rgba(240,154,15,0.10);
+    }
+    textarea{resize:vertical;min-height:170px}
+
+    .attachments{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .att{
+      width:86px;
+      height:86px;
+      background:#f3f4f6;
+      border-radius:14px;
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid #e5e7eb;
+    }
+    .att img{width:100%;height:100%;object-fit:cover}
+    .att .remove{
+      position:absolute;
+      top:6px;
+      right:6px;
+      background:rgba(0,0,0,0.55);
+      color:#fff;
+      border-radius:8px;
+      padding:2px 7px;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .btn{
+      padding:12px 14px;
+      border-radius:14px;
+      border:0;
+      cursor:pointer;
+      font-weight:950;
+      font-size:1rem;
+      box-shadow:0 10px 22px rgba(11,18,32,0.06);
+    }
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-secondary{
+      background:#fff;
+      color:var(--accent);
+      border:1px solid rgba(0,0,0,0.10);
+      box-shadow:none;
+    }
+    .btn-cancel{background:#eef2f6;color:#111;box-shadow:none}
+
+    .form-actions{
+      margin-top:16px;
+      display:flex;
+      justify-content:flex-end;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .form-error{
+      color:var(--danger);
+      margin-top:12px;
+      display:none;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    /* popup */
+    .popup-backdrop{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:300;
+      background:rgba(0,0,0,0.35);
+      opacity:0;
+      transition:opacity .18s ease;
+      padding:14px;
+    }
+    .popup{
+      background:#fff;
+      padding:20px;
+      border-radius:18px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.18);
+      max-width:560px;
+      width:100%;
+      text-align:center;
+    }
+    .popup-text{
+      margin:0 0 14px 0;
+      line-height:1.6;
+      white-space:pre-line;
+      font-weight:700;
+    }
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      margin:34px 0 20px;
+      font-size:.95rem;
+      font-weight:800;
+      padding:0 14px 24px;
+    }
+
+    /* ===== Overlay editor ===== */
+    .edit-overlay{
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.45);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:220;
+      padding:12px;
+    }
+    .editor{
+      background:#fff;
+      padding:18px;
+      border-radius:18px;
+      max-width:840px;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      box-shadow:0 18px 46px rgba(0,0,0,0.25);
+      max-height:min(90vh,960px);
+      overflow:auto;
+    }
+    .editor h3{
+      margin:0;
+      font-size:1.2rem;
+    }
+    .editor-section{
+      padding:14px;
+      border:1px solid #e9eef5;
+      border-radius:16px;
+      background:#fbfcfe;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .editor-section h4{
+      margin:0;
+      font-size:1.02rem;
+      font-weight:950;
+    }
+    .helptext{
+      color:var(--muted);
+      font-size:.95rem;
+      line-height:1.45;
+      font-weight:750;
+      margin:0;
+      white-space:pre-line;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .row > *{flex:1 1 auto}
+    .form-grid.two-cols{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+    @media (max-width: 900px){
+      .form-grid.two-cols{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
-
-<header id="siteHeader">
-  <div class="brand">
-    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
-    <a href="index.html" style="text-decoration:none;color:inherit; display:flex; flex-direction:column; justify-content:center; margin-left:8px;">
-      <div style="font-weight:700;font-size:1.5rem;">Västhaga Nr4</div>
-      <div class="muted" style="font-size:1rem;">Bostadsrättsförening</div>
-    </a>
-  </div>
-
-  <nav>
-    <div class="hamburger" id="hamburger">☰</div>
-    <ul id="mainNav">
-      <li><a href="index.html">Hem</a></li>
-      <li class="dropdown">
-        <a href="om.html">Om föreningen ▾</a>
-        <div class="dropdown-content">
-          <a href="om.html">Om oss</a>
-          <a href="stadgar.html">Stadgar</a>
+  <header id="siteHeader">
+    <div class="brand">
+      <a href="index.html" class="logo" aria-label="Hem">
+        <img id="brandLogo" src="logga.png" alt="Logga">
+      </a>
+      <a href="index.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:center;min-width:0;">
+        <div class="brand-title">
+          <strong id="brandName">Västhaga Nr4</strong>
+          <span id="brandTagline">Bostadsrättsförening</span>
         </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="styrelsen.html">Styrelsen ▾</a>
-        <div class="dropdown-content">
-          <a href="styrelsen.html">Styrelsen</a>
-          <a href="styrelseninformerar.html">Styrelsen informerar</a>
-        </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="#">Planeringsprojekt ▾</a>
-        <div class="dropdown-content">
-          <a href="pagaendeplaner.html">Pågående planer</a>
-          <a href="utfordaplaner.html">Utförda planer</a>
-        </div>
-      </li>
-
-      <li><a href="felanmalan.html">Felanmälan</a></li>
-      <li><a href="loggain.html">Logga in</a></li>
-      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
-    </ul>
-  </nav>
-</header>
-
-<main>
-  <div class="page-title">Felanmälan</div>
-
-  <div class="form-card">
-    <div class="alert-box">
-      <strong>⚠ Vid akuta ärenden (t.ex. vattenläckor, elfel, värmeproblem nattetid):</strong><br>
-      Kontakta <strong>HSB Jouren</strong> direkt på telefonnummer <strong>010-303 27 00</strong>.
+      </a>
     </div>
 
-    <p class="small-muted">Vid övriga ärenden kan ni fylla i formuläret nedan. Beskriv tydligt vad som behöver åtgärdas, så återkopplar vi så snart som möjligt.</p>
+    <nav>
+      <div class="hamburger" id="hamburger" aria-expanded="false">☰</div>
+      <ul id="mainNav"></ul>
+    </nav>
+  </header>
 
-    <form id="felForm" novalidate>
-      <div class="form-grid">
-        <div>
-          <label for="fullName">Namn &amp; Efternamn*</label>
-          <input id="fullName" class="input" type="text" placeholder="Förnamn Efternamn" required>
-        </div>
-        <div>
-          <label for="apt">Lägenhetsnummer &amp; trapphus*</label>
-          <input id="apt" class="input" type="text" placeholder="Ex: 9A, Trapphus 1" required>
-        </div>
+  <div class="hero-spacer"></div>
 
-        <div>
-          <label for="email">E-postadress*</label>
-          <input id="email" class="input" type="email" placeholder="din@epost.se" required>
-        </div>
-        <div>
-          <label for="phone">Telefonnummer (valfritt)</label>
-          <input id="phone" class="input" type="tel" placeholder="070-xxx xx xx">
-        </div>
-
-        <div style="grid-column:1 / -1;">
-          <label for="description">Beskrivning av ärendet*</label>
-          <textarea id="description" class="input" rows="6" placeholder="Beskriv problemet så tydligt som möjligt" required></textarea>
-        </div>
-
-        <div style="grid-column:1 / -1;">
-          <label>Bifoga bilder (valfritt)</label>
-          <label class="btn btn-secondary" for="attachmentsInput" style="margin:0;">
-            <input id="attachmentsInput" type="file" accept="image/*" multiple style="display:none;">
-            Ladda upp från enhet
-          </label>
-          <div class="attachments" id="attachmentsPreview" aria-live="polite"></div>
+  <main class="page-shell">
+    <div class="container">
+      <div class="page-head">
+        <div class="page-head-left">
+          <h1 id="pageTitle">Felanmälan</h1>
+          <p class="page-subtitle" id="pageSubtitle">Här kan du enkelt skicka in en felanmälan till styrelsen.</p>
         </div>
       </div>
 
-      <div style="margin-top:14px; display:flex; justify-content:flex-end; gap:12px;">
-        <button type="button" id="previewBtn" class="btn btn-secondary">Förhandsgranska</button>
-        <button type="submit" id="sendBtn" class="btn btn-primary">Skicka felanmälan</button>
+      <div class="admin-tools">
+        <button class="mini-edit" id="editPageBtn" type="button">
+          <span>✏️</span> Redigera sidan
+        </button>
       </div>
-      <div id="formError" style="color:#b91c1c;margin-top:10px;display:none;"></div>
-    </form>
-  </div>
-</main>
 
-<!-- Popup -->
-<div class="popup-backdrop" id="popupBackdrop" aria-hidden="true">
-  <div class="popup" role="dialog" aria-modal="true">
-    <p id="popupMessage" style="margin:0 0 12px;">Tack! Ditt ärende har skickats.</p>
-    <div style="display:flex;gap:10px;justify-content:center;">
-      <button id="popupOk" class="btn btn-primary">OK</button>
+      <section class="form-card">
+        <div class="alert-box" id="alertBox">
+          <strong id="alertTitle">⚠ Vid akuta ärenden (t.ex. vattenläckor, elfel, värmeproblem nattetid):</strong><br>
+          <span id="alertPrefix">Kontakta</span>
+          <strong id="alertService">HSB Jouren</strong>
+          <span id="alertSuffix">direkt på telefonnummer</span>
+          <a id="alertPhoneLink" href="tel:0103032700">010-303 27 00</a>.
+        </div>
+
+        <p class="small-muted" id="introText">Vid övriga ärenden kan ni fylla i formuläret nedan. Beskriv tydligt vad som behöver åtgärdas, så återkopplar vi så snart som möjligt.</p>
+
+        <form id="felForm" novalidate>
+          <div class="form-grid">
+            <div>
+              <label for="fullName">Namn &amp; Efternamn*</label>
+              <input id="fullName" class="input" type="text" placeholder="Förnamn Efternamn" required>
+            </div>
+
+            <div>
+              <label for="apt">Lägenhetsnummer &amp; trapphus*</label>
+              <input id="apt" class="input" type="text" placeholder="Ex: 9A, Trapphus 1" required>
+            </div>
+
+            <div>
+              <label for="email">E-postadress*</label>
+              <input id="email" class="input" type="email" placeholder="din@epost.se" required>
+            </div>
+
+            <div>
+              <label for="phone">Telefonnummer (valfritt)</label>
+              <input id="phone" class="input" type="tel" placeholder="070-xxx xx xx">
+            </div>
+
+            <div class="field-full">
+              <label for="description">Beskrivning av ärendet*</label>
+              <textarea id="description" class="input" rows="6" placeholder="Beskriv problemet så tydligt som möjligt" required></textarea>
+            </div>
+
+            <div class="field-full">
+              <label>Bifoga bilder (valfritt)</label>
+              <label class="btn btn-secondary" for="attachmentsInput" style="margin:0;display:inline-flex;align-items:center;justify-content:center;">
+                <input id="attachmentsInput" type="file" accept="image/*" multiple style="display:none;">
+                Ladda upp från enhet
+              </label>
+              <div class="attachments" id="attachmentsPreview" aria-live="polite"></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="previewBtn" class="btn btn-secondary">Förhandsgranska</button>
+            <button type="submit" id="sendBtn" class="btn btn-primary">Skicka felanmälan</button>
+          </div>
+
+          <div id="formError" class="form-error"></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <div class="popup-backdrop" id="popupBackdrop" aria-hidden="true">
+    <div class="popup" role="dialog" aria-modal="true">
+      <p id="popupMessage" class="popup-text">Tack! Ditt ärende har skickats.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button id="popupOk" class="btn btn-primary" type="button">OK</button>
+      </div>
     </div>
   </div>
-</div>
 
-<footer>&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
+  <div class="edit-overlay" id="pageOverlay" role="dialog" aria-modal="true" aria-label="Redigera felanmälan">
+    <div class="editor">
+      <h3>Redigera felanmälan</h3>
+      <p class="helptext">Här kan admin uppdatera innehållet på sidan. Ändringarna sparas direkt i Firestore.</p>
 
-<script>
-// === Header scroll ===
-const header = document.getElementById('siteHeader');
-window.addEventListener('scroll',()=>{
-  if(window.scrollY>100){ header.classList.add('scrolled'); }
-  else{ header.classList.remove('scrolled'); }
-});
+      <div class="editor-section">
+        <h4>1. Topp och intro</h4>
+        <div>
+          <label for="editPageTitle">Sidrubrik</label>
+          <input id="editPageTitle" class="input" type="text" placeholder="Felanmälan">
+        </div>
+        <div>
+          <label for="editPageSubtitle">Underrubrik</label>
+          <textarea id="editPageSubtitle" class="input" rows="3" placeholder="Kort beskrivning överst på sidan"></textarea>
+        </div>
+        <div>
+          <label for="editIntroText">Ingress</label>
+          <textarea id="editIntroText" class="input" rows="4" placeholder="Förklarande text ovanför formuläret"></textarea>
+        </div>
+      </div>
 
-// === Hamburger ===
-const hamburger=document.getElementById('hamburger');
-const mainNav=document.getElementById('mainNav');
-hamburger.addEventListener('click',()=>{
-  mainNav.classList.toggle('show');
-  hamburger.textContent = mainNav.classList.contains('show')?'➤':'☰';
-});
+      <div class="editor-section">
+        <h4>2. Akut information</h4>
+        <div>
+          <label for="editAlertTitle">Varningsrubrik</label>
+          <textarea id="editAlertTitle" class="input" rows="3" placeholder="⚠ Vid akuta ärenden ..."></textarea>
+        </div>
+        <div class="form-grid two-cols">
+          <div>
+            <label for="editAlertPrefix">Text före tjänst</label>
+            <input id="editAlertPrefix" class="input" type="text" placeholder="Kontakta">
+          </div>
+          <div>
+            <label for="editAlertService">Tjänstens namn</label>
+            <input id="editAlertService" class="input" type="text" placeholder="HSB Jouren">
+          </div>
+          <div>
+            <label for="editAlertSuffix">Text före telefonnummer</label>
+            <input id="editAlertSuffix" class="input" type="text" placeholder="direkt på telefonnummer">
+          </div>
+          <div>
+            <label for="editAlertPhone">Telefonnummer</label>
+            <input id="editAlertPhone" class="input" type="text" placeholder="010-303 27 00">
+          </div>
+        </div>
+      </div>
 
-// === Admin visibility ===
-const currentUser = JSON.parse(localStorage.getItem('currentUser')||'null');
-if(currentUser && currentUser.role==='admin'){
-  document.getElementById('adminNav').style.display='block';
-}
+      <div class="editor-section">
+        <h4>3. Knapptexter</h4>
+        <div class="form-grid two-cols">
+          <div>
+            <label for="editPreviewBtnText">Text på förhandsgranska-knappen</label>
+            <input id="editPreviewBtnText" class="input" type="text" placeholder="Förhandsgranska">
+          </div>
+          <div>
+            <label for="editSendBtnText">Text på skicka-knappen</label>
+            <input id="editSendBtnText" class="input" type="text" placeholder="Skicka felanmälan">
+          </div>
+        </div>
+      </div>
 
-// === Form logic ===
-const felForm=document.getElementById('felForm');
-const fullName=document.getElementById('fullName');
-const apt=document.getElementById('apt');
-const emailIn=document.getElementById('email');
-const phone=document.getElementById('phone');
-const description=document.getElementById('description');
-const attachmentsInput=document.getElementById('attachmentsInput');
-const attachmentsPreview=document.getElementById('attachmentsPreview');
-const formError=document.getElementById('formError');
-const popupBackdrop=document.getElementById('popupBackdrop');
-const popupMessage=document.getElementById('popupMessage');
-const popupOk=document.getElementById('popupOk');
+      <div class="row">
+        <button id="savePageBtn" class="btn btn-primary" type="button">Spara</button>
+        <button id="cancelPageBtn" class="btn btn-cancel" type="button">Avbryt</button>
+      </div>
+    </div>
+  </div>
 
-let attachments=[];
+  <footer id="footerText">© Västhaga Nr4 — Bostadsrättsförening</footer>
 
-function uid(){return Math.random().toString(36).slice(2,9);}
-function renderAttachments(){
-  attachmentsPreview.innerHTML='';
-  attachments.forEach(att=>{
-    const el=document.createElement('div');
-    el.className='att';
-    const img=document.createElement('img');
-    img.src=att.data;
-    el.appendChild(img);
-    const rem=document.createElement('div');
-    rem.className='remove';
-    rem.textContent='✕';
-    rem.onclick=()=>{attachments=attachments.filter(a=>a.id!==att.id);renderAttachments();};
-    el.appendChild(rem);
-    attachmentsPreview.appendChild(el);
-  });
-}
-attachmentsInput.addEventListener('change',(e)=>{
-  const files=Array.from(e.target.files||[]);
-  files.forEach(file=>{
-    const reader=new FileReader();
-    reader.onload=function(ev){
-      attachments.push({id:uid(),data:ev.target.result,name:file.name});
-      renderAttachments();
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
+      authDomain:"vasthaganr4.firebaseapp.com",
+      projectId:"vasthaganr4",
+      storageBucket:"vasthaganr4.firebasestorage.app",
+      messagingSenderId:"547846391741",
+      appId:"1:547846391741:web:048eb47b28d1027539f4d4"
     };
-    reader.readAsDataURL(file);
-  });
-  attachmentsInput.value='';
-});
-function validateForm(){
-  formError.style.display='none';
-  if(!fullName.value.trim()){formError.textContent='Ange namn och efternamn.';formError.style.display='block';return false;}
-  if(!apt.value.trim()){formError.textContent='Ange lägenhetsnummer och trapphus.';formError.style.display='block';return false;}
-  if(!emailIn.value.trim()||!/^\S+@\S+\.\S+$/.test(emailIn.value.trim())){formError.textContent='Ange en giltig e-postadress.';formError.style.display='block';return false;}
-  if(!description.value.trim()){formError.textContent='Beskriv ärendet.';formError.style.display='block';return false;}
-  return true;
-}
-function showPopup(msg){
-  popupMessage.textContent=msg;
-  popupBackdrop.style.display='flex';
-  setTimeout(()=>{popupBackdrop.style.opacity='1';},10);
-}
-function hidePopup(){
-  popupBackdrop.style.opacity='0';
-  setTimeout(()=>{popupBackdrop.style.display='none';},200);
-}
-popupOk.addEventListener('click',hidePopup);
-document.getElementById('previewBtn').addEventListener('click',()=>{
-  if(!validateForm())return;
-  const summary=`Namn: ${fullName.value}\nLgh: ${apt.value}\nEpost: ${emailIn.value}\nTel: ${phone.value}\n\n${description.value}`;
-  showPopup(summary);
-});
-felForm.addEventListener('submit',(e)=>{
-  e.preventDefault();
-  if(!validateForm())return;
-  const payload={
-    name:fullName.value.trim(),
-    apartment:apt.value.trim(),
-    email:emailIn.value.trim(),
-    phone:phone.value.trim(),
-    description:description.value.trim(),
-    attachments:attachments.map(a=>a.data),
-    timestamp:new Date().toISOString()
-  };
-  const existing=JSON.parse(localStorage.getItem('felanmalanCases')||'[]');
-  existing.unshift(payload);
-  localStorage.setItem('felanmalanCases',JSON.stringify(existing));
-  showPopup('Tack! Ditt ärende har skickats.');
-  felForm.reset();
-  attachments=[];
-  renderAttachments();
-});
-popupBackdrop.addEventListener('click',(e)=>{if(e.target===popupBackdrop)hidePopup();});
-renderAttachments();
-</script>
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    (function(){ emailjs.init("iAf2yRysdfBR5Nlbd"); })();
+
+    const body = document.body;
+    const header = document.getElementById('siteHeader');
+    const mainNav = document.getElementById('mainNav');
+    const hamburger = document.getElementById('hamburger');
+
+    const brandLogo = document.getElementById('brandLogo');
+    const brandName = document.getElementById('brandName');
+    const brandTagline = document.getElementById('brandTagline');
+    const footerTextEl = document.getElementById('footerText');
+
+    const pageTitleEl = document.getElementById('pageTitle');
+    const pageSubtitleEl = document.getElementById('pageSubtitle');
+    const introTextEl = document.getElementById('introText');
+    const alertBox = document.getElementById('alertBox');
+    const alertTitleEl = document.getElementById('alertTitle');
+    const alertPrefixEl = document.getElementById('alertPrefix');
+    const alertServiceEl = document.getElementById('alertService');
+    const alertSuffixEl = document.getElementById('alertSuffix');
+    const alertPhoneLink = document.getElementById('alertPhoneLink');
+    const previewBtn = document.getElementById('previewBtn');
+    const sendBtn = document.getElementById('sendBtn');
+
+    const editPageBtn = document.getElementById('editPageBtn');
+    const pageOverlay = document.getElementById('pageOverlay');
+    const editPageTitle = document.getElementById('editPageTitle');
+    const editPageSubtitle = document.getElementById('editPageSubtitle');
+    const editIntroText = document.getElementById('editIntroText');
+    const editAlertTitle = document.getElementById('editAlertTitle');
+    const editAlertPrefix = document.getElementById('editAlertPrefix');
+    const editAlertService = document.getElementById('editAlertService');
+    const editAlertSuffix = document.getElementById('editAlertSuffix');
+    const editAlertPhone = document.getElementById('editAlertPhone');
+    const editPreviewBtnText = document.getElementById('editPreviewBtnText');
+    const editSendBtnText = document.getElementById('editSendBtnText');
+    const savePageBtn = document.getElementById('savePageBtn');
+    const cancelPageBtn = document.getElementById('cancelPageBtn');
+
+    const felForm = document.getElementById('felForm');
+    const fullName = document.getElementById('fullName');
+    const apt = document.getElementById('apt');
+    const emailIn = document.getElementById('email');
+    const phone = document.getElementById('phone');
+    const description = document.getElementById('description');
+    const attachmentsInput = document.getElementById('attachmentsInput');
+    const attachmentsPreview = document.getElementById('attachmentsPreview');
+    const formError = document.getElementById('formError');
+    const popupBackdrop = document.getElementById('popupBackdrop');
+    const popupMessage = document.getElementById('popupMessage');
+    const popupOk = document.getElementById('popupOk');
+
+    const pageHomeRef = doc(db,'pages','home');
+    const navRef = doc(db,'site','navigation');
+    const issuePageRef = doc(db,'pages','felanmalan');
+
+    let currentUser = null;
+    let isAdmin = false;
+    let navData = null;
+
+    let pageData = {
+      pageTitle: 'Felanmälan',
+      pageSubtitle: 'Här kan du enkelt skicka in en felanmälan till styrelsen.',
+      introText: 'Vid övriga ärenden kan ni fylla i formuläret nedan. Beskriv tydligt vad som behöver åtgärdas, så återkopplar vi så snart som möjligt.',
+      alertTitle: '⚠ Vid akuta ärenden (t.ex. vattenläckor, elfel, värmeproblem nattetid):',
+      alertPrefix: 'Kontakta',
+      alertService: 'HSB Jouren',
+      alertSuffix: 'direkt på telefonnummer',
+      alertPhone: '010-303 27 00',
+      previewBtnText: 'Förhandsgranska',
+      sendBtnText: 'Skicka felanmälan'
+    };
+
+    let homePageData = {
+      brandName: 'Västhaga Nr4',
+      brandTagline: 'Bostadsrättsförening',
+      logoUrl: 'logga.png',
+      footerText: '© Västhaga Nr4 — Bostadsrättsförening'
+    };
+
+    const fallbackNav = {
+      items: [
+        { type:'link', label:'Hem', url:'index.html', order:0 },
+        {
+          type:'dropdown', label:'Om föreningen', order:1, children:[
+            { label:'Om oss', url:'om.html', order:0 },
+            { label:'Stadgar', url:'stadgar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Styrelsen', order:2, children:[
+            { label:'Styrelsen', url:'styrelsen.html', order:0 },
+            { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Projekt', order:3, children:[
+            { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
+            { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
+          ]
+        },
+        { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4, id:'felanmalanNav' },
+        { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
+        { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
+        { type:'link', label:'Admin', url:'admin.html', order:92, id:'adminNav', adminOnly:true }
+      ]
+    };
+
+    let attachments = [];
+
+    function requireAdmin(){
+      if(!isAdmin) throw new Error('Du behöver vara admin för att göra detta.');
+    }
+
+    function sanitizePhoneNumber(raw=''){
+      return String(raw).replace(/[^\d+]/g, '');
+    }
+
+    function renderHomeBranding(){
+      brandName.textContent = homePageData.brandName || 'Västhaga Nr4';
+      brandTagline.textContent = homePageData.brandTagline || 'Bostadsrättsförening';
+      footerTextEl.textContent = homePageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+      if((homePageData.logoUrl || '').trim()) brandLogo.src = homePageData.logoUrl.trim();
+    }
+
+    function renderPageContent(){
+      pageTitleEl.textContent = pageData.pageTitle || 'Felanmälan';
+      pageSubtitleEl.textContent = pageData.pageSubtitle || '';
+      introTextEl.textContent = pageData.introText || '';
+
+      alertTitleEl.textContent = pageData.alertTitle || '';
+      alertPrefixEl.textContent = pageData.alertPrefix || '';
+      alertServiceEl.textContent = pageData.alertService || '';
+      alertSuffixEl.textContent = pageData.alertSuffix || '';
+
+      const visiblePhone = (pageData.alertPhone || '').trim() || '010-303 27 00';
+      const telPhone = sanitizePhoneNumber(visiblePhone);
+      alertPhoneLink.textContent = visiblePhone;
+      alertPhoneLink.href = telPhone ? `tel:${telPhone}` : '#';
+
+      previewBtn.textContent = pageData.previewBtnText || 'Förhandsgranska';
+      sendBtn.textContent = pageData.sendBtnText || 'Skicka felanmälan';
+    }
+
+    function updateAdminVisibility(){
+      body.classList.toggle('is-admin', isAdmin);
+    }
+
+    function updateHeaderState(){
+      header.classList.toggle('is-solid', window.scrollY > 24);
+    }
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState);
+
+    function setNavOpen(open){
+      mainNav.classList.toggle('show', open);
+      hamburger.textContent = open ? '➤' : '☰';
+      hamburger.classList.toggle('is-open', open);
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    hamburger.addEventListener('click', ()=>setNavOpen(!mainNav.classList.contains('show')));
+
+    function wireMobileDropdowns(){
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
+      if(!isMobile) return;
+
+      document.querySelectorAll('nav .dropdown > a').forEach(a => {
+        a.onclick = (e) => {
+          const li = a.closest('.dropdown');
+          if(!li) return;
+          e.preventDefault();
+          li.classList.toggle('active');
+        };
+      });
+    }
+    window.addEventListener('resize', wireMobileDropdowns);
+
+    function appendMobileCloseRow(){
+      const li = document.createElement('li');
+      li.className = 'mobile-close-wrap';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-close-btn';
+      btn.textContent = 'Stäng meny';
+      btn.addEventListener('click', ()=>setNavOpen(false));
+      li.appendChild(btn);
+      mainNav.appendChild(li);
+    }
+
+    function renderNav(){
+      const data = navData || fallbackNav;
+      const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+        .slice()
+        .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+      mainNav.innerHTML = '';
+
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentUser) return;
+        if(isAdmin && (item.id === 'loginNav' || item.id === 'kontoNav')) return;
+
+        const isActive = (item.url || '').toLowerCase() === 'felanmalan.html';
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'dropdown';
+
+          const a = document.createElement('a');
+          a.href = item.url || '#';
+          a.textContent = `${item.label || ''} ▾`;
+
+          const dd = document.createElement('div');
+          dd.className = 'dropdown-content';
+
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((x,y)=>(x.order ?? 0) - (y.order ?? 0));
+
+          children.forEach(ch => {
+            const ca = document.createElement('a');
+            ca.href = ch.url || '#';
+            ca.textContent = ch.label || '';
+            if((ch.url || '').toLowerCase() === 'felanmalan.html') ca.classList.add('is-active');
+            dd.appendChild(ca);
+          });
+
+          li.appendChild(a);
+          li.appendChild(dd);
+          mainNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        if(isActive) a.classList.add('is-active');
+        li.appendChild(a);
+        mainNav.appendChild(li);
+      });
+
+      appendMobileCloseRow();
+      wireMobileDropdowns();
+      mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>setNavOpen(false)));
+    }
+
+    function setOverlayOpen(overlay, open){
+      overlay.style.display = open ? 'flex' : 'none';
+    }
+
+    editPageBtn.addEventListener('click', () => {
+      if(!isAdmin) return;
+      editPageTitle.value = pageData.pageTitle || '';
+      editPageSubtitle.value = pageData.pageSubtitle || '';
+      editIntroText.value = pageData.introText || '';
+      editAlertTitle.value = pageData.alertTitle || '';
+      editAlertPrefix.value = pageData.alertPrefix || '';
+      editAlertService.value = pageData.alertService || '';
+      editAlertSuffix.value = pageData.alertSuffix || '';
+      editAlertPhone.value = pageData.alertPhone || '';
+      editPreviewBtnText.value = pageData.previewBtnText || '';
+      editSendBtnText.value = pageData.sendBtnText || '';
+      setOverlayOpen(pageOverlay, true);
+    });
+
+    cancelPageBtn.addEventListener('click', ()=>setOverlayOpen(pageOverlay, false));
+
+    savePageBtn.addEventListener('click', async () => {
+      try{
+        requireAdmin();
+        const payload = {
+          pageTitle: editPageTitle.value.trim(),
+          pageSubtitle: editPageSubtitle.value.trim(),
+          introText: editIntroText.value.trim(),
+          alertTitle: editAlertTitle.value.trim(),
+          alertPrefix: editAlertPrefix.value.trim(),
+          alertService: editAlertService.value.trim(),
+          alertSuffix: editAlertSuffix.value.trim(),
+          alertPhone: editAlertPhone.value.trim(),
+          previewBtnText: editPreviewBtnText.value.trim(),
+          sendBtnText: editSendBtnText.value.trim(),
+          updatedAt: Date.now()
+        };
+        await setDoc(issuePageRef, payload, { merge:true });
+        pageData = { ...pageData, ...payload };
+        renderPageContent();
+        setOverlayOpen(pageOverlay, false);
+        alert('Sidan är uppdaterad.');
+      }catch(err){
+        alert(err?.message || 'Kunde inte spara sidan.');
+      }
+    });
+
+    document.querySelectorAll('.edit-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if(e.target === overlay) overlay.style.display = 'none';
+      });
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        setNavOpen(false);
+        setOverlayOpen(pageOverlay, false);
+        hidePopup();
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if(!user){
+        isAdmin = false;
+        updateAdminVisibility();
+        renderNav();
+        return;
+      }
+
+      try{
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        const role = snap.exists() ? snap.data().role : null;
+        isAdmin = role === 'admin' || role === 'ordforande';
+      }catch{
+        isAdmin = false;
+      }
+
+      updateAdminVisibility();
+      renderNav();
+    });
+
+    onSnapshot(pageHomeRef, snap => {
+      if(snap.exists()) homePageData = { ...homePageData, ...snap.data() };
+      renderHomeBranding();
+    });
+
+    onSnapshot(navRef, snap => {
+      navData = snap.exists() ? snap.data() : fallbackNav;
+      renderNav();
+    });
+
+    onSnapshot(issuePageRef, snap => {
+      if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+      renderPageContent();
+    });
+
+    function uid(){
+      return Math.random().toString(36).slice(2,9);
+    }
+
+    function renderAttachments(){
+      attachmentsPreview.innerHTML = '';
+      attachments.forEach(att => {
+        const el = document.createElement('div');
+        el.className = 'att';
+
+        const img = document.createElement('img');
+        img.src = att.data;
+        img.alt = att.name || 'Bilaga';
+        el.appendChild(img);
+
+        const rem = document.createElement('div');
+        rem.className = 'remove';
+        rem.textContent = '✕';
+        rem.onclick = () => {
+          attachments = attachments.filter(a => a.id !== att.id);
+          renderAttachments();
+        };
+        el.appendChild(rem);
+
+        attachmentsPreview.appendChild(el);
+      });
+    }
+
+    attachmentsInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files || []);
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          attachments.push({
+            id: uid(),
+            data: ev.target.result,
+            name: file.name
+          });
+          renderAttachments();
+        };
+        reader.readAsDataURL(file);
+      });
+      attachmentsInput.value = '';
+    });
+
+    function validateForm(){
+      formError.style.display = 'none';
+
+      if(!fullName.value.trim()){
+        formError.textContent = 'Ange namn och efternamn.';
+        formError.style.display = 'block';
+        return false;
+      }
+      if(!apt.value.trim()){
+        formError.textContent = 'Ange lägenhetsnummer och trapphus.';
+        formError.style.display = 'block';
+        return false;
+      }
+      if(!emailIn.value.trim() || !/^\S+@\S+\.\S+$/.test(emailIn.value.trim())){
+        formError.textContent = 'Ange giltig e-postadress.';
+        formError.style.display = 'block';
+        return false;
+      }
+      if(!description.value.trim()){
+        formError.textContent = 'Beskriv ärendet.';
+        formError.style.display = 'block';
+        return false;
+      }
+      return true;
+    }
+
+    function showPopup(msg){
+      popupMessage.textContent = msg;
+      popupBackdrop.style.display = 'flex';
+      setTimeout(() => popupBackdrop.style.opacity = '1', 10);
+    }
+
+    function hidePopup(){
+      popupBackdrop.style.opacity = '0';
+      setTimeout(() => popupBackdrop.style.display = 'none', 200);
+    }
+
+    popupOk.addEventListener('click', hidePopup);
+    popupBackdrop.addEventListener('click', (e) => {
+      if(e.target === popupBackdrop) hidePopup();
+    });
+
+    previewBtn.addEventListener('click', () => {
+      if(!validateForm()) return;
+      const summary =
+`Namn: ${fullName.value}
+Lgh: ${apt.value}
+E-post: ${emailIn.value}
+Tel: ${phone.value || 'Ej angivet'}
+
+${description.value}`;
+      showPopup(summary);
+    });
+
+    felForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if(!validateForm()) return;
+
+      const payload = {
+        from_name: fullName.value.trim(),
+        apartment: apt.value.trim(),
+        sender_email: emailIn.value.trim(),
+        phone: phone.value.trim() || "Ej angivet",
+        message: description.value.trim(),
+        to_email: "styrelsen@vasthaganr4.se"
+      };
+
+      try{
+        await emailjs.send("service_tg8g49c", "template_pvu8q4j", payload);
+        showPopup("Tack! Ditt ärende har skickats till styrelsen.");
+        felForm.reset();
+        attachments = [];
+        renderAttachments();
+      }catch(err){
+        console.error(err);
+        showPopup("Kunde inte skicka e-post. Försök igen senare.");
+      }
+    });
+
+    renderHomeBranding();
+    renderPageContent();
+    renderNav();
+    renderAttachments();
+  </script>
 </body>
 </html>
