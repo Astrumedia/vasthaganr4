@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Konto — Västhaga Nr4</title>
+  <style>
+    :root{
+      --bg:#f7f9fc;
+      --card:#ffffff;
+      --accent:#f09a0f;
+      --accent-dark:#d27c0c;
+      --muted:#6b7280;
+      --maxw:900px;
+      --shadow:0 12px 30px rgba(11,18,32,0.08);
+      --line:#e9eef5;
+      --soft:#fbfcfe;
+      --success:#166534;
+      --success-bg:#ecfdf5;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:#0b1220;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+    }
+    body.menu-open{overflow:hidden}
+
+    header{
+      position:fixed;
+      top:0;left:0;
+      width:100%;
+      padding:22px 28px;
+      z-index:200;
+      background:rgba(255,255,255,0);
+      box-shadow:0 8px 24px rgba(11,18,32,0);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      transition:background .08s linear, box-shadow .08s linear, padding .08s linear;
+    }
+
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .logo{
+      width:44px;height:44px;border-radius:8px;background:var(--accent);
+      display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex:0 0 auto;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+    .brand-title{display:flex;flex-direction:column;justify-content:center;min-width:0}
+    .brand-title strong{font-weight:700;font-size:1.3rem;line-height:1.1}
+    .brand-title span{font-size:.95rem;color:var(--muted)}
+
+    .site-nav{position:relative;z-index:210}
+
+    /* ===== Desktop menu ===== */
+    .desktop-nav{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      gap:4px;
+      align-items:center;
+    }
+    .desktop-nav a,
+    .desktop-nav .desktop-parent{
+      padding:8px 12px;
+      border-radius:8px;
+      text-decoration:none;
+      color:#0b1220;
+      transition:all .2s ease;
+      white-space:nowrap;
+      display:block;
+      font-weight:500;
+    }
+    .desktop-nav a:hover,
+    .desktop-nav .desktop-parent:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
+    .desktop-nav .dropdown{position:relative}
+    .desktop-nav .dropdown-content{
+      position:absolute;
+      top:35px;left:0;
+      background:#fff;
+      box-shadow:0 8px 22px rgba(0,0,0,0.10);
+      padding:8px;
+      border-radius:10px;
+      display:none;
+      min-width:190px;
+      z-index:80;
+    }
+    .desktop-nav .dropdown:hover > .dropdown-content{display:block}
+    .desktop-nav .dropdown-content a{
+      color:var(--accent);
+      background:#fff;
+      margin:2px 0;
+      padding:8px 10px;
+      display:block;
+      border-radius:8px;
+      font-weight:500;
+    }
+    .desktop-nav .dropdown-content a:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
+
+    /* ===== Mobile trigger ===== */
+    .hamburger{
+      display:none;
+      font-size:1.8rem;
+      cursor:pointer;
+      user-select:none;
+      z-index:320;
+      color:var(--accent);
+      position:relative;
+      transition:
+        transform .35s cubic-bezier(.22,1,.36,1),
+        background .22s ease,
+        box-shadow .22s ease;
+      line-height:1;
+      background:none;
+      border:0;
+      font-family:inherit;
+    }
+    .hamburger.is-open{
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      box-shadow:0 10px 22px rgba(11,18,32,0.10);
+      transform:translateX(-2px) scale(1.02);
+    }
+
+    /* ===== Mobile drawer ===== */
+    .mobile-drawer{display:none}
+
+    main{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:110px 16px 60px;
+    }
+
+    .card{
+      background:var(--card);
+      padding:40px 44px;
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      max-width:520px;
+      width:100%;
+      animation:fadeIn .4s ease;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:24px;
+      color:var(--accent);
+      font-size:2rem;
+    }
+
+    .account-intro{
+      text-align:center;
+      color:var(--muted);
+      line-height:1.5;
+      font-weight:700;
+      margin:-6px 0 28px 0;
+    }
+
+    .info-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .info-row{
+      padding:14px 16px;
+      border-radius:16px;
+      background:var(--soft);
+      border:1px solid var(--line);
+    }
+
+    .info-row strong{
+      display:block;
+      color:#333;
+      margin-bottom:6px;
+      font-size:.95rem;
+    }
+
+    .info-value{
+      font-weight:800;
+      word-break:break-word;
+      line-height:1.45;
+    }
+
+    .role-wrap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .role-badge{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      background:var(--accent);
+      color:#fff;
+      font-size:.85rem;
+      font-weight:900;
+    }
+    .role-badge.ordforande{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+
+    .btn{
+      padding:12px 16px;
+      border:none;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all .25s ease;
+      font-family:inherit;
+      font-size:1rem;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:#fff;
+      box-shadow:0 4px 10px rgba(240,154,15,0.35);
+    }
+    .btn-primary:hover{background:var(--accent-dark)}
+    .btn-secondary{
+      background:#fff;
+      color:var(--accent);
+      border:1px solid rgba(0,0,0,0.10);
+    }
+
+    .card-actions{
+      margin-top:30px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .loading-state,
+    .error-state{
+      text-align:center;
+      font-weight:800;
+      line-height:1.6;
+    }
+    .loading-state{color:var(--muted)}
+    .error-state{color:#b91c1c}
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:0.9rem;
+      margin:10px 0 26px;
+      padding:0 16px;
+      font-weight:800;
+    }
+
+    @media (max-width:768px){
+      .desktop-nav{display:none}
+
+      .hamburger{
+        display:block;
+        position:fixed;
+        top:18px;
+        right:16px;
+      }
+
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+
+      .mobile-drawer{
+        display:block;
+        position:fixed;
+        inset:0;
+        pointer-events:none;
+        z-index:300;
+      }
+
+      .mobile-drawer::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:rgba(0,0,0,0.22);
+        opacity:0;
+        transition:opacity .25s ease;
+      }
+
+      .mobile-drawer.is-open{
+        pointer-events:auto;
+      }
+
+      .mobile-drawer.is-open::before{
+        opacity:1;
+      }
+
+      .mobile-drawer-inner{
+        position:absolute;
+        top:0;
+        right:0;
+        width:290px;
+        max-width:86vw;
+        height:100dvh;
+        background:#fff;
+        box-shadow:-10px 0 26px rgba(0,0,0,0.10);
+        transform:translateX(100%);
+        transition:transform .28s ease;
+        display:flex;
+        flex-direction:column;
+        padding:78px 12px 18px 12px;
+        overflow-y:auto;
+        overflow-x:hidden;
+      }
+
+      .mobile-drawer.is-open .mobile-drawer-inner{
+        transform:translateX(0);
+      }
+
+      .mobile-nav{
+        list-style:none;
+        padding:0;
+        margin:0;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .mobile-nav li{
+        width:100%;
+      }
+
+      .mobile-nav a,
+      .mobile-nav .mobile-parent{
+        width:100%;
+        text-align:left;
+        padding:12px 14px;
+        font-size:1.06rem;
+        border-radius:12px;
+        text-decoration:none;
+        color:#0b1220;
+        background:none;
+        border:0;
+        font:inherit;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        -webkit-tap-highlight-color:transparent;
+      }
+
+      .mobile-nav a:hover,
+      .mobile-nav .mobile-parent:hover{
+        background:rgba(240,154,15,0.10);
+      }
+
+      .mobile-submenu{
+        display:none;
+        padding:6px 0 0 10px;
+      }
+
+      .mobile-item.open > .mobile-submenu{
+        display:block;
+      }
+
+      .mobile-submenu a{
+        margin:4px 0;
+        color:var(--accent);
+        background:#fff;
+        border-radius:10px;
+      }
+
+      .mobile-chevron{
+        transition:transform .2s ease;
+        flex:0 0 auto;
+      }
+
+      .mobile-item.open .mobile-chevron{
+        transform:rotate(180deg);
+      }
+
+      .mobile-close-wrap{
+        margin-top:auto;
+        padding-top:12px;
+      }
+      .mobile-close-btn{
+        width:100%;
+        padding:14px 14px;
+        border-radius:12px;
+        border:0;
+        background:rgba(240,154,15,0.16);
+        color:#a86405;
+        font-weight:700;
+        cursor:pointer;
+      }
+      .mobile-close-btn:active{transform:translateY(1px)}
+
+      .card{
+        padding:28px 20px;
+      }
+    }
+
+    /* ===== Brand text always black ===== */
+    header .brand-title strong,
+    header .brand-title span{
+      color:#000000 !important;
+    }
+
+    header.is-hero .desktop-nav a,
+    header.is-hero .desktop-nav .desktop-parent{
+      color:#0b1220 !important;
+    }
+    header.is-hero .desktop-nav a:hover,
+    header.is-hero .desktop-nav .desktop-parent:hover{
+      background:rgba(240,154,15,0.95);
+      color:#fff !important;
+    }
+    header.is-solid .desktop-nav a,
+    header.is-solid .desktop-nav .desktop-parent{
+      color:inherit !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header id="siteHeader" class="is-solid">
+    <div class="brand">
+      <a href="index.html" class="logo" aria-label="Hem">
+        <img id="brandLogo" src="logga.png" alt="Logga">
+      </a>
+      <a href="index.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:center;min-width:0;">
+        <div class="brand-title">
+          <strong id="brandName">Västhaga Nr4</strong>
+          <span id="brandTagline">Bostadsrättsförening</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="site-nav">
+      <ul id="desktopNav" class="desktop-nav"></ul>
+
+      <button class="hamburger" id="hamburger" type="button" aria-label="Öppna meny" aria-expanded="false">☰</button>
+
+      <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+        <div class="mobile-drawer-inner">
+          <ul id="mobileNav" class="mobile-nav"></ul>
+
+          <div class="mobile-close-wrap">
+            <button class="mobile-close-btn" id="mobileCloseBtn" type="button">Stäng meny</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card" id="kontoCard">
+      <h1>Konto</h1>
+      <p class="account-intro">Här ser du dina kontouppgifter och din nuvarande behörighet.</p>
+
+      <div id="accountContent" class="loading-state">Laddar konto...</div>
+
+      <div class="card-actions" id="cardActions" style="display:none;">
+        <button id="logoutBtn" class="btn btn-primary" type="button">Logga ut</button>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footerText">&copy; Västhaga Nr4 — Bostadsrättsförening</footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
+      authDomain: "vasthaganr4.firebaseapp.com",
+      projectId: "vasthaganr4",
+      storageBucket: "vasthaganr4.firebasestorage.app",
+      messagingSenderId: "547846391741",
+      appId: "1:547846391741:web:048eb47b28d1027539f4d4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const body = document.body;
+    const header = document.getElementById('siteHeader');
+    const desktopNav = document.getElementById('desktopNav');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const hamburger = document.getElementById('hamburger');
+    const mobileCloseBtn = document.getElementById('mobileCloseBtn');
+
+    const brandLogo = document.getElementById('brandLogo');
+    const brandName = document.getElementById('brandName');
+    const brandTagline = document.getElementById('brandTagline');
+    const footerText = document.getElementById('footerText');
+
+    const accountContent = document.getElementById('accountContent');
+    const cardActions = document.getElementById('cardActions');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    let currentUser = null;
+    let currentUserData = null;
+    let isAdmin = false;
+    let navData = null;
+
+    let homePageData = {
+      brandName: 'Västhaga Nr4',
+      brandTagline: 'Bostadsrättsförening',
+      logoUrl: 'logga.png',
+      footerText: '© Västhaga Nr4 — Bostadsrättsförening'
+    };
+
+    const fallbackNav = {
+      items: [
+        { type:'link', label:'Hem', url:'index.html', order:0 },
+        {
+          type:'dropdown', label:'Om föreningen', order:1, children:[
+            { label:'Om oss', url:'om.html', order:0 },
+            { label:'Stadgar', url:'stadgar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Styrelsen', order:2, children:[
+            { label:'Styrelsen', url:'styrelsen.html', order:0 },
+            { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+          ]
+        },
+        {
+          type:'dropdown', label:'Projekt', order:3, children:[
+            { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
+            { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
+          ]
+        },
+        { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
+        { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
+        { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
+        { type:'link', label:'Admin', url:'admin.html', order:92, id:'adminNav', adminOnly:true }
+      ]
+    };
+
+    function updateHeaderState(){
+      const progress = Math.min(window.scrollY / 120, 1);
+      const bgAlpha = 0.98 * progress;
+      const shadowAlpha = 0.08 * progress;
+
+      header.classList.toggle('is-hero', progress === 0);
+      header.classList.toggle('is-solid', progress > 0);
+      header.style.background = `rgba(255,255,255,${bgAlpha})`;
+      header.style.boxShadow = `0 8px 24px rgba(11,18,32,${shadowAlpha})`;
+    }
+
+    function setMobileMenuOpen(open){
+      mobileDrawer.classList.toggle('is-open', open);
+      hamburger.classList.toggle('is-open', open);
+      hamburger.textContent = open ? '➤' : '☰';
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      body.classList.toggle('menu-open', open);
+
+      if(!open){
+        mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+          item.classList.remove('open');
+          const btn = item.querySelector('.mobile-parent');
+          if(btn) btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+    }
+
+    function closeOtherMobileItems(currentItem){
+      mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+        if(item !== currentItem){
+          item.classList.remove('open');
+          const btn = item.querySelector('.mobile-parent');
+          if(btn) btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    function buildDesktopNav(items){
+      desktopNav.innerHTML = '';
+
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentUser) return;
+        if(item.label === 'Logga in' && currentUser) return;
+        if(item.label === 'Konto' && isAdmin) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'dropdown';
+
+          const parent = document.createElement('span');
+          parent.className = 'desktop-parent';
+          parent.textContent = `${item.label || ''} ▾`;
+
+          const submenu = document.createElement('div');
+          submenu.className = 'dropdown-content';
+
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+          children.forEach(child => {
+            const a = document.createElement('a');
+            a.href = child.url || '#';
+            a.textContent = child.label || '';
+            submenu.appendChild(a);
+          });
+
+          li.appendChild(parent);
+          li.appendChild(submenu);
+          desktopNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        li.appendChild(a);
+        desktopNav.appendChild(li);
+      });
+    }
+
+    function buildMobileNav(items){
+      mobileNav.innerHTML = '';
+
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentUser) return;
+        if(item.label === 'Logga in' && currentUser) return;
+        if(item.label === 'Konto' && isAdmin) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'mobile-item';
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mobile-parent';
+          btn.setAttribute('aria-expanded', 'false');
+          btn.innerHTML = `
+            <span>${item.label || ''}</span>
+            <span class="mobile-chevron" aria-hidden="true">▾</span>
+          `;
+
+          const submenu = document.createElement('div');
+          submenu.className = 'mobile-submenu';
+
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+          children.forEach(child => {
+            const a = document.createElement('a');
+            a.href = child.url || '#';
+            a.textContent = child.label || '';
+            a.addEventListener('click', () => setMobileMenuOpen(false));
+            submenu.appendChild(a);
+          });
+
+          btn.addEventListener('click', () => {
+            const isOpen = li.classList.contains('open');
+            closeOtherMobileItems(li);
+
+            if(isOpen){
+              li.classList.remove('open');
+              btn.setAttribute('aria-expanded', 'false');
+            }else{
+              li.classList.add('open');
+              btn.setAttribute('aria-expanded', 'true');
+            }
+          });
+
+          li.appendChild(btn);
+          li.appendChild(submenu);
+          mobileNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        a.addEventListener('click', () => setMobileMenuOpen(false));
+        li.appendChild(a);
+        mobileNav.appendChild(li);
+      });
+    }
+
+    function renderNav(){
+      const data = navData || fallbackNav;
+      const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+        .slice()
+        .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+      buildDesktopNav(items);
+      buildMobileNav(items);
+    }
+
+    function renderBranding(){
+      brandName.textContent = homePageData.brandName || 'Västhaga Nr4';
+      brandTagline.textContent = homePageData.brandTagline || 'Bostadsrättsförening';
+      footerText.textContent = homePageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+      if((homePageData.logoUrl || '').trim()) brandLogo.src = homePageData.logoUrl.trim();
+    }
+
+    function roleLabel(role){
+      if(role === 'ordforande') return 'Ordförande';
+      if(role === 'admin') return 'Admin';
+      return 'Medlem';
+    }
+
+    function roleBadge(role){
+      if(role === 'ordforande'){
+        return '<span class="role-badge ordforande">UR-admin</span>';
+      }
+      if(role === 'admin'){
+        return '<span class="role-badge">Redigerare</span>';
+      }
+      return '';
+    }
+
+    function renderAccount(user, userData){
+      const displayName =
+        userData?.name?.trim() ||
+        user.displayName?.trim() ||
+        user.email?.split('@')[0] ||
+        '-';
+
+      const role = userData?.role || 'user';
+
+      accountContent.className = 'info-list';
+      accountContent.innerHTML = `
+        <div class="info-row">
+          <strong>Namn</strong>
+          <div class="info-value">${displayName}</div>
+        </div>
+
+        <div class="info-row">
+          <strong>E-post</strong>
+          <div class="info-value">${user.email || '-'}</div>
+        </div>
+
+        <div class="info-row">
+          <strong>Roll</strong>
+          <div class="info-value role-wrap">
+            <span>${roleLabel(role)}</span>
+            ${roleBadge(role)}
+          </div>
+        </div>
+
+        <div class="info-row">
+          <strong>Användar-ID</strong>
+          <div class="info-value">${user.uid}</div>
+        </div>
+      `;
+
+      cardActions.style.display = 'flex';
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+
+      if(!user){
+        window.location.href = 'loggain.html';
+        return;
+      }
+
+      try{
+        const userSnap = await getDoc(doc(db, 'users', user.uid));
+        currentUserData = userSnap.exists() ? userSnap.data() : {};
+        isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'ordforande';
+
+        renderNav();
+        renderAccount(user, currentUserData);
+      }catch(err){
+        console.error(err);
+        accountContent.className = 'error-state';
+        accountContent.textContent = 'Kunde inte läsa kontouppgifterna.';
+      }
+    });
+
+    onSnapshot(doc(db, 'pages', 'home'), (snap) => {
+      if(snap.exists()){
+        homePageData = { ...homePageData, ...snap.data() };
+      }
+      renderBranding();
+    });
+
+    onSnapshot(doc(db, 'site', 'navigation'), (snap) => {
+      navData = snap.exists() ? snap.data() : fallbackNav;
+      renderNav();
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      try{
+        await signOut(auth);
+        window.location.href = 'index.html';
+      }catch(err){
+        alert(err?.message || 'Kunde inte logga ut.');
+      }
+    });
+
+    hamburger.addEventListener('click', () => {
+      setMobileMenuOpen(!mobileDrawer.classList.contains('is-open'));
+    });
+
+    mobileCloseBtn.addEventListener('click', () => {
+      setMobileMenuOpen(false);
+    });
+
+    mobileDrawer.addEventListener('click', (e) => {
+      if(e.target === mobileDrawer){
+        setMobileMenuOpen(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){
+        setMobileMenuOpen(false);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if(window.matchMedia('(min-width: 769px)').matches){
+        setMobileMenuOpen(false);
+      }
+      updateHeaderState();
+    });
+
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState, { passive:true });
+
+    renderBranding();
+    renderNav();
+  </script>
+</body>
+</html>
