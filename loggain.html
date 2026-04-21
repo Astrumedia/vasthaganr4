@@ -12,6 +12,8 @@
   --accent-dark:#d27c0c;
   --muted:#6b7280;
   --maxw:900px;
+  --shadow:0 12px 30px rgba(11,18,32,0.08);
+  --line:#e9eef5;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -22,39 +24,116 @@ body{
   flex-direction:column;
   min-height:100vh;
 }
+body.menu-open{overflow:hidden}
 
-/* --- Header (vit som på admin.html) --- */
+/* ===== Header ===== */
 header{
   position:fixed;
   top:0; left:0; width:100%;
   padding:22px 32px;
-  background:#fff;
-  transition:box-shadow .25s;
-  display:flex; align-items:center; justify-content:space-between;
-  z-index:100;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  z-index:200;
+  background:rgba(255,255,255,0);
+  box-shadow:0 8px 24px rgba(11,18,32,0);
+  transition:background .08s linear, box-shadow .08s linear, padding .08s linear;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
 }
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{
+  width:44px;height:44px;border-radius:8px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto;
+}
 .logo img{width:100%;height:100%;object-fit:cover;border-radius:8px}
-nav ul{list-style:none;margin:0;padding:0;display:flex;gap:8px;align-items:center}
-nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:inherit;transition:all .18s;white-space:nowrap}
-nav a:hover{background:var(--accent);color:#fff}
-.dropdown{position:relative}
-.dropdown-content{position:absolute;top:36px;left:0;background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);padding:8px;display:none;min-width:180px;z-index:80}
-.dropdown.show .dropdown-content{display:block}
-.hamburger{display:none;font-size:1.6rem;cursor:pointer;color:var(--accent)}
-@media(max-width:768px){
-  .hamburger{display:block}
-  nav ul{flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;background:#fff;padding-top:72px;padding-left:16px;transform:translateX(100%);transition:transform .28s;box-shadow:-6px 0 20px rgba(0,0,0,0.08);z-index:120;align-items:flex-start}
-  nav ul.show{transform:translateX(0)}
-  nav ul li{width:100%;margin-bottom:12px}
-  nav ul li a{width:100%;text-align:left;padding-left:12px}
-  .dropdown-content{position:static;box-shadow:none;padding-left:12px;display:none}
-  .dropdown.active .dropdown-content{display:block}
+.brand-title{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.brand-title strong{font-weight:700;font-size:1.3rem;line-height:1.1}
+.brand-title span{font-size:.95rem;color:var(--muted)}
+
+.site-nav{position:relative;z-index:210}
+
+/* ===== Desktop menu ===== */
+.desktop-nav{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  gap:4px;
+  align-items:center;
+}
+.desktop-nav a,
+.desktop-nav .desktop-parent{
+  padding:8px 12px;
+  border-radius:8px;
+  text-decoration:none;
+  color:#0b1220;
+  transition:all .2s ease;
+  white-space:nowrap;
+  display:block;
+  font-weight:500;
+}
+.desktop-nav a:hover,
+.desktop-nav .desktop-parent:hover{
+  background:var(--accent);
+  color:#fff !important;
+}
+.desktop-nav .dropdown{position:relative}
+.desktop-nav .dropdown-content{
+  position:absolute;
+  top:35px; left:0;
+  background:#fff;
+  box-shadow:0 8px 22px rgba(0,0,0,0.10);
+  padding:8px;
+  border-radius:10px;
+  display:none;
+  min-width:190px;
+  z-index:80;
+}
+.desktop-nav .dropdown:hover > .dropdown-content{display:block}
+.desktop-nav .dropdown-content a{
+  color:var(--accent);
+  background:#fff;
+  margin:2px 0;
+  padding:8px 10px;
+  display:block;
+  border-radius:8px;
+  font-weight:500;
+}
+.desktop-nav .dropdown-content a:hover{
+  background:var(--accent);
+  color:#fff !important;
 }
 
-/* --- Innehåll --- */
+/* ===== Mobile trigger ===== */
+.hamburger{
+  display:none;
+  font-size:1.8rem;
+  cursor:pointer;
+  user-select:none;
+  z-index:320;
+  color:var(--accent);
+  position:relative;
+  transition:
+    transform .35s cubic-bezier(.22,1,.36,1),
+    background .22s ease,
+    box-shadow .22s ease;
+  line-height:1;
+  background:none;
+  border:0;
+  font-family:inherit;
+}
+.hamburger.is-open{
+  background:#fff;
+  border-radius:999px;
+  padding:6px 10px;
+  box-shadow:0 10px 22px rgba(11,18,32,0.10);
+  transform:translateX(-2px) scale(1.02);
+}
+
+/* ===== Mobile drawer ===== */
+.mobile-drawer{display:none}
+
+/* ===== Content ===== */
 main{
   flex:1;
   display:flex;
@@ -63,21 +142,23 @@ main{
   padding:120px 16px 80px;
 }
 
-/* --- Kort / panel --- */
 .card{
   background:var(--card);
   padding:40px;
   border-radius:18px;
-  box-shadow:0 12px 30px rgba(11,18,32,0.08);
-  max-width:400px;
+  box-shadow:var(--shadow);
+  max-width:420px;
   width:100%;
   animation:fadeIn .4s ease;
 }
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
 h1{text-align:center;margin-bottom:20px;color:var(--accent);}
-p.lead{text-align:center;color:var(--muted);margin:10px 0 20px;}
-label{font-weight:600;color:#333;display:block;margin-bottom:6px;}
+p.lead{text-align:center;color:var(--muted);margin:10px 0 20px;line-height:1.5;font-weight:700}
+label{font-weight:700;color:#333;display:block;margin-bottom:6px;}
 input{
   padding:12px;
   border-radius:10px;
@@ -85,71 +166,275 @@ input{
   font-size:1rem;
   width:100%;
   margin-bottom:16px;
+  font-family:inherit;
 }
 .btn{
   padding:12px 16px;
   border:none;
   border-radius:10px;
-  font-weight:600;
+  font-weight:700;
   cursor:pointer;
   transition:all .25s ease;
+  font-family:inherit;
 }
-.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 10px rgba(240,154,15,0.4);}
-.btn-primary:hover{background:var(--accent-dark);transform:translateY(-1px);}
-.btn-outline{background:#fff;border:1px solid var(--accent);color:var(--accent);}
-.btn-outline:hover{background:var(--accent);color:#fff;}
-.bottom-actions{margin-top:16px;display:flex;justify-content:center;gap:10px;}
-.link-btn{background:none;border:none;color:var(--accent);cursor:pointer;text-decoration:underline;font-weight:600;}
-.link-btn:hover{color:var(--accent-dark);}
-#loginMsg{margin-top:10px;text-align:center;font-weight:600;}
+.btn-primary{
+  background:var(--accent);
+  color:#fff;
+  box-shadow:0 4px 10px rgba(240,154,15,0.4);
+}
+.btn-primary:hover{
+  background:var(--accent-dark);
+  transform:translateY(-1px);
+}
+.btn-outline{
+  background:#fff;
+  border:1px solid var(--accent);
+  color:var(--accent);
+}
+.btn-outline:hover{
+  background:var(--accent);
+  color:#fff;
+}
+.bottom-actions{
+  margin-top:16px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+.link-btn{
+  background:none;
+  border:none;
+  color:var(--accent);
+  cursor:pointer;
+  text-decoration:underline;
+  font-weight:700;
+  font-family:inherit;
+}
+.link-btn:hover{color:var(--accent-dark)}
+#loginMsg{
+  margin-top:10px;
+  text-align:center;
+  font-weight:700;
+  line-height:1.4;
+}
 .error{color:#b91c1c;}
 .success{color:green;}
 
-/* --- Overlays --- */
+/* ===== Overlays ===== */
 .overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.45);
   display:none;align-items:center;justify-content:center;
-  z-index:200;
+  z-index:220;
+  padding:12px;
 }
 .overlay.show{display:flex;animation:fadeIn .25s;}
 .panel{
   background:#fff;padding:28px;border-radius:14px;
   box-shadow:0 18px 40px rgba(0,0,0,0.2);
-  max-width:400px;width:90%;
+  max-width:420px;width:100%;
 }
 .panel h2{text-align:center;color:var(--accent);margin-bottom:12px;}
-.footer-note{text-align:center;margin-top:18px;color:var(--muted);font-size:0.9rem}
+.footer-note{
+  text-align:center;
+  margin-top:18px;
+  color:var(--muted);
+  font-size:0.9rem;
+  line-height:1.5;
+  font-weight:700;
+}
+
+/* ===== Mobile ===== */
+@media(max-width:768px){
+  .desktop-nav{display:none}
+
+  .hamburger{
+    display:block;
+    position:fixed;
+    top:18px;
+    right:16px;
+  }
+
+  header{padding:18px 14px}
+  .brand-title span{display:none}
+
+  .mobile-drawer{
+    display:block;
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:300;
+  }
+
+  .mobile-drawer::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.22);
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+
+  .mobile-drawer.is-open{
+    pointer-events:auto;
+  }
+
+  .mobile-drawer.is-open::before{
+    opacity:1;
+  }
+
+  .mobile-drawer-inner{
+    position:absolute;
+    top:0;
+    right:0;
+    width:290px;
+    max-width:86vw;
+    height:100dvh;
+    background:#fff;
+    box-shadow:-10px 0 26px rgba(0,0,0,0.10);
+    transform:translateX(100%);
+    transition:transform .28s ease;
+    display:flex;
+    flex-direction:column;
+    padding:78px 12px 18px 12px;
+    overflow-y:auto;
+    overflow-x:hidden;
+  }
+
+  .mobile-drawer.is-open .mobile-drawer-inner{
+    transform:translateX(0);
+  }
+
+  .mobile-nav{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .mobile-nav li{
+    width:100%;
+  }
+
+  .mobile-nav a,
+  .mobile-nav .mobile-parent{
+    width:100%;
+    text-align:left;
+    padding:12px 14px;
+    font-size:1.06rem;
+    border-radius:12px;
+    text-decoration:none;
+    color:#0b1220;
+    background:none;
+    border:0;
+    font:inherit;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .mobile-nav a:hover,
+  .mobile-nav .mobile-parent:hover{
+    background:rgba(240,154,15,0.10);
+  }
+
+  .mobile-submenu{
+    display:none;
+    padding:6px 0 0 10px;
+  }
+
+  .mobile-item.open > .mobile-submenu{
+    display:block;
+  }
+
+  .mobile-submenu a{
+    margin:4px 0;
+    color:var(--accent);
+    background:#fff;
+    border-radius:10px;
+  }
+
+  .mobile-chevron{
+    transition:transform .2s ease;
+    flex:0 0 auto;
+  }
+
+  .mobile-item.open .mobile-chevron{
+    transform:rotate(180deg);
+  }
+
+  .mobile-close-wrap{
+    margin-top:auto;
+    padding-top:12px;
+  }
+  .mobile-close-btn{
+    width:100%;
+    padding:14px 14px;
+    border-radius:12px;
+    border:0;
+    background:rgba(240,154,15,0.16);
+    color:#a86405;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .mobile-close-btn:active{transform:translateY(1px)}
+
+  .card{padding:28px 20px}
+}
+
+/* ===== Brandtext alltid svart ===== */
+header .brand-title strong,
+header .brand-title span{
+  color:#000000 !important;
+}
+
+header.is-hero .desktop-nav a,
+header.is-hero .desktop-nav .desktop-parent{
+  color:#0b1220 !important;
+}
+header.is-hero .desktop-nav a:hover,
+header.is-hero .desktop-nav .desktop-parent:hover{
+  background:rgba(240,154,15,0.95);
+  color:#fff !important;
+}
+header.is-solid .desktop-nav a,
+header.is-solid .desktop-nav .desktop-parent{
+  color:inherit !important;
+}
 </style>
 </head>
 <body>
 
-<header id="siteHeader">
+<header id="siteHeader" class="is-solid">
   <div class="brand">
-    <a href="index.html" class="logo"><img src="logga.png" alt="Logga"></a>
-    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-      <div style="font-weight:700;font-size:1.3rem">Västhaga Nr4</div>
-      <div style="font-size:0.95rem;color:var(--muted)">Bostadsrättsförening</div>
+    <a href="index.html" class="logo" aria-label="Hem">
+      <img id="brandLogo" src="logga.png" alt="Logga">
+    </a>
+    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:center;min-width:0;">
+      <div class="brand-title">
+        <strong id="brandName">Västhaga Nr4</strong>
+        <span id="brandTagline">Bostadsrättsförening</span>
+      </div>
     </a>
   </div>
 
-  <nav>
-    <div class="hamburger" id="hamburger">☰</div>
-    <ul id="mainNav">
-      <li><a href="index.html">Hem</a></li>
-      <li class="dropdown" id="omDropdown">
-        <a href="om.html">Om föreningen ▾</a>
-        <div class="dropdown-content">
-          <a href="om.html">Om oss</a>
-          <a href="stadgar.html">Stadgar</a>
+  <nav class="site-nav">
+    <ul id="desktopNav" class="desktop-nav"></ul>
+
+    <button class="hamburger" id="hamburger" type="button" aria-label="Öppna meny" aria-expanded="false">☰</button>
+
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+      <div class="mobile-drawer-inner">
+        <ul id="mobileNav" class="mobile-nav"></ul>
+
+        <div class="mobile-close-wrap">
+          <button class="mobile-close-btn" id="mobileCloseBtn" type="button">Stäng meny</button>
         </div>
-      </li>
-      <li class="restricted"><a href="styrelsen.html">Styrelsen</a></li>
-      <li class="restricted"><a href="pagaendeplaner.html">Planeringsprojekt</a></li>
-      <li class="restricted"><a href="felanmalan.html">Felanmälan</a></li>
-      <li id="loginNav"><a href="loggain.html">Logga in</a></li>
-      <li id="kontoNav" style="display:none;"><a href="konto.html">Konto</a></li>
-      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
-    </ul>
+      </div>
+    </div>
   </nav>
 </header>
 
@@ -160,12 +445,13 @@ input{
     <form id="loginForm">
       <label for="email">E-post</label>
       <input id="email" type="email" placeholder="din@epost.se" required>
+
       <label for="password">Lösenord</label>
       <input id="password" type="password" placeholder="Lösenord" required>
 
       <button class="btn btn-primary" type="submit" style="width:100%;">Logga in</button>
 
-      <p class="lead">Logga in med din e-postadress och lösenord.</p>
+      <p class="lead">Logga in med din e-postadress och ditt lösenord.</p>
 
       <div id="loginMsg"></div>
     </form>
@@ -175,26 +461,30 @@ input{
     </div>
 
     <div class="bottom-actions">
-      <button id="createBtn" class="link-btn">Skapa konto</button>
-      <button id="forgotBtn" class="link-btn">Glömt lösenord</button>
+      <button id="createBtn" class="link-btn" type="button">Skapa konto</button>
+      <button id="forgotBtn" class="link-btn" type="button">Glömt lösenord</button>
     </div>
   </div>
 </main>
 
-<!-- Overlays -->
 <div class="overlay" id="signupOverlay">
   <div class="panel">
     <h2>Skapa konto</h2>
     <form id="signupForm">
       <label for="suName">Namn</label>
       <input id="suName" type="text" required placeholder="Förnamn Efternamn">
+
       <label for="suEmail">E-post</label>
       <input id="suEmail" type="email" required placeholder="din@epost.se">
+
       <label for="suPassword">Lösenord</label>
       <input id="suPassword" type="password" required>
+
       <label for="suPassConfirm">Bekräfta lösenord</label>
       <input id="suPassConfirm" type="password" required>
+
       <div id="signupError" class="error" style="display:none;margin-top:8px;"></div>
+
       <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
         <button type="button" id="signupCancel" class="btn btn-outline">Avbryt</button>
         <button type="submit" class="btn btn-primary">Skapa konto</button>
@@ -208,8 +498,10 @@ input{
     <h2>Återställ lösenord</h2>
     <form id="resetForm">
       <label for="resetEmail">E-post</label>
-      <input id="resetEmail" type="email" required>
-      <div id="resetMsg" style="margin-top:6px;"></div>
+      <input id="resetEmail" type="email" required placeholder="din@epost.se">
+
+      <div id="resetMsg" style="margin-top:6px;font-weight:700;line-height:1.4;"></div>
+
       <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
         <button type="button" id="resetCancel" class="btn btn-outline">Avbryt</button>
         <button type="submit" class="btn btn-primary">Skicka länk</button>
@@ -220,8 +512,21 @@ input{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
@@ -231,108 +536,416 @@ const firebaseConfig = {
   messagingSenderId: "547846391741",
   appId: "1:547846391741:web:048eb47b28d1027539f4d4"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* --- Inloggning --- */
-const loginForm=document.getElementById('loginForm');
-const loginMsg=document.getElementById('loginMsg');
-const emailEl=document.getElementById('email');
-const passEl=document.getElementById('password');
+const body = document.body;
+const header = document.getElementById('siteHeader');
+const desktopNav = document.getElementById('desktopNav');
+const mobileNav = document.getElementById('mobileNav');
+const mobileDrawer = document.getElementById('mobileDrawer');
+const hamburger = document.getElementById('hamburger');
+const mobileCloseBtn = document.getElementById('mobileCloseBtn');
 
-loginForm.addEventListener('submit',async e=>{
-  e.preventDefault();
-  loginMsg.textContent='';
-  try{
-    const cred=await signInWithEmailAndPassword(auth,emailEl.value,passEl.value);
-    const uid=cred.user.uid;
-    const docSnap=await getDoc(doc(db,'users',uid));
-    const userData=docSnap.exists()?docSnap.data():{role:'user',email:cred.user.email,name:cred.user.email.split('@')[0]};
-    localStorage.setItem('currentUser',JSON.stringify({uid,...userData}));
-    loginMsg.textContent='Inloggad!'; loginMsg.className='success';
-    setTimeout(()=>window.location.href='index.html',800);
-  }catch(err){loginMsg.textContent='Fel e-post eller lösenord.';loginMsg.className='error';}
+const brandLogo = document.getElementById('brandLogo');
+const brandName = document.getElementById('brandName');
+const brandTagline = document.getElementById('brandTagline');
+
+const loginForm = document.getElementById('loginForm');
+const loginMsg = document.getElementById('loginMsg');
+const emailEl = document.getElementById('email');
+const passEl = document.getElementById('password');
+
+const signupOverlay = document.getElementById('signupOverlay');
+const signupForm = document.getElementById('signupForm');
+const suName = document.getElementById('suName');
+const suEmail = document.getElementById('suEmail');
+const suPassword = document.getElementById('suPassword');
+const suPassConfirm = document.getElementById('suPassConfirm');
+const signupError = document.getElementById('signupError');
+
+const resetOverlay = document.getElementById('resetOverlay');
+const resetForm = document.getElementById('resetForm');
+const resetEmail = document.getElementById('resetEmail');
+const resetMsg = document.getElementById('resetMsg');
+
+let currentUser = null;
+let currentUserData = null;
+let isAdmin = false;
+let navData = null;
+
+let homePageData = {
+  brandName: 'Västhaga Nr4',
+  brandTagline: 'Bostadsrättsförening',
+  logoUrl: 'logga.png'
+};
+
+const fallbackNav = {
+  items: [
+    { type:'link', label:'Hem', url:'index.html', order:0 },
+    {
+      type:'dropdown', label:'Om föreningen', order:1, children:[
+        { label:'Om oss', url:'om.html', order:0 },
+        { label:'Stadgar', url:'stadgar.html', order:1 }
+      ]
+    },
+    {
+      type:'dropdown', label:'Styrelsen', order:2, children:[
+        { label:'Styrelsen', url:'styrelsen.html', order:0 },
+        { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+      ]
+    },
+    {
+      type:'dropdown', label:'Projekt', order:3, children:[
+        { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
+        { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
+      ]
+    },
+    { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
+    { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
+    { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
+    { type:'link', label:'Admin', url:'admin.html', order:92, id:'adminNav', adminOnly:true }
+  ]
+};
+
+function updateHeaderState(){
+  const progress = Math.min(window.scrollY / 120, 1);
+  const bgAlpha = 0.98 * progress;
+  const shadowAlpha = 0.08 * progress;
+
+  header.classList.toggle('is-hero', progress === 0);
+  header.classList.toggle('is-solid', progress > 0);
+  header.style.background = `rgba(255,255,255,${bgAlpha})`;
+  header.style.boxShadow = `0 8px 24px rgba(11,18,32,${shadowAlpha})`;
+}
+
+function setMobileMenuOpen(open){
+  mobileDrawer.classList.toggle('is-open', open);
+  hamburger.classList.toggle('is-open', open);
+  hamburger.textContent = open ? '➤' : '☰';
+  hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+  body.classList.toggle('menu-open', open);
+
+  if(!open){
+    mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+      item.classList.remove('open');
+      const btn = item.querySelector('.mobile-parent');
+      if(btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+}
+
+function closeOtherMobileItems(currentItem){
+  mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+    if(item !== currentItem){
+      item.classList.remove('open');
+      const btn = item.querySelector('.mobile-parent');
+      if(btn) btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+function buildDesktopNav(items){
+  desktopNav.innerHTML = '';
+
+  items.forEach(item => {
+    if(item.adminOnly && !isAdmin) return;
+    if(item.restricted && !currentUser) return;
+    if(item.label === 'Logga in' && currentUser) return;
+    if(item.label === 'Konto' && isAdmin) return;
+
+    if(item.type === 'dropdown'){
+      const li = document.createElement('li');
+      li.className = 'dropdown';
+
+      const parent = document.createElement('span');
+      parent.className = 'desktop-parent';
+      parent.textContent = `${item.label || ''} ▾`;
+
+      const submenu = document.createElement('div');
+      submenu.className = 'dropdown-content';
+
+      const children = (Array.isArray(item.children) ? item.children : [])
+        .slice()
+        .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+      children.forEach(child => {
+        const a = document.createElement('a');
+        a.href = child.url || '#';
+        a.textContent = child.label || '';
+        submenu.appendChild(a);
+      });
+
+      li.appendChild(parent);
+      li.appendChild(submenu);
+      desktopNav.appendChild(li);
+      return;
+    }
+
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = item.url || '#';
+    a.textContent = item.label || '';
+    li.appendChild(a);
+    desktopNav.appendChild(li);
+  });
+}
+
+function buildMobileNav(items){
+  mobileNav.innerHTML = '';
+
+  items.forEach(item => {
+    if(item.adminOnly && !isAdmin) return;
+    if(item.restricted && !currentUser) return;
+    if(item.label === 'Logga in' && currentUser) return;
+    if(item.label === 'Konto' && isAdmin) return;
+
+    if(item.type === 'dropdown'){
+      const li = document.createElement('li');
+      li.className = 'mobile-item';
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-parent';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = `
+        <span>${item.label || ''}</span>
+        <span class="mobile-chevron" aria-hidden="true">▾</span>
+      `;
+
+      const submenu = document.createElement('div');
+      submenu.className = 'mobile-submenu';
+
+      const children = (Array.isArray(item.children) ? item.children : [])
+        .slice()
+        .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+      children.forEach(child => {
+        const a = document.createElement('a');
+        a.href = child.url || '#';
+        a.textContent = child.label || '';
+        a.addEventListener('click', () => setMobileMenuOpen(false));
+        submenu.appendChild(a);
+      });
+
+      btn.addEventListener('click', () => {
+        const isOpen = li.classList.contains('open');
+        closeOtherMobileItems(li);
+
+        if(isOpen){
+          li.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }else{
+          li.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      li.appendChild(btn);
+      li.appendChild(submenu);
+      mobileNav.appendChild(li);
+      return;
+    }
+
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = item.url || '#';
+    a.textContent = item.label || '';
+    a.addEventListener('click', () => setMobileMenuOpen(false));
+    li.appendChild(a);
+    mobileNav.appendChild(li);
+  });
+}
+
+function renderNav(){
+  const data = navData || fallbackNav;
+  const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+    .slice()
+    .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+  buildDesktopNav(items);
+  buildMobileNav(items);
+}
+
+function renderBranding(){
+  brandName.textContent = homePageData.brandName || 'Västhaga Nr4';
+  brandTagline.textContent = homePageData.brandTagline || 'Bostadsrättsförening';
+  if((homePageData.logoUrl || '').trim()) brandLogo.src = homePageData.logoUrl.trim();
+}
+
+function showOverlay(overlay){
+  overlay.classList.add('show');
+}
+
+function hideOverlay(overlay){
+  overlay.classList.remove('show');
+}
+
+document.getElementById('createBtn').addEventListener('click', () => {
+  signupForm.reset();
+  signupError.style.display = 'none';
+  showOverlay(signupOverlay);
 });
 
-/* --- Skapa konto --- */
-const signupOverlay=document.getElementById('signupOverlay');
-const signupForm=document.getElementById('signupForm');
-const suName=document.getElementById('suName');
-const suEmail=document.getElementById('suEmail');
-const suPassword=document.getElementById('suPassword');
-const suPassConfirm=document.getElementById('suPassConfirm');
-const signupError=document.getElementById('signupError');
+document.getElementById('forgotBtn').addEventListener('click', () => {
+  resetForm.reset();
+  resetMsg.textContent = '';
+  showOverlay(resetOverlay);
+});
 
-signupForm.addEventListener('submit',async e=>{
-  e.preventDefault(); signupError.style.display='none';
-  const name=suName.value.trim(), email=suEmail.value.trim().toLowerCase();
-  const p1=suPassword.value, p2=suPassConfirm.value;
-  if(p1!==p2){signupError.textContent='Lösenorden matchar inte.';signupError.style.display='block';return;}
-  if(p1.length<8){signupError.textContent='Lösenordet måste vara minst 8 tecken.';signupError.style.display='block';return;}
+document.getElementById('signupCancel').addEventListener('click', () => hideOverlay(signupOverlay));
+document.getElementById('resetCancel').addEventListener('click', () => hideOverlay(resetOverlay));
+
+document.querySelectorAll('.overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay){
+      hideOverlay(overlay);
+    }
+  });
+});
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  loginMsg.textContent = '';
+  loginMsg.className = '';
+
   try{
-    const cred=await createUserWithEmailAndPassword(auth,email,p1);
-    const uid=cred.user.uid;
-    const role=email==='uradmin@vasthaganr4.se'?'ordforande':'user';
-    await setDoc(doc(db,'users',uid),{name,email,role,createdAt:serverTimestamp()});
-    localStorage.setItem('currentUser',JSON.stringify({uid,name,email,role}));
+    await signInWithEmailAndPassword(auth, emailEl.value.trim(), passEl.value);
+    loginMsg.textContent = 'Inloggad!';
+    loginMsg.className = 'success';
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 700);
+  }catch(err){
+    loginMsg.textContent = 'Fel e-post eller lösenord.';
+    loginMsg.className = 'error';
+  }
+});
+
+signupForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  signupError.style.display = 'none';
+
+  const name = suName.value.trim();
+  const email = suEmail.value.trim().toLowerCase();
+  const p1 = suPassword.value;
+  const p2 = suPassConfirm.value;
+
+  if(p1 !== p2){
+    signupError.textContent = 'Lösenorden matchar inte.';
+    signupError.style.display = 'block';
+    return;
+  }
+
+  if(p1.length < 8){
+    signupError.textContent = 'Lösenordet måste vara minst 8 tecken.';
+    signupError.style.display = 'block';
+    return;
+  }
+
+  try{
+    const cred = await createUserWithEmailAndPassword(auth, email, p1);
+    const uid = cred.user.uid;
+    const role = email === 'uradmin@vasthaganr4.se' ? 'ordforande' : 'user';
+
+    await setDoc(doc(db, 'users', uid), {
+      name,
+      email,
+      role,
+      createdAt: serverTimestamp()
+    });
+
     alert('Konto skapat!');
-    window.location.href='index.html';
-  }catch(err){signupError.textContent=err.message;signupError.style.display='block';}
+    hideOverlay(signupOverlay);
+    window.location.href = 'index.html';
+  }catch(err){
+    signupError.textContent = err?.message || 'Kunde inte skapa konto.';
+    signupError.style.display = 'block';
+  }
 });
 
-/* --- Återställ lösenord --- */
-const resetOverlay=document.getElementById('resetOverlay');
-const resetForm=document.getElementById('resetForm');
-const resetEmail=document.getElementById('resetEmail');
-const resetMsg=document.getElementById('resetMsg');
-
-resetForm.addEventListener('submit',async e=>{
+resetForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  resetMsg.textContent = '';
+  resetMsg.className = '';
+
   try{
-    await sendPasswordResetEmail(auth,resetEmail.value.trim());
-    resetMsg.textContent='Ett återställningsmail har skickats.';
-  }catch{resetMsg.textContent='Kunde inte skicka återställningsmail.';}
+    await sendPasswordResetEmail(auth, resetEmail.value.trim());
+    resetMsg.textContent = 'Ett återställningsmail har skickats.';
+    resetMsg.className = 'success';
+  }catch(err){
+    resetMsg.textContent = 'Kunde inte skicka återställningsmail.';
+    resetMsg.className = 'error';
+  }
 });
 
-/* --- Överlägg och meny --- */
-function showOverlay(o){o.classList.add('show');}
-function hideOverlay(o){o.classList.remove('show');}
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  currentUserData = null;
+  isAdmin = false;
 
-document.getElementById('createBtn').onclick=()=>{signupForm.reset();showOverlay(signupOverlay)};
-document.getElementById('forgotBtn').onclick=()=>{resetForm.reset();showOverlay(resetOverlay)};
-document.getElementById('signupCancel').onclick=()=>hideOverlay(signupOverlay);
-document.getElementById('resetCancel').onclick=()=>hideOverlay(resetOverlay);
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)hideOverlay(o)}));
+  if(user){
+    try{
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      currentUserData = snap.exists() ? snap.data() : {};
+      isAdmin = currentUserData?.role === 'admin' || currentUserData?.role === 'ordforande';
+    }catch(err){
+      console.error('Kunde inte läsa användarroll:', err);
+    }
+  }
 
-const hamburger=document.getElementById('hamburger');
-const mainNav=document.getElementById('mainNav');
-hamburger.addEventListener('click',()=>{
-  mainNav.classList.toggle('show');
-  hamburger.textContent=mainNav.classList.contains('show')?'➤':'☰';
+  renderNav();
 });
 
-/* --- Visa/Dölj länkar --- */
-const currentUser=JSON.parse(localStorage.getItem('currentUser')||'null');
-const loginNav=document.getElementById('loginNav');
-const kontoNav=document.getElementById('kontoNav');
-const adminNav=document.getElementById('adminNav');
-
-document.querySelectorAll('.restricted').forEach(li=>{
-  li.style.display=currentUser?'block':'none';
+onSnapshot(doc(db, 'pages', 'home'), (snap) => {
+  if(snap.exists()){
+    homePageData = { ...homePageData, ...snap.data() };
+  }
+  renderBranding();
 });
-if(currentUser){
-  loginNav.style.display='none';
-  kontoNav.style.display='block';
-}else{
-  kontoNav.style.display='none';
-  loginNav.style.display='block';
-}
-if(currentUser && ['admin','ordforande'].includes(currentUser.role)){
-  adminNav.style.display='block';
-}else{
-  adminNav.style.display='none';
-}
+
+onSnapshot(doc(db, 'site', 'navigation'), (snap) => {
+  navData = snap.exists() ? snap.data() : fallbackNav;
+  renderNav();
+});
+
+hamburger.addEventListener('click', () => {
+  setMobileMenuOpen(!mobileDrawer.classList.contains('is-open'));
+});
+
+mobileCloseBtn.addEventListener('click', () => {
+  setMobileMenuOpen(false);
+});
+
+mobileDrawer.addEventListener('click', (e) => {
+  if(e.target === mobileDrawer){
+    setMobileMenuOpen(false);
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape'){
+    setMobileMenuOpen(false);
+    hideOverlay(signupOverlay);
+    hideOverlay(resetOverlay);
+  }
+});
+
+window.addEventListener('resize', () => {
+  if(window.matchMedia('(min-width: 769px)').matches){
+    setMobileMenuOpen(false);
+  }
+  updateHeaderState();
+});
+
+updateHeaderState();
+window.addEventListener('scroll', updateHeaderState, { passive:true });
+
+renderBranding();
+renderNav();
 </script>
 </body>
 </html>
