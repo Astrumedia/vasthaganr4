@@ -16,14 +16,23 @@
     }
     *{box-sizing:border-box}
     body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:#0b1220}
+    body.menu-open{overflow:hidden}
     .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
+    /* ===== Standardiserad header ===== */
     header{
-      position:fixed;top:0;left:0;width:100%;
-      padding:22px 32px;z-index:10;
-      background:rgba(255,255,255,0.98);
-      box-shadow:0 8px 24px rgba(11,18,32,0.08);
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      padding:22px 32px;
+      z-index:200;
+      background:rgba(255,255,255,0);
+      box-shadow:0 8px 24px rgba(11,18,32,0);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      transition:background .08s linear, box-shadow .08s linear, padding .08s linear;
     }
     .brand{display:flex;align-items:center;gap:12px}
     .logo{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
@@ -32,28 +41,73 @@
     .brand-title strong{font-weight:700;font-size:1.5rem;line-height:1.1}
     .brand-title span{font-size:1rem;color:var(--muted)}
 
-    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
-    nav a{
-      padding:8px 12px;border-radius:8px;text-decoration:none;color:#0b1220;
-      transition:all .22s ease;white-space:nowrap;font-weight:500;
-    }
-    nav > ul > li > a:hover{background:var(--accent);color:#fff !important;}
+    .site-nav{position:relative;z-index:210}
 
-    .dropdown{position:relative}
-    .dropdown-content{
-      position:absolute;top:28px;left:0;background:#fff;
+    /* ===== Desktop menu ===== */
+    .desktop-nav{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      gap:4px;
+      align-items:center;
+    }
+    .desktop-nav a,
+    .desktop-nav .desktop-parent{
+      padding:8px 12px;
+      border-radius:8px;
+      text-decoration:none;
+      color:#0b1220;
+      transition:all .22s ease;
+      white-space:nowrap;
+      font-weight:500;
+      display:block;
+    }
+    .desktop-nav > li > a:hover,
+    .desktop-nav .desktop-parent:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
+
+    .desktop-nav .dropdown{position:relative}
+    .desktop-nav .dropdown-content{
+      position:absolute;
+      top:35px;
+      left:0;
+      background:#fff;
       box-shadow:0 10px 24px rgba(0,0,0,0.10);
-      padding:8px;border-radius:10px;display:none;min-width:180px;z-index:10;
+      padding:8px;
+      border-radius:10px;
+      display:none;
+      min-width:180px;
+      z-index:10;
     }
-    .dropdown:hover .dropdown-content{display:block}
-    .dropdown-content a{
-      color:var(--accent);background:#fff;margin:2px 0;padding:8px 10px;display:block;border-radius:8px;
+    .desktop-nav .dropdown:hover .dropdown-content{display:block}
+    .desktop-nav .dropdown-content a{
+      color:var(--accent);
+      background:#fff;
+      margin:2px 0;
+      padding:8px 10px;
+      display:block;
+      border-radius:8px;
+      font-weight:500;
     }
-    .dropdown-content a:hover{background:var(--accent);color:#fff !important;}
+    .desktop-nav .dropdown-content a:hover{background:var(--accent);color:#fff !important;}
 
+    /* ===== Mobile trigger ===== */
     .hamburger{
-      display:none;font-size:1.8rem;cursor:pointer;user-select:none;z-index:70;color:var(--accent);
-      position:relative;font-weight:700;line-height:1;
+      display:none;
+      font-size:1.8rem;
+      cursor:pointer;
+      user-select:none;
+      z-index:320;
+      color:var(--accent);
+      position:relative;
+      font-weight:700;
+      line-height:1;
+      background:none;
+      border:0;
+      font-family:inherit;
       transition:transform .35s cubic-bezier(.22,1,.36,1), background .22s ease, box-shadow .22s ease;
     }
     .hamburger.is-open{
@@ -61,32 +115,9 @@
       box-shadow:0 10px 22px rgba(11,18,32,0.10);
       transform:translateX(-2px) scale(1.02);
     }
-    @media (max-width:768px){
-      .hamburger{display:block;position:fixed;top:18px;right:16px;z-index:130}
-      header{padding:18px 14px}
-      .brand-title span{display:none}
-      nav ul{
-        flex-direction:column;position:fixed;top:0;right:0;width:260px;height:100%;
-        background:#fff;padding-top:72px;padding-left:12px;
-        transform:translateX(100%);transition:transform .42s cubic-bezier(.22,1,.36,1);
-        box-shadow:-10px 0 28px rgba(0,0,0,0.10);
-        z-index:120;text-align:left;align-items:flex-start;overflow-y:auto;
-      }
-      nav ul.show{transform:translateX(0)}
-      nav ul li{margin-bottom:10px;width:100%}
-      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.02rem;font-weight:500}
-      .dropdown-content{position:static;box-shadow:none;padding-left:10px;display:none;min-width:unset}
-      .dropdown.active .dropdown-content{display:block}
-      .dropdown:hover .dropdown-content{display:none}
-    }
 
-    .mobile-close-wrap{margin-top:auto;padding:12px 12px 18px 12px;width:100%}
-    .mobile-close-btn{
-      width:100%;padding:14px 14px;border-radius:12px;border:0;
-      background:rgba(240,154,15,0.16);color:#a86405;font-weight:700;cursor:pointer;
-    }
-    .mobile-close-btn:active{transform:translateY(1px)}
-    @media (min-width:769px){.mobile-close-wrap{display:none}}
+    /* ===== Mobile drawer ===== */
+    .mobile-drawer{display:none}
 
     .hero-spacer{height:88px}
     .page-shell{padding-top:36px;padding-bottom:10px}
@@ -206,13 +237,177 @@
 
     footer{margin-top:28px;text-align:center;color:var(--muted);font-size:.98rem;padding:20px 14px 30px 14px;font-weight:800}
 
-    @media (max-width: 900px){
+
+   @media (max-width: 900px){
       .news-card{flex-direction:column}
-      .news-card img,.news-card.expanded img{width:100%;min-height:220px;flex-basis:auto;transform:none}
+      .news-card img,
+      .news-card.expanded img{
+        width:100%;
+        min-height:220px;
+        flex-basis:auto;
+        transform:none;
+      }
+    }
+
+    @media (max-width: 768px){
+      .desktop-nav{display:none}
+
+      .hamburger{
+        display:block;
+        position: fixed;
+        top: 18px;
+        right: 16px;
+      }
+
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+
+      .mobile-drawer{
+        display:block;
+        position:fixed;
+        inset:0;
+        pointer-events:none;
+        z-index:300;
+      }
+
+      .mobile-drawer::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:rgba(0,0,0,0.22);
+        opacity:0;
+        transition:opacity .25s ease;
+      }
+
+      .mobile-drawer.is-open{
+        pointer-events:auto;
+      }
+
+      .mobile-drawer.is-open::before{
+        opacity:1;
+      }
+
+      .mobile-drawer-inner{
+        position:absolute;
+        top:0;
+        right:0;
+        width:290px;
+        max-width:86vw;
+        height:100dvh;
+        background:#fff;
+        box-shadow:-10px 0 26px rgba(0,0,0,0.10);
+        transform:translateX(100%);
+        transition:transform .28s ease;
+        display:flex;
+        flex-direction:column;
+        padding:78px 12px 18px 12px;
+        overflow-y:auto;
+        overflow-x:hidden;
+      }
+
+      .mobile-drawer.is-open .mobile-drawer-inner{
+        transform:translateX(0);
+      }
+
+      .mobile-nav{
+        list-style:none;
+        padding:0;
+        margin:0;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .mobile-nav li{
+        width:100%;
+      }
+
+      .mobile-nav a,
+      .mobile-nav .mobile-parent{
+        width:100%;
+        text-align:left;
+        padding:12px 14px;
+        font-size:1.02rem;
+        border-radius:12px;
+        text-decoration:none;
+        color:#0b1220;
+        background:none;
+        border:0;
+        font:inherit;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        -webkit-tap-highlight-color:transparent;
+      }
+
+      .mobile-nav a:hover,
+      .mobile-nav .mobile-parent:hover{
+        background:rgba(240,154,15,0.10);
+      }
+
+      .mobile-submenu{
+        display:none;
+        padding:6px 0 0 10px;
+      }
+
+      .mobile-item.open > .mobile-submenu{
+        display:block;
+      }
+
+      .mobile-submenu a{
+        margin:4px 0;
+        color:var(--accent);
+        background:#fff;
+        border-radius:10px;
+      }
+
+      .mobile-chevron{
+        transition:transform .2s ease;
+        flex:0 0 auto;
+      }
+
+      .mobile-item.open .mobile-chevron{
+        transform:rotate(180deg);
+      }
+
       h1{font-size:2rem}
-      .page-head{grid-template-columns:1fr}
-      .page-head-left{grid-column:1}
-      .page-head-right{grid-column:1;justify-self:center}
+
+      .mobile-close-wrap{
+        margin-top:auto;
+        padding-top:12px;
+      }
+      .mobile-close-btn{
+        width:100%;
+        padding:14px 14px;
+        border-radius:12px;
+        border:0;
+        background:rgba(240,154,15,0.16);
+        color:#a86405;
+        font-weight:700;
+        cursor:pointer;
+      }
+      .mobile-close-btn:active{transform:translateY(1px)}
+    }
+
+    /* Brandtext alltid svart */
+    header .brand-title strong,
+    header .brand-title span{
+      color:#000000 !important;
+    }
+
+    header.is-hero .desktop-nav a,
+    header.is-hero .desktop-nav .desktop-parent{
+      color:#0b1220 !important;
+    }
+    header.is-hero .desktop-nav > li > a:hover,
+    header.is-hero .desktop-nav .desktop-parent:hover{
+      background:rgba(240,154,15,0.95);
+      color:#fff !important;
+    }
+    header.is-solid .desktop-nav a,
+    header.is-solid .desktop-nav .desktop-parent{
+      color:#0b1220;
     }
 
     @keyframes cardIn{
@@ -234,45 +429,20 @@
     </a>
   </div>
 
-  <nav>
-    <div class="hamburger" id="hamburger">☰</div>
+  <nav class="site-nav">
+    <ul id="desktopNav" class="desktop-nav"></ul>
 
-    <ul id="mainNav">
-      <li><a href="index.html">Hem</a></li>
+    <button class="hamburger" id="hamburger" type="button" aria-label="Öppna meny" aria-expanded="false">☰</button>
 
-      <li class="dropdown">
-        <a href="om.html">Om föreningen ▾</a>
-        <div class="dropdown-content">
-          <a href="om.html">Om oss</a>
-          <a href="stadgar.html">Stadgar</a>
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+      <div class="mobile-drawer-inner">
+        <ul id="mobileNav" class="mobile-nav"></ul>
+
+        <div class="mobile-close-wrap">
+          <button class="mobile-close-btn" id="mobileCloseBtn" type="button">Stäng meny</button>
         </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="styrelsen.html">Styrelsen ▾</a>
-        <div class="dropdown-content">
-          <a href="styrelsen.html">Styrelsen</a>
-          <a href="styrelseninformerar.html">Styrelsen informerar</a>
-        </div>
-      </li>
-
-      <li class="dropdown">
-        <a href="#">Projekt ▾</a>
-        <div class="dropdown-content">
-          <a href="pagaendeplaner.html">Framtida projekt</a>
-          <a href="utfordaplaner.html">Utförda projekt</a>
-        </div>
-      </li>
-
-      <li><a href="felanmalan.html">Felanmälan</a></li>
-      <li id="loginNav"><a href="loggain.html">Logga in</a></li>
-      <li id="kontoNav" class="restricted" style="display:none;"><a href="konto.html">Konto</a></li>
-      <li id="adminNav" style="display:none;"><a href="admin.html">Admin</a></li>
-
-      <li class="mobile-close-wrap">
-        <button type="button" class="mobile-close-btn" id="closeMenuBtn">Stäng meny</button>
-      </li>
-    </ul>
+      </div>
+    </div>
   </nav>
 </header>
 
@@ -444,35 +614,6 @@
   window.addEventListener("error", (e)=> showRuntimeError("JavaScript-fel", e.error || e.message));
   window.addEventListener("unhandledrejection", (e)=> showRuntimeError("Ohanterat Promise-fel", e.reason));
 
-  function wireMobileDropdowns(){
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    document.querySelectorAll(".dropdown").forEach(dd => dd.classList.remove("active"));
-    if(!isMobile) return;
-    document.querySelectorAll("nav .dropdown > a").forEach(a=>{
-      a.onclick = (ev)=>{
-        const li = a.closest(".dropdown");
-        if(!li) return;
-        ev.preventDefault();
-        li.classList.toggle("active");
-      };
-    });
-  }
-  wireMobileDropdowns();
-  window.addEventListener("resize", wireMobileDropdowns);
-
-  const mainNav = document.getElementById("mainNav");
-  const hamburger = document.getElementById("hamburger");
-  const closeMenuBtn = document.getElementById("closeMenuBtn");
-  function setNavOpen(open){
-    if(!mainNav || !hamburger) return;
-    mainNav.classList.toggle("show", open);
-    hamburger.textContent = open ? "➤" : "☰";
-    hamburger.classList.toggle("is-open", open);
-  }
-  hamburger?.addEventListener("click", ()=> setNavOpen(!mainNav.classList.contains("show")));
-  closeMenuBtn?.addEventListener("click", ()=> setNavOpen(false));
-  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") setNavOpen(false); });
-
   (async () => {
     try{
       const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js");
@@ -497,9 +638,17 @@
       const storage = getStorage(app);
 
       const PAGE_DOC_REF = doc(db, "pages", "projectsOngoing");
+      const NAV_DOC_REF = doc(db, "site", "navigation");
       const PROJECTS_COL = collection(db, "projects");
-      const FEED_COL = collection(db, "latestFeed");
       const DRAFT_STORAGE_KEY = `vasthaga_projects_drafts_like_news_v4:${STATUS}`;
+
+      const body = document.body;
+      const header = document.getElementById("siteHeader");
+      const desktopNav = document.getElementById("desktopNav");
+      const mobileNav = document.getElementById("mobileNav");
+      const mobileDrawer = document.getElementById("mobileDrawer");
+      const hamburger = document.getElementById("hamburger");
+      const mobileCloseBtn = document.getElementById("mobileCloseBtn");
 
       const pageTitleEl = document.getElementById("pageTitle");
       const pageSubtitleEl = document.getElementById("pageSubtitle");
@@ -576,6 +725,7 @@
 
       let currentUser = null;
       let isAdmin = false;
+      let navData = null;
 
       let pageData = {
         title: "Framtida projekt",
@@ -585,6 +735,34 @@
         brandTagline: "Bostadsrättsförening",
         logoUrl: "logga.png",
         defaultImageUrl: "husbild.jpg"
+      };
+
+      const fallbackNav = {
+        items: [
+          { type:'link', label:'Hem', url:'index.html', order:0 },
+          {
+            type:'dropdown', label:'Om föreningen', order:1, children:[
+              { label:'Om oss', url:'om.html', order:0 },
+              { label:'Stadgar', url:'stadgar.html', order:1 }
+            ]
+          },
+          {
+            type:'dropdown', label:'Styrelsen', order:2, children:[
+              { label:'Styrelsen', url:'styrelsen.html', order:0 },
+              { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+            ]
+          },
+          {
+            type:'dropdown', label:'Projekt', order:3, children:[
+              { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
+              { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
+            ]
+          },
+          { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4 },
+          { type:'link', label:'Logga in', url:'loggain.html', order:90 },
+          { type:'link', label:'Konto', url:'konto.html', order:91, restricted:true },
+          { type:'link', label:'Admin', url:'admin.html', order:92, adminOnly:true }
+        ]
       };
 
       let serverItems = [];
@@ -614,7 +792,166 @@
       function requireAdmin(){ if(!isAdmin) throw new Error("Admin krävs."); }
 
       function statusLabel(status){ return status === "done" ? "Utförda projekt" : "Framtida projekt"; }
-      function statusUrl(status){ return status === "done" ? "utfordaplaner.html" : "pagaendeplaner.html"; }
+
+      function updateHeaderState(){
+        const progress = Math.min(window.scrollY / 120, 1);
+        const bgAlpha = 0.98 * progress;
+        const shadowAlpha = 0.08 * progress;
+
+        header.classList.toggle('is-hero', progress === 0);
+        header.classList.toggle('is-solid', progress > 0);
+        header.style.background = `rgba(255,255,255,${bgAlpha})`;
+        header.style.boxShadow = `0 8px 24px rgba(11,18,32,${shadowAlpha})`;
+      }
+
+      function setMobileMenuOpen(open){
+        mobileDrawer.classList.toggle('is-open', open);
+        hamburger.classList.toggle('is-open', open);
+        hamburger.textContent = open ? '➤' : '☰';
+        hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+        body.classList.toggle('menu-open', open);
+
+        if(!open){
+          mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+            item.classList.remove('open');
+            const btn = item.querySelector('.mobile-parent');
+            if(btn) btn.setAttribute('aria-expanded', 'false');
+          });
+        }
+      }
+
+      function closeOtherMobileItems(currentItem){
+        mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+          if(item !== currentItem){
+            item.classList.remove('open');
+            const btn = item.querySelector('.mobile-parent');
+            if(btn) btn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      function buildDesktopNav(items){
+        desktopNav.innerHTML = '';
+
+        items.forEach(item => {
+          if(item.adminOnly && !isAdmin) return;
+          if(item.restricted && !currentUser) return;
+          if(item.label === 'Logga in' && currentUser) return;
+          if(item.label === 'Konto' && isAdmin) return;
+
+          if(item.type === 'dropdown'){
+            const li = document.createElement('li');
+            li.className = 'dropdown';
+
+            const parent = document.createElement('span');
+            parent.className = 'desktop-parent';
+            parent.textContent = `${item.label || ''} ▾`;
+
+            const submenu = document.createElement('div');
+            submenu.className = 'dropdown-content';
+
+            const children = (Array.isArray(item.children) ? item.children : [])
+              .slice()
+              .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+            children.forEach(child => {
+              const a = document.createElement('a');
+              a.href = child.url || '#';
+              a.textContent = child.label || '';
+              submenu.appendChild(a);
+            });
+
+            li.appendChild(parent);
+            li.appendChild(submenu);
+            desktopNav.appendChild(li);
+            return;
+          }
+
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = item.url || '#';
+          a.textContent = item.label || '';
+          li.appendChild(a);
+          desktopNav.appendChild(li);
+        });
+      }
+
+      function buildMobileNav(items){
+        mobileNav.innerHTML = '';
+
+        items.forEach(item => {
+          if(item.adminOnly && !isAdmin) return;
+          if(item.restricted && !currentUser) return;
+          if(item.label === 'Logga in' && currentUser) return;
+          if(item.label === 'Konto' && isAdmin) return;
+
+          if(item.type === 'dropdown'){
+            const li = document.createElement('li');
+            li.className = 'mobile-item';
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'mobile-parent';
+            btn.setAttribute('aria-expanded', 'false');
+            btn.innerHTML = `
+              <span>${escapeHtml(item.label || '')}</span>
+              <span class="mobile-chevron" aria-hidden="true">▾</span>
+            `;
+
+            const submenu = document.createElement('div');
+            submenu.className = 'mobile-submenu';
+
+            const children = (Array.isArray(item.children) ? item.children : [])
+              .slice()
+              .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+            children.forEach(child => {
+              const a = document.createElement('a');
+              a.href = child.url || '#';
+              a.textContent = child.label || '';
+              a.addEventListener('click', () => setMobileMenuOpen(false));
+              submenu.appendChild(a);
+            });
+
+            btn.addEventListener('click', () => {
+              const isOpen = li.classList.contains('open');
+              closeOtherMobileItems(li);
+
+              if(isOpen){
+                li.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+              }else{
+                li.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+              }
+            });
+
+            li.appendChild(btn);
+            li.appendChild(submenu);
+            mobileNav.appendChild(li);
+            return;
+          }
+
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = item.url || '#';
+          a.textContent = item.label || '';
+          a.addEventListener('click', () => setMobileMenuOpen(false));
+          li.appendChild(a);
+          mobileNav.appendChild(li);
+        });
+      }
+
+      function renderNav(){
+        const data = navData || fallbackNav;
+        const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+          .slice()
+          .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+        buildDesktopNav(items);
+        buildMobileNav(items);
+      }
 
       function syncStatusHint(){
         if(!statusHintTarget) return;
@@ -892,9 +1229,31 @@
       });
       document.addEventListener("keydown", (e)=>{
         if(e.key === "Escape"){
+          setMobileMenuOpen(false);
           setOverlayOpen(projectOverlay, false);
           setOverlayOpen(pageOverlay, false);
         }
+      });
+
+      hamburger.addEventListener('click', () => {
+        setMobileMenuOpen(!mobileDrawer.classList.contains('is-open'));
+      });
+
+      mobileCloseBtn.addEventListener('click', () => {
+        setMobileMenuOpen(false);
+      });
+
+      mobileDrawer.addEventListener('click', (e) => {
+        if(e.target === mobileDrawer){
+          setMobileMenuOpen(false);
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        if(window.matchMedia('(min-width: 769px)').matches){
+          setMobileMenuOpen(false);
+        }
+        updateHeaderState();
       });
 
       async function publishPendingDrafts(){
@@ -907,7 +1266,6 @@
 
         (pendingDrafts.deletedIds || []).forEach(id=>{
           jobs.push(deleteDoc(doc(db, "projects", id)));
-          jobs.push(deleteDoc(doc(db, "latestFeed", id)));
         });
 
         Object.entries(pendingDrafts.items || {}).forEach(([id, payload])=>{
@@ -922,20 +1280,6 @@
             updatedAt: Date.now()
           };
           jobs.push(setDoc(doc(db, "projects", id), projPayload, { merge:true }));
-
-          const feedPayload = {
-            title: projPayload.title,
-            shortText: projPayload.short,
-            text: projPayload.body,
-            image: withDefaultImage(projPayload.image),
-            sourceLabel: statusLabel(projPayload.status),
-            sourceUrl: statusUrl(projPayload.status),
-            sourceType: "project",
-            published: true,
-            createdAt: projPayload.createdAt,
-            updatedAt: projPayload.updatedAt
-          };
-          jobs.push(setDoc(doc(db, "latestFeed", id), feedPayload, { merge:true }));
         });
 
         await Promise.all(jobs);
@@ -953,7 +1297,6 @@
         window.location.reload();
       }
 
-      // LISTENERS (with error callbacks)
       onSnapshot(
         PAGE_DOC_REF,
         (snap)=>{
@@ -962,6 +1305,15 @@
           renderProjects();
         },
         (err)=> showFirestoreError("Kunde inte läsa sidinställningar (pages)", err)
+      );
+
+      onSnapshot(
+        NAV_DOC_REF,
+        (snap)=>{
+          navData = snap.exists() ? snap.data() : fallbackNav;
+          renderNav();
+        },
+        (err)=> showFirestoreError("Kunde inte läsa navigation (site/navigation)", err)
       );
 
       onSnapshot(
@@ -1004,10 +1356,10 @@
         }
 
         document.body.classList.toggle("is-admin", isAdmin);
+        renderNav();
         renderSavePublishBar();
       });
 
-      // WATCHDOG
       setTimeout(() => {
         const stillLoading = document.getElementById("projectsLoading");
         if(stillLoading){
@@ -1015,8 +1367,11 @@
         }
       }, 6000);
 
-      // INITIAL
+      updateHeaderState();
+      window.addEventListener('scroll', updateHeaderState, { passive:true });
+
       renderPage();
+      renderNav();
       renderProjects();
       renderSavePublishBar();
 
