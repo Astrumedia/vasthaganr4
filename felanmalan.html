@@ -903,7 +903,7 @@
         if(item.restricted && !currentUser) return;
         if(isAdmin && (item.id === 'loginNav' || item.id === 'kontoNav')) return;
 
-        const isActive = (item.url || '').toLowerCase() === 'felanmalan.html';
+        const isActive = false;
 
         if(item.type === 'dropdown'){
           const li = document.createElement('li');
