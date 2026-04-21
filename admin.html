@@ -26,6 +26,7 @@
       background:var(--bg);
       color:#0b1220;
     }
+    body.menu-open{overflow:hidden}
     .container{max-width:var(--maxw);margin:0 auto;padding:16px}
 
     header{
@@ -33,14 +34,16 @@
       top:0; left:0;
       width:100%;
       padding:22px 32px;
-      z-index:40;
-      background:rgba(255,255,255,0.98);
-      box-shadow:0 8px 24px rgba(11,18,32,0.08);
+      z-index:200;
+      background:rgba(255,255,255,0);
+      box-shadow:0 8px 24px rgba(11,18,32,0);
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
+      transition:background .08s linear, box-shadow .08s linear, padding .08s linear;
     }
+
     .brand{display:flex;align-items:center;gap:12px;min-width:0}
     .logo{
       width:44px;height:44px;border-radius:8px;background:var(--accent);
@@ -51,26 +54,37 @@
     .brand-title strong{font-weight:700;font-size:1.3rem;line-height:1.1}
     .brand-title span{font-size:.95rem;color:var(--muted)}
 
-    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
-    nav a{
+    .site-nav{position:relative;z-index:210}
+
+    /* ===== Desktop menu ===== */
+    .desktop-nav{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      gap:4px;
+      align-items:center;
+    }
+    .desktop-nav a,
+    .desktop-nav .desktop-parent{
       padding:8px 12px;
       border-radius:8px;
       text-decoration:none;
       color:#0b1220;
       transition:all .2s ease;
       white-space:nowrap;
+      display:block;
       font-weight:500;
     }
-    nav > ul > li > a:hover{background:var(--accent);color:#fff !important}
-    .nav-current{
-      color:var(--accent) !important;
-      font-weight:800;
+    .desktop-nav a:hover,
+    .desktop-nav .desktop-parent:hover{
+      background:var(--accent);
+      color:#fff !important;
     }
-
-    .dropdown{position:relative}
-    .dropdown-content{
+    .desktop-nav .dropdown{position:relative}
+    .desktop-nav .dropdown-content{
       position:absolute;
-      top:28px; left:0;
+      top:35px; left:0;
       background:#fff;
       box-shadow:0 8px 22px rgba(0,0,0,0.10);
       padding:8px;
@@ -79,24 +93,28 @@
       min-width:190px;
       z-index:80;
     }
-    .dropdown:hover .dropdown-content{display:block}
-    .dropdown-content a{
+    .desktop-nav .dropdown:hover > .dropdown-content{display:block}
+    .desktop-nav .dropdown-content a{
       color:var(--accent);
       background:#fff;
       margin:2px 0;
       padding:8px 10px;
       display:block;
       border-radius:8px;
-      font-weight:0;
+      font-weight:500;
     }
-    .dropdown-content a:hover{background:var(--accent);color:#fff !important}
+    .desktop-nav .dropdown-content a:hover{
+      background:var(--accent);
+      color:#fff !important;
+    }
 
+    /* ===== Mobile trigger ===== */
     .hamburger{
       display:none;
       font-size:1.8rem;
       cursor:pointer;
       user-select:none;
-      z-index:70;
+      z-index:320;
       color:var(--accent);
       position:relative;
       transition:
@@ -104,6 +122,9 @@
         background .22s ease,
         box-shadow .22s ease;
       line-height:1;
+      background:none;
+      border:0;
+      font-family:inherit;
     }
     .hamburger.is-open{
       background:#fff;
@@ -112,6 +133,9 @@
       box-shadow:0 10px 22px rgba(11,18,32,0.10);
       transform:translateX(-2px) scale(1.02);
     }
+
+    /* ===== Mobile drawer ===== */
+    .mobile-drawer{display:none}
 
     .hero-spacer{height:98px}
     .page-shell{padding-top:8px;padding-bottom:22px}
@@ -288,72 +312,180 @@
     }
     .muted{color:var(--muted)}
 
-    .mobile-close-wrap{
-      margin-top:auto;
-      padding:12px 12px 18px 12px;
-      width:100%;
-    }
-    .mobile-close-btn{
-      width:100%;
-      padding:14px 14px;
-      border-radius:12px;
-      border:0;
-      background:rgba(240,154,15,0.16);
-      color:#a86405;
-      font-weight:700;
-      cursor:pointer;
-    }
-    .mobile-close-btn:active{transform:translateY(1px)}
-    @media (min-width:769px){.mobile-close-wrap{display:none}}
-
+    /* ===== Mobile ===== */
     @media (max-width:980px){
       .dashboard-grid{grid-template-columns:1fr 1fr}
       .span-2{grid-column:span 2}
     }
+
     @media (max-width:768px){
+      .desktop-nav{display:none}
+
       .hamburger{
         display:block;
         position:fixed;
         top:18px;
         right:16px;
-        z-index:130;
       }
+
       header{padding:18px 14px}
       .brand-title span{display:none}
-      nav ul{
-        flex-direction:column;
+
+      .mobile-drawer{
+        display:block;
         position:fixed;
+        inset:0;
+        pointer-events:none;
+        z-index:300;
+      }
+
+      .mobile-drawer::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:rgba(0,0,0,0.22);
+        opacity:0;
+        transition:opacity .25s ease;
+      }
+
+      .mobile-drawer.is-open{
+        pointer-events:auto;
+      }
+
+      .mobile-drawer.is-open::before{
+        opacity:1;
+      }
+
+      .mobile-drawer-inner{
+        position:absolute;
         top:0;
         right:0;
-        width:260px;
-        height:100%;
+        width:290px;
+        max-width:86vw;
+        height:100dvh;
         background:#fff;
-        padding-top:72px;
-        padding-left:12px;
+        box-shadow:-10px 0 26px rgba(0,0,0,0.10);
         transform:translateX(100%);
-        transition:transform .42s cubic-bezier(.22,1,.36,1);
-        box-shadow:-10px 0 28px rgba(0,0,0,0.10);
-        z-index:120;
-        text-align:left;
-        align-items:flex-start;
+        transition:transform .28s ease;
+        display:flex;
+        flex-direction:column;
+        padding:78px 12px 18px 12px;
         overflow-y:auto;
+        overflow-x:hidden;
       }
-      nav ul.show{transform:translateX(0)}
-      nav ul li{margin-bottom:10px;width:100%}
-      nav ul li a{width:100%;text-align:left;padding:12px 14px;font-size:1.02rem;font-weight:500}
-      .dropdown-content{position:static;box-shadow:none;padding-left:10px;display:none;min-width:unset}
-      .dropdown.active .dropdown-content{display:block}
-      .dropdown:hover .dropdown-content{display:none}
+
+      .mobile-drawer.is-open .mobile-drawer-inner{
+        transform:translateX(0);
+      }
+
+      .mobile-nav{
+        list-style:none;
+        padding:0;
+        margin:0;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .mobile-nav li{
+        width:100%;
+      }
+
+      .mobile-nav a,
+      .mobile-nav .mobile-parent{
+        width:100%;
+        text-align:left;
+        padding:12px 14px;
+        font-size:1.06rem;
+        border-radius:12px;
+        text-decoration:none;
+        color:#0b1220;
+        background:none;
+        border:0;
+        font:inherit;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        -webkit-tap-highlight-color:transparent;
+      }
+
+      .mobile-nav a:hover,
+      .mobile-nav .mobile-parent:hover{
+        background:rgba(240,154,15,0.10);
+      }
+
+      .mobile-submenu{
+        display:none;
+        padding:6px 0 0 10px;
+      }
+
+      .mobile-item.open > .mobile-submenu{
+        display:block;
+      }
+
+      .mobile-submenu a{
+        margin:4px 0;
+        color:var(--accent);
+        background:#fff;
+        border-radius:10px;
+      }
+
+      .mobile-chevron{
+        transition:transform .2s ease;
+        flex:0 0 auto;
+      }
+
+      .mobile-item.open .mobile-chevron{
+        transform:rotate(180deg);
+      }
+
+      .mobile-close-wrap{
+        margin-top:auto;
+        padding-top:12px;
+      }
+      .mobile-close-btn{
+        width:100%;
+        padding:14px 14px;
+        border-radius:12px;
+        border:0;
+        background:rgba(240,154,15,0.16);
+        color:#a86405;
+        font-weight:700;
+        cursor:pointer;
+      }
+      .mobile-close-btn:active{transform:translateY(1px)}
+
       .dashboard-grid{grid-template-columns:1fr}
       .span-2{grid-column:span 1}
       .user-item{align-items:flex-start}
       .user-actions{width:100%}
       .user-actions .btn{width:100%}
     }
+
+    /* ===== Brand text always black ===== */
+    header .brand-title strong,
+    header .brand-title span{
+      color:#000000 !important;
+    }
+
+    header.is-hero .desktop-nav a,
+    header.is-hero .desktop-nav .desktop-parent{
+      color:#0b1220 !important;
+    }
+    header.is-hero .desktop-nav a:hover,
+    header.is-hero .desktop-nav .desktop-parent:hover{
+      background:rgba(240,154,15,0.95);
+      color:#fff !important;
+    }
+    header.is-solid .desktop-nav a,
+    header.is-solid .desktop-nav .desktop-parent{
+      color:inherit !important;
+    }
   </style>
 </head>
 <body>
-  <header>
+  <header id="siteHeader" class="is-solid">
     <div class="brand">
       <a href="index.html" class="logo" aria-label="Hem">
         <img id="brandLogo" src="logga.png" alt="Logga">
@@ -366,9 +498,20 @@
       </a>
     </div>
 
-    <nav>
-      <div class="hamburger" id="hamburger" aria-label="Meny" aria-expanded="false">☰</div>
-      <ul id="mainNav"></ul>
+    <nav class="site-nav">
+      <ul id="desktopNav" class="desktop-nav"></ul>
+
+      <button class="hamburger" id="hamburger" type="button" aria-label="Öppna meny" aria-expanded="false">☰</button>
+
+      <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+        <div class="mobile-drawer-inner">
+          <ul id="mobileNav" class="mobile-nav"></ul>
+
+          <div class="mobile-close-wrap">
+            <button class="mobile-close-btn" id="mobileCloseBtn" type="button">Stäng meny</button>
+          </div>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -464,8 +607,14 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const mainNav = document.getElementById('mainNav');
+    const body = document.body;
+    const header = document.getElementById('siteHeader');
+    const desktopNav = document.getElementById('desktopNav');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileDrawer = document.getElementById('mobileDrawer');
     const hamburger = document.getElementById('hamburger');
+    const mobileCloseBtn = document.getElementById('mobileCloseBtn');
+
     const roleInfo = document.getElementById('roleInfo');
     const roleHint = document.getElementById('roleHint');
     const userListDiv = document.getElementById('userList');
@@ -511,43 +660,154 @@
       ]
     };
 
-    function setNavOpen(open){
-      mainNav.classList.toggle('show', open);
-      hamburger.textContent = open ? '➤' : '☰';
-      hamburger.classList.toggle('is-open', open);
-      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    function updateHeaderState(){
+      const progress = Math.min(window.scrollY / 120, 1);
+      const bgAlpha = 0.98 * progress;
+      const shadowAlpha = 0.08 * progress;
+
+      header.classList.toggle('is-hero', progress === 0);
+      header.classList.toggle('is-solid', progress > 0);
+      header.style.background = `rgba(255,255,255,${bgAlpha})`;
+      header.style.boxShadow = `0 8px 24px rgba(11,18,32,${shadowAlpha})`;
     }
 
-    hamburger.addEventListener('click', ()=>setNavOpen(!mainNav.classList.contains('show')));
-    document.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape') setNavOpen(false);
-    });
+    function setMobileMenuOpen(open){
+      mobileDrawer.classList.toggle('is-open', open);
+      hamburger.classList.toggle('is-open', open);
+      hamburger.textContent = open ? '➤' : '☰';
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      body.classList.toggle('menu-open', open);
 
-    function wireMobileDropdowns(){
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
-      if(!isMobile) return;
-      document.querySelectorAll('nav .dropdown > a').forEach(a => {
-        a.onclick = (e) => {
-          const li = a.closest('.dropdown');
-          if(!li) return;
-          e.preventDefault();
-          li.classList.toggle('active');
-        };
+      if(!open){
+        mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+          item.classList.remove('open');
+          const btn = item.querySelector('.mobile-parent');
+          if(btn) btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+    }
+
+    function closeOtherMobileItems(currentItem){
+      mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+        if(item !== currentItem){
+          item.classList.remove('open');
+          const btn = item.querySelector('.mobile-parent');
+          if(btn) btn.setAttribute('aria-expanded', 'false');
+        }
       });
     }
-    window.addEventListener('resize', wireMobileDropdowns);
 
-    function appendMobileCloseRow(){
-      const li = document.createElement('li');
-      li.className = 'mobile-close-wrap';
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'mobile-close-btn';
-      btn.textContent = 'Stäng meny';
-      btn.addEventListener('click', () => setNavOpen(false));
-      li.appendChild(btn);
-      mainNav.appendChild(li);
+    function buildDesktopNav(items){
+      desktopNav.innerHTML = '';
+
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentFirebaseUser) return;
+        if(item.label === 'Logga in' && currentFirebaseUser) return;
+        if(item.label === 'Konto' && isAdmin) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'dropdown';
+
+          const parent = document.createElement('span');
+          parent.className = 'desktop-parent';
+          parent.textContent = `${item.label || ''} ▾`;
+
+          const submenu = document.createElement('div');
+          submenu.className = 'dropdown-content';
+
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+          children.forEach(child => {
+            const a = document.createElement('a');
+            a.href = child.url || '#';
+            a.textContent = child.label || '';
+            submenu.appendChild(a);
+          });
+
+          li.appendChild(parent);
+          li.appendChild(submenu);
+          desktopNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        li.appendChild(a);
+        desktopNav.appendChild(li);
+      });
+    }
+
+    function buildMobileNav(items){
+      mobileNav.innerHTML = '';
+
+      items.forEach(item => {
+        if(item.adminOnly && !isAdmin) return;
+        if(item.restricted && !currentFirebaseUser) return;
+        if(item.label === 'Logga in' && currentFirebaseUser) return;
+        if(item.label === 'Konto' && isAdmin) return;
+
+        if(item.type === 'dropdown'){
+          const li = document.createElement('li');
+          li.className = 'mobile-item';
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mobile-parent';
+          btn.setAttribute('aria-expanded', 'false');
+          btn.innerHTML = `
+            <span>${item.label || ''}</span>
+            <span class="mobile-chevron" aria-hidden="true">▾</span>
+          `;
+
+          const submenu = document.createElement('div');
+          submenu.className = 'mobile-submenu';
+
+          const children = (Array.isArray(item.children) ? item.children : [])
+            .slice()
+            .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+          children.forEach(child => {
+            const a = document.createElement('a');
+            a.href = child.url || '#';
+            a.textContent = child.label || '';
+            a.addEventListener('click', () => setMobileMenuOpen(false));
+            submenu.appendChild(a);
+          });
+
+          btn.addEventListener('click', () => {
+            const isOpen = li.classList.contains('open');
+            closeOtherMobileItems(li);
+
+            if(isOpen){
+              li.classList.remove('open');
+              btn.setAttribute('aria-expanded', 'false');
+            }else{
+              li.classList.add('open');
+              btn.setAttribute('aria-expanded', 'true');
+            }
+          });
+
+          li.appendChild(btn);
+          li.appendChild(submenu);
+          mobileNav.appendChild(li);
+          return;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.label || '';
+        a.addEventListener('click', () => setMobileMenuOpen(false));
+        li.appendChild(a);
+        mobileNav.appendChild(li);
+      });
     }
 
     function renderNav(){
@@ -556,52 +816,8 @@
         .slice()
         .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
 
-      mainNav.innerHTML = '';
-
-      items.forEach(item => {
-        if(item.adminOnly && !isAdmin) return;
-        if(item.restricted && !currentFirebaseUser) return;
-        if(isAdmin && (item.id === 'loginNav' || item.id === 'kontoNav')) return;
-
-        if(item.type === 'dropdown'){
-          const li = document.createElement('li');
-          li.className = 'dropdown';
-
-          const a = document.createElement('a');
-          a.href = item.url || '#';
-          a.textContent = `${item.label || ''} ▾`;
-
-          const dd = document.createElement('div');
-          dd.className = 'dropdown-content';
-          const children = (Array.isArray(item.children) ? item.children : [])
-            .slice()
-            .sort((x,y)=>(x.order ?? 0) - (y.order ?? 0));
-
-          children.forEach(ch => {
-            const ca = document.createElement('a');
-            ca.href = ch.url || '#';
-            ca.textContent = ch.label || '';
-            dd.appendChild(ca);
-          });
-
-          li.appendChild(a);
-          li.appendChild(dd);
-          mainNav.appendChild(li);
-          return;
-        }
-
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = item.url || '#';
-        a.textContent = item.label || '';
-        if(item.id === 'adminNav') a.classList.add('nav-current');
-        li.appendChild(a);
-        mainNav.appendChild(li);
-      });
-
-      appendMobileCloseRow();
-      wireMobileDropdowns();
-      mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+      buildDesktopNav(items);
+      buildMobileNav(items);
     }
 
     function roleBadgeClass(role='user'){
@@ -709,6 +925,10 @@
       renderNav();
     }
 
+    function updateAdminVisibility(){
+      body.classList.toggle('is-admin', isAdmin);
+    }
+
     onAuthStateChanged(auth, async (user) => {
       currentFirebaseUser = user;
       renderNav();
@@ -732,6 +952,7 @@
 
         currentUserRole = current.role || 'user';
         isAdmin = current.role === 'admin' || current.role === 'ordforande';
+        updateAdminVisibility();
         renderNav();
 
         roleInfo.textContent = `Inloggad som: ${user.email} (${current.role})`;
@@ -749,7 +970,8 @@
 
         onSnapshot(collection(db, 'users'), snapShot => {
           const updated = snapShot.docs.map(d => ({ id:d.id, ...d.data() }));
-          renderUserList(updated, current);
+          const latestCurrent = updated.find(u => u.id === user.uid) || current;
+          renderUserList(updated, latestCurrent);
           renderAdmins(updated);
         });
       }catch(err){
@@ -768,7 +990,37 @@
       }
     });
 
+    hamburger.addEventListener('click', () => {
+      setMobileMenuOpen(!mobileDrawer.classList.contains('is-open'));
+    });
+
+    mobileCloseBtn.addEventListener('click', () => {
+      setMobileMenuOpen(false);
+    });
+
+    mobileDrawer.addEventListener('click', (e) => {
+      if(e.target === mobileDrawer){
+        setMobileMenuOpen(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){
+        setMobileMenuOpen(false);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if(window.matchMedia('(min-width: 769px)').matches){
+        setMobileMenuOpen(false);
+      }
+      updateHeaderState();
+    });
+
     logsDiv.textContent = 'Här kommer loggar visas senare. Strukturen är nu uppdaterad till samma standard som övriga nya sidor.';
+
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState, { passive:true });
 
     loadBranding();
     loadNavigation();
