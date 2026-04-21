@@ -30,6 +30,7 @@
       background:var(--bg);
       color:#0b1220;
     }
+    body.menu-open{overflow:hidden}
 
     .container{
       max-width:var(--maxw);
@@ -43,20 +44,14 @@
       top:0; left:0;
       width:100%;
       padding:22px 32px;
-      z-index:40;
-      background:transparent;
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      box-shadow:0 8px 24px rgba(11,18,32,0.05);
+      z-index:200;
+      background:rgba(255,255,255,0);
+      box-shadow:0 8px 24px rgba(11,18,32,0);
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      transition:background .28s ease, box-shadow .28s ease;
-    }
-    header.is-solid{
-      background:rgba(255,255,255,0.98);
-      box-shadow:0 8px 24px rgba(11,18,32,0.08);
+      transition:background .08s linear, box-shadow .08s linear, padding .08s linear;
     }
 
     .brand{display:flex;align-items:center;gap:12px;min-width:0}
@@ -69,26 +64,38 @@
     .brand-title strong{font-weight:700;font-size:1.3rem;line-height:1.1}
     .brand-title span{font-size:.95rem;color:var(--muted)}
 
-    nav ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;align-items:center}
-    nav a{
+    .site-nav{position:relative;z-index:210}
+
+    /* ===== Desktop menu ===== */
+    .desktop-nav{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      gap:4px;
+      align-items:center;
+    }
+    .desktop-nav a,
+    .desktop-nav .desktop-parent{
       padding:8px 12px;
       border-radius:8px;
       text-decoration:none;
       color:#0b1220;
       transition:all .2s ease;
       white-space:nowrap;
+      display:block;
       font-weight:500;
     }
-    nav > ul > li > a:hover,
-    nav > ul > li > a.is-active{
+    .desktop-nav a:hover,
+    .desktop-nav .desktop-parent:hover,
+    .desktop-nav a.is-active{
       background:var(--accent);
       color:#fff !important;
     }
-
-    .dropdown{position:relative}
-    .dropdown-content{
+    .desktop-nav .dropdown{position:relative}
+    .desktop-nav .dropdown-content{
       position:absolute;
-      top:28px; left:0;
+      top:35px; left:0;
       background:#fff;
       box-shadow:0 8px 22px rgba(0,0,0,0.10);
       padding:8px;
@@ -97,27 +104,29 @@
       min-width:190px;
       z-index:80;
     }
-    .dropdown:hover .dropdown-content{display:block}
-    .dropdown-content a{
+    .desktop-nav .dropdown:hover > .dropdown-content{display:block}
+    .desktop-nav .dropdown-content a{
       color:var(--accent);
       background:#fff;
       margin:2px 0;
       padding:8px 10px;
       display:block;
       border-radius:8px;
-      font-weight:0;
+      font-weight:500;
     }
-    .dropdown-content a:hover{
+    .desktop-nav .dropdown-content a:hover,
+    .desktop-nav .dropdown-content a.is-active{
       background:var(--accent);
       color:#fff !important;
     }
 
+    /* ===== Mobile trigger ===== */
     .hamburger{
       display:none;
       font-size:1.8rem;
       cursor:pointer;
       user-select:none;
-      z-index:70;
+      z-index:320;
       color:var(--accent);
       position:relative;
       transition:
@@ -125,6 +134,9 @@
         background .22s ease,
         box-shadow .22s ease;
       line-height:1;
+      background:none;
+      border:0;
+      font-family:inherit;
     }
     .hamburger.is-open{
       background:#fff;
@@ -134,71 +146,8 @@
       transform:translateX(-2px) scale(1.02);
     }
 
-    @media (max-width: 768px){
-      .hamburger{
-        display:block;
-        position:fixed;
-        top:18px;
-        right:16px;
-        z-index:130;
-      }
-      header{padding:18px 14px}
-      .brand-title span{display:none}
-      nav ul{
-        flex-direction:column;
-        position:fixed;
-        top:0;
-        right:0;
-        width:260px;
-        height:100%;
-        background:#fff;
-        padding-top:72px;
-        padding-left:12px;
-        transform:translateX(100%);
-        transition:transform .42s cubic-bezier(.22,1,.36,1);
-        box-shadow:-10px 0 28px rgba(0,0,0,0.10);
-        z-index:120;
-        text-align:left;
-        align-items:flex-start;
-        overflow-y:auto;
-      }
-      nav ul.show{transform:translateX(0)}
-      nav ul li{margin-bottom:10px;width:100%}
-      nav ul li a{
-        width:100%;
-        text-align:left;
-        padding:12px 14px;
-        font-size:1.02rem;
-        font-weight:500;
-      }
-      .dropdown-content{
-        position:static;
-        box-shadow:none;
-        padding-left:10px;
-        display:none;
-        min-width:unset;
-      }
-      .dropdown.active .dropdown-content{display:block}
-      .dropdown:hover .dropdown-content{display:none}
-    }
-
-    .mobile-close-wrap{
-      margin-top:auto;
-      padding:12px 12px 18px 12px;
-      width:100%;
-    }
-    .mobile-close-btn{
-      width:100%;
-      padding:14px 14px;
-      border-radius:12px;
-      border:0;
-      background:rgba(240,154,15,0.16);
-      color:#a86405;
-      font-weight:700;
-      cursor:pointer;
-    }
-    .mobile-close-btn:active{transform:translateY(1px)}
-    @media (min-width: 769px){ .mobile-close-wrap{display:none} }
+    /* ===== Mobile drawer ===== */
+    .mobile-drawer{display:none}
 
     /* ===== Page ===== */
     .hero-spacer{height:98px}
@@ -496,10 +445,176 @@
     @media (max-width: 900px){
       .form-grid.two-cols{grid-template-columns:1fr}
     }
+
+    /* ===== Mobilmeny ===== */
+    @media (max-width: 768px){
+      .desktop-nav{display:none}
+
+      .hamburger{
+        display:block;
+        position:fixed;
+        top:18px;
+        right:16px;
+      }
+
+      header{padding:18px 14px}
+      .brand-title span{display:none}
+
+      .mobile-drawer{
+        display:block;
+        position:fixed;
+        inset:0;
+        pointer-events:none;
+        z-index:300;
+      }
+
+      .mobile-drawer::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:rgba(0,0,0,0.22);
+        opacity:0;
+        transition:opacity .25s ease;
+      }
+
+      .mobile-drawer.is-open{
+        pointer-events:auto;
+      }
+
+      .mobile-drawer.is-open::before{
+        opacity:1;
+      }
+
+      .mobile-drawer-inner{
+        position:absolute;
+        top:0;
+        right:0;
+        width:290px;
+        max-width:86vw;
+        height:100dvh;
+        background:#fff;
+        box-shadow:-10px 0 26px rgba(0,0,0,0.10);
+        transform:translateX(100%);
+        transition:transform .28s ease;
+        display:flex;
+        flex-direction:column;
+        padding:78px 12px 18px 12px;
+        overflow-y:auto;
+        overflow-x:hidden;
+      }
+
+      .mobile-drawer.is-open .mobile-drawer-inner{
+        transform:translateX(0);
+      }
+
+      .mobile-nav{
+        list-style:none;
+        padding:0;
+        margin:0;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .mobile-nav li{
+        width:100%;
+      }
+
+      .mobile-nav a,
+      .mobile-nav .mobile-parent{
+        width:100%;
+        text-align:left;
+        padding:12px 14px;
+        font-size:1.06rem;
+        border-radius:12px;
+        text-decoration:none;
+        color:#0b1220;
+        background:none;
+        border:0;
+        font:inherit;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        -webkit-tap-highlight-color:transparent;
+      }
+
+      .mobile-nav a:hover,
+      .mobile-nav .mobile-parent:hover,
+      .mobile-nav a.is-active{
+        background:rgba(240,154,15,0.10);
+      }
+
+      .mobile-submenu{
+        display:none;
+        padding:6px 0 0 10px;
+      }
+
+      .mobile-item.open > .mobile-submenu{
+        display:block;
+      }
+
+      .mobile-submenu a{
+        margin:4px 0;
+        color:var(--accent);
+        background:#fff;
+        border-radius:10px;
+      }
+
+      .mobile-submenu a.is-active{
+        background:rgba(240,154,15,0.12);
+        color:#a86405;
+      }
+
+      .mobile-chevron{
+        transition:transform .2s ease;
+        flex:0 0 auto;
+      }
+
+      .mobile-item.open .mobile-chevron{
+        transform:rotate(180deg);
+      }
+
+      .mobile-close-wrap{
+        margin-top:auto;
+        padding-top:12px;
+      }
+      .mobile-close-btn{
+        width:100%;
+        padding:14px 14px;
+        border-radius:12px;
+        border:0;
+        background:rgba(240,154,15,0.16);
+        color:#a86405;
+        font-weight:700;
+        cursor:pointer;
+      }
+      .mobile-close-btn:active{transform:translateY(1px)}
+    }
+
+    /* ===== Brandtext alltid svart ===== */
+    header .brand-title strong,
+    header .brand-title span{
+      color:#000000 !important;
+    }
+
+    header.is-hero .desktop-nav a,
+    header.is-hero .desktop-nav .desktop-parent{
+      color:#0b1220 !important;
+    }
+    header.is-hero .desktop-nav a:hover,
+    header.is-hero .desktop-nav .desktop-parent:hover{
+      background:rgba(240,154,15,0.95);
+      color:#fff !important;
+    }
+    header.is-solid .desktop-nav a,
+    header.is-solid .desktop-nav .desktop-parent{
+      color:inherit !important;
+    }
   </style>
 </head>
 <body>
-  <header id="siteHeader">
+  <header id="siteHeader" class="is-solid">
     <div class="brand">
       <a href="index.html" class="logo" aria-label="Hem">
         <img id="brandLogo" src="logga.png" alt="Logga">
@@ -512,9 +627,20 @@
       </a>
     </div>
 
-    <nav>
-      <div class="hamburger" id="hamburger" aria-expanded="false">☰</div>
-      <ul id="mainNav"></ul>
+    <nav class="site-nav">
+      <ul id="desktopNav" class="desktop-nav"></ul>
+
+      <button class="hamburger" id="hamburger" type="button" aria-label="Öppna meny" aria-expanded="false">☰</button>
+
+      <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+        <div class="mobile-drawer-inner">
+          <ul id="mobileNav" class="mobile-nav"></ul>
+
+          <div class="mobile-close-wrap">
+            <button class="mobile-close-btn" id="mobileCloseBtn" type="button">Stäng meny</button>
+          </div>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -676,503 +802,588 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      setDoc,
-      onSnapshot
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
-      authDomain:"vasthaganr4.firebaseapp.com",
-      projectId:"vasthaganr4",
-      storageBucket:"vasthaganr4.firebasestorage.app",
-      messagingSenderId:"547846391741",
-      appId:"1:547846391741:web:048eb47b28d1027539f4d4"
-    };
+  const firebaseConfig = {
+    apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
+    authDomain:"vasthaganr4.firebaseapp.com",
+    projectId:"vasthaganr4",
+    storageBucket:"vasthaganr4.firebasestorage.app",
+    messagingSenderId:"547846391741",
+    appId:"1:547846391741:web:048eb47b28d1027539f4d4"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    (function(){ emailjs.init("iAf2yRysdfBR5Nlbd"); })();
+  (function(){ emailjs.init("iAf2yRysdfBR5Nlbd"); })();
 
-    const body = document.body;
-    const header = document.getElementById('siteHeader');
-    const mainNav = document.getElementById('mainNav');
-    const hamburger = document.getElementById('hamburger');
+  const body = document.body;
+  const header = document.getElementById('siteHeader');
+  const desktopNav = document.getElementById('desktopNav');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const hamburger = document.getElementById('hamburger');
+  const mobileCloseBtn = document.getElementById('mobileCloseBtn');
 
-    const brandLogo = document.getElementById('brandLogo');
-    const brandName = document.getElementById('brandName');
-    const brandTagline = document.getElementById('brandTagline');
-    const footerTextEl = document.getElementById('footerText');
+  const brandLogo = document.getElementById('brandLogo');
+  const brandName = document.getElementById('brandName');
+  const brandTagline = document.getElementById('brandTagline');
+  const footerTextEl = document.getElementById('footerText');
 
-    const pageTitleEl = document.getElementById('pageTitle');
-    const pageSubtitleEl = document.getElementById('pageSubtitle');
-    const introTextEl = document.getElementById('introText');
-    const alertBox = document.getElementById('alertBox');
-    const alertTitleEl = document.getElementById('alertTitle');
-    const alertPrefixEl = document.getElementById('alertPrefix');
-    const alertServiceEl = document.getElementById('alertService');
-    const alertSuffixEl = document.getElementById('alertSuffix');
-    const alertPhoneLink = document.getElementById('alertPhoneLink');
-    const previewBtn = document.getElementById('previewBtn');
-    const sendBtn = document.getElementById('sendBtn');
+  const pageTitleEl = document.getElementById('pageTitle');
+  const pageSubtitleEl = document.getElementById('pageSubtitle');
+  const introTextEl = document.getElementById('introText');
+  const alertTitleEl = document.getElementById('alertTitle');
+  const alertPrefixEl = document.getElementById('alertPrefix');
+  const alertServiceEl = document.getElementById('alertService');
+  const alertSuffixEl = document.getElementById('alertSuffix');
+  const alertPhoneLink = document.getElementById('alertPhoneLink');
+  const previewBtn = document.getElementById('previewBtn');
+  const sendBtn = document.getElementById('sendBtn');
 
-    const editPageBtn = document.getElementById('editPageBtn');
-    const pageOverlay = document.getElementById('pageOverlay');
-    const editPageTitle = document.getElementById('editPageTitle');
-    const editPageSubtitle = document.getElementById('editPageSubtitle');
-    const editIntroText = document.getElementById('editIntroText');
-    const editAlertTitle = document.getElementById('editAlertTitle');
-    const editAlertPrefix = document.getElementById('editAlertPrefix');
-    const editAlertService = document.getElementById('editAlertService');
-    const editAlertSuffix = document.getElementById('editAlertSuffix');
-    const editAlertPhone = document.getElementById('editAlertPhone');
-    const editPreviewBtnText = document.getElementById('editPreviewBtnText');
-    const editSendBtnText = document.getElementById('editSendBtnText');
-    const savePageBtn = document.getElementById('savePageBtn');
-    const cancelPageBtn = document.getElementById('cancelPageBtn');
+  const editPageBtn = document.getElementById('editPageBtn');
+  const pageOverlay = document.getElementById('pageOverlay');
+  const editPageTitle = document.getElementById('editPageTitle');
+  const editPageSubtitle = document.getElementById('editPageSubtitle');
+  const editIntroText = document.getElementById('editIntroText');
+  const editAlertTitle = document.getElementById('editAlertTitle');
+  const editAlertPrefix = document.getElementById('editAlertPrefix');
+  const editAlertService = document.getElementById('editAlertService');
+  const editAlertSuffix = document.getElementById('editAlertSuffix');
+  const editAlertPhone = document.getElementById('editAlertPhone');
+  const editPreviewBtnText = document.getElementById('editPreviewBtnText');
+  const editSendBtnText = document.getElementById('editSendBtnText');
+  const savePageBtn = document.getElementById('savePageBtn');
+  const cancelPageBtn = document.getElementById('cancelPageBtn');
 
-    const felForm = document.getElementById('felForm');
-    const fullName = document.getElementById('fullName');
-    const apt = document.getElementById('apt');
-    const emailIn = document.getElementById('email');
-    const phone = document.getElementById('phone');
-    const description = document.getElementById('description');
-    const attachmentsInput = document.getElementById('attachmentsInput');
-    const attachmentsPreview = document.getElementById('attachmentsPreview');
-    const formError = document.getElementById('formError');
-    const popupBackdrop = document.getElementById('popupBackdrop');
-    const popupMessage = document.getElementById('popupMessage');
-    const popupOk = document.getElementById('popupOk');
+  const felForm = document.getElementById('felForm');
+  const fullName = document.getElementById('fullName');
+  const apt = document.getElementById('apt');
+  const emailIn = document.getElementById('email');
+  const phone = document.getElementById('phone');
+  const description = document.getElementById('description');
+  const attachmentsInput = document.getElementById('attachmentsInput');
+  const attachmentsPreview = document.getElementById('attachmentsPreview');
+  const formError = document.getElementById('formError');
+  const popupBackdrop = document.getElementById('popupBackdrop');
+  const popupMessage = document.getElementById('popupMessage');
+  const popupOk = document.getElementById('popupOk');
 
-    const pageHomeRef = doc(db,'pages','home');
-    const navRef = doc(db,'site','navigation');
-    const issuePageRef = doc(db,'pages','felanmalan');
+  const pageHomeRef = doc(db,'pages','home');
+  const issuePageRef = doc(db,'pages','felanmalan');
+  const navRef = doc(db,'site','navigation');
 
-    let currentUser = null;
-    let isAdmin = false;
-    let navData = null;
+  let currentUser = null;
+  let isAdmin = false;
+  let navData = null;
 
-    let pageData = {
-      pageTitle: 'Felanmälan',
-      pageSubtitle: 'Här kan du enkelt skicka in en felanmälan till styrelsen.',
-      introText: 'Vid övriga ärenden kan ni fylla i formuläret nedan. Beskriv tydligt vad som behöver åtgärdas, så återkopplar vi så snart som möjligt.',
-      alertTitle: '⚠ Vid akuta ärenden (t.ex. vattenläckor, elfel, värmeproblem nattetid):',
-      alertPrefix: 'Kontakta',
-      alertService: 'HSB Jouren',
-      alertSuffix: 'direkt på telefonnummer',
-      alertPhone: '010-303 27 00',
-      previewBtnText: 'Förhandsgranska',
-      sendBtnText: 'Skicka felanmälan'
-    };
+  let pageData = {
+    pageTitle: 'Felanmälan',
+    pageSubtitle: 'Här kan du enkelt skicka in en felanmälan till styrelsen.',
+    introText: 'Vid övriga ärenden kan ni fylla i formuläret nedan. Beskriv tydligt vad som behöver åtgärdas, så återkopplar vi så snart som möjligt.',
+    alertTitle: '⚠ Vid akuta ärenden (t.ex. vattenläckor, elfel, värmeproblem nattetid):',
+    alertPrefix: 'Kontakta',
+    alertService: 'HSB Jouren',
+    alertSuffix: 'direkt på telefonnummer',
+    alertPhone: '010-303 27 00',
+    previewBtnText: 'Förhandsgranska',
+    sendBtnText: 'Skicka felanmälan'
+  };
 
-    let homePageData = {
-      brandName: 'Västhaga Nr4',
-      brandTagline: 'Bostadsrättsförening',
-      logoUrl: 'logga.png',
-      footerText: '© Västhaga Nr4 — Bostadsrättsförening'
-    };
+  let homePageData = {
+    brandName: 'Västhaga Nr4',
+    brandTagline: 'Bostadsrättsförening',
+    logoUrl: 'logga.png',
+    footerText: '© Västhaga Nr4 — Bostadsrättsförening'
+  };
 
-    const fallbackNav = {
-      items: [
-        { type:'link', label:'Hem', url:'index.html', order:0 },
-        {
-          type:'dropdown', label:'Om föreningen', order:1, children:[
-            { label:'Om oss', url:'om.html', order:0 },
-            { label:'Stadgar', url:'stadgar.html', order:1 }
-          ]
-        },
-        {
-          type:'dropdown', label:'Styrelsen', order:2, children:[
-            { label:'Styrelsen', url:'styrelsen.html', order:0 },
-            { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
-          ]
-        },
-        {
-          type:'dropdown', label:'Projekt', order:3, children:[
-            { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
-            { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
-          ]
-        },
-        { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4, id:'felanmalanNav' },
-        { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
-        { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
-        { type:'link', label:'Admin', url:'admin.html', order:92, id:'adminNav', adminOnly:true }
-      ]
-    };
+  const fallbackNav = {
+    items: [
+      { type:'link', label:'Hem', url:'index.html', order:0 },
+      {
+        type:'dropdown', label:'Om föreningen', order:1, children:[
+          { label:'Om oss', url:'om.html', order:0 },
+          { label:'Stadgar', url:'stadgar.html', order:1 }
+        ]
+      },
+      {
+        type:'dropdown', label:'Styrelsen', order:2, children:[
+          { label:'Styrelsen', url:'styrelsen.html', order:0 },
+          { label:'Styrelsen informerar', url:'styrelseninformerar.html', order:1 }
+        ]
+      },
+      {
+        type:'dropdown', label:'Projekt', order:3, children:[
+          { label:'Framtida projekt', url:'pagaendeplaner.html', order:0 },
+          { label:'Utförda projekt', url:'utfordaplaner.html', order:1 }
+        ]
+      },
+      { type:'link', label:'Felanmälan', url:'felanmalan.html', order:4, id:'felanmalanNav' },
+      { type:'link', label:'Logga in', url:'loggain.html', order:90, id:'loginNav' },
+      { type:'link', label:'Konto', url:'konto.html', order:91, id:'kontoNav', restricted:true },
+      { type:'link', label:'Admin', url:'admin.html', order:92, id:'adminNav', adminOnly:true }
+    ]
+  };
 
-    let attachments = [];
+  let attachments = [];
 
-    function requireAdmin(){
-      if(!isAdmin) throw new Error('Du behöver vara admin för att göra detta.');
-    }
+  function requireAdmin(){
+    if(!isAdmin) throw new Error('Du behöver vara admin för att göra detta.');
+  }
 
-    function sanitizePhoneNumber(raw=''){
-      return String(raw).replace(/[^\d+]/g, '');
-    }
+  function sanitizePhoneNumber(raw=''){
+    return String(raw).replace(/[^\d+]/g, '');
+  }
 
-    function renderHomeBranding(){
-      brandName.textContent = homePageData.brandName || 'Västhaga Nr4';
-      brandTagline.textContent = homePageData.brandTagline || 'Bostadsrättsförening';
-      footerTextEl.textContent = homePageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
-      if((homePageData.logoUrl || '').trim()) brandLogo.src = homePageData.logoUrl.trim();
-    }
+  function renderHomeBranding(){
+    brandName.textContent = homePageData.brandName || 'Västhaga Nr4';
+    brandTagline.textContent = homePageData.brandTagline || 'Bostadsrättsförening';
+    footerTextEl.textContent = homePageData.footerText || '© Västhaga Nr4 — Bostadsrättsförening';
+    if((homePageData.logoUrl || '').trim()) brandLogo.src = homePageData.logoUrl.trim();
+  }
 
-    function renderPageContent(){
-      pageTitleEl.textContent = pageData.pageTitle || 'Felanmälan';
-      pageSubtitleEl.textContent = pageData.pageSubtitle || '';
-      introTextEl.textContent = pageData.introText || '';
+  function renderPageContent(){
+    pageTitleEl.textContent = pageData.pageTitle || 'Felanmälan';
+    pageSubtitleEl.textContent = pageData.pageSubtitle || '';
+    introTextEl.textContent = pageData.introText || '';
 
-      alertTitleEl.textContent = pageData.alertTitle || '';
-      alertPrefixEl.textContent = pageData.alertPrefix || '';
-      alertServiceEl.textContent = pageData.alertService || '';
-      alertSuffixEl.textContent = pageData.alertSuffix || '';
+    alertTitleEl.textContent = pageData.alertTitle || '';
+    alertPrefixEl.textContent = pageData.alertPrefix || '';
+    alertServiceEl.textContent = pageData.alertService || '';
+    alertSuffixEl.textContent = pageData.alertSuffix || '';
 
-      const visiblePhone = (pageData.alertPhone || '').trim() || '010-303 27 00';
-      const telPhone = sanitizePhoneNumber(visiblePhone);
-      alertPhoneLink.textContent = visiblePhone;
-      alertPhoneLink.href = telPhone ? `tel:${telPhone}` : '#';
+    const visiblePhone = (pageData.alertPhone || '').trim() || '010-303 27 00';
+    const telPhone = sanitizePhoneNumber(visiblePhone);
+    alertPhoneLink.textContent = visiblePhone;
+    alertPhoneLink.href = telPhone ? `tel:${telPhone}` : '#';
 
-      previewBtn.textContent = pageData.previewBtnText || 'Förhandsgranska';
-      sendBtn.textContent = pageData.sendBtnText || 'Skicka felanmälan';
-    }
+    previewBtn.textContent = pageData.previewBtnText || 'Förhandsgranska';
+    sendBtn.textContent = pageData.sendBtnText || 'Skicka felanmälan';
+  }
 
-    function updateAdminVisibility(){
-      body.classList.toggle('is-admin', isAdmin);
-    }
+  function updateAdminVisibility(){
+    body.classList.toggle('is-admin', isAdmin);
+  }
 
-    function updateHeaderState(){
-      header.classList.toggle('is-solid', window.scrollY > 24);
-    }
-    updateHeaderState();
-    window.addEventListener('scroll', updateHeaderState);
+  function updateHeaderState(){
+    const progress = Math.min(window.scrollY / 120, 1);
+    const bgAlpha = 0.98 * progress;
+    const shadowAlpha = 0.08 * progress;
 
-    function setNavOpen(open){
-      mainNav.classList.toggle('show', open);
-      hamburger.textContent = open ? '➤' : '☰';
-      hamburger.classList.toggle('is-open', open);
-      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
+    header.classList.toggle('is-hero', progress === 0);
+    header.classList.toggle('is-solid', progress > 0);
+    header.style.background = `rgba(255,255,255,${bgAlpha})`;
+    header.style.boxShadow = `0 8px 24px rgba(11,18,32,${shadowAlpha})`;
+  }
 
-    hamburger.addEventListener('click', ()=>setNavOpen(!mainNav.classList.contains('show')));
+  function setMobileMenuOpen(open){
+    mobileDrawer.classList.toggle('is-open', open);
+    hamburger.classList.toggle('is-open', open);
+    hamburger.textContent = open ? '➤' : '☰';
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    body.classList.toggle('menu-open', open);
 
-    function wireMobileDropdowns(){
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
-      if(!isMobile) return;
-
-      document.querySelectorAll('nav .dropdown > a').forEach(a => {
-        a.onclick = (e) => {
-          const li = a.closest('.dropdown');
-          if(!li) return;
-          e.preventDefault();
-          li.classList.toggle('active');
-        };
+    if(!open){
+      mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+        item.classList.remove('open');
+        const btn = item.querySelector('.mobile-parent');
+        if(btn) btn.setAttribute('aria-expanded', 'false');
       });
     }
-    window.addEventListener('resize', wireMobileDropdowns);
+  }
 
-    function appendMobileCloseRow(){
-      const li = document.createElement('li');
-      li.className = 'mobile-close-wrap';
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'mobile-close-btn';
-      btn.textContent = 'Stäng meny';
-      btn.addEventListener('click', ()=>setNavOpen(false));
-      li.appendChild(btn);
-      mainNav.appendChild(li);
-    }
+  function closeOtherMobileItems(currentItem){
+    mobileNav.querySelectorAll('.mobile-item').forEach(item => {
+      if(item !== currentItem){
+        item.classList.remove('open');
+        const btn = item.querySelector('.mobile-parent');
+        if(btn) btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
-    function renderNav(){
-      const data = navData || fallbackNav;
-      const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
-        .slice()
-        .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+  function buildDesktopNav(items){
+    desktopNav.innerHTML = '';
 
-      mainNav.innerHTML = '';
+    items.forEach(item => {
+      if(item.adminOnly && !isAdmin) return;
+      if(item.restricted && !currentUser) return;
+      if(item.label === 'Logga in' && currentUser) return;
+      if(item.label === 'Konto' && isAdmin) return;
 
-      items.forEach(item => {
-        if(item.adminOnly && !isAdmin) return;
-        if(item.restricted && !currentUser) return;
-        if(isAdmin && (item.id === 'loginNav' || item.id === 'kontoNav')) return;
-
-        const isActive = false;
-
-        if(item.type === 'dropdown'){
-          const li = document.createElement('li');
-          li.className = 'dropdown';
-
-          const a = document.createElement('a');
-          a.href = item.url || '#';
-          a.textContent = `${item.label || ''} ▾`;
-
-          const dd = document.createElement('div');
-          dd.className = 'dropdown-content';
-
-          const children = (Array.isArray(item.children) ? item.children : [])
-            .slice()
-            .sort((x,y)=>(x.order ?? 0) - (y.order ?? 0));
-
-          children.forEach(ch => {
-            const ca = document.createElement('a');
-            ca.href = ch.url || '#';
-            ca.textContent = ch.label || '';
-            if((ch.url || '').toLowerCase() === 'felanmalan.html') ca.classList.add('is-active');
-            dd.appendChild(ca);
-          });
-
-          li.appendChild(a);
-          li.appendChild(dd);
-          mainNav.appendChild(li);
-          return;
-        }
-
+      if(item.type === 'dropdown'){
         const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = item.url || '#';
-        a.textContent = item.label || '';
-        if(isActive) a.classList.add('is-active');
-        li.appendChild(a);
-        mainNav.appendChild(li);
-      });
+        li.className = 'dropdown';
 
-      appendMobileCloseRow();
-      wireMobileDropdowns();
-      mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>setNavOpen(false)));
-    }
+        const parent = document.createElement('span');
+        parent.className = 'desktop-parent';
+        parent.textContent = `${item.label || ''} ▾`;
 
-    function setOverlayOpen(overlay, open){
-      overlay.style.display = open ? 'flex' : 'none';
-    }
+        const submenu = document.createElement('div');
+        submenu.className = 'dropdown-content';
 
-    editPageBtn.addEventListener('click', () => {
-      if(!isAdmin) return;
-      editPageTitle.value = pageData.pageTitle || '';
-      editPageSubtitle.value = pageData.pageSubtitle || '';
-      editIntroText.value = pageData.introText || '';
-      editAlertTitle.value = pageData.alertTitle || '';
-      editAlertPrefix.value = pageData.alertPrefix || '';
-      editAlertService.value = pageData.alertService || '';
-      editAlertSuffix.value = pageData.alertSuffix || '';
-      editAlertPhone.value = pageData.alertPhone || '';
-      editPreviewBtnText.value = pageData.previewBtnText || '';
-      editSendBtnText.value = pageData.sendBtnText || '';
-      setOverlayOpen(pageOverlay, true);
-    });
+        const children = (Array.isArray(item.children) ? item.children : [])
+          .slice()
+          .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
 
-    cancelPageBtn.addEventListener('click', ()=>setOverlayOpen(pageOverlay, false));
+        children.forEach(child => {
+          const a = document.createElement('a');
+          a.href = child.url || '#';
+          a.textContent = child.label || '';
+          submenu.appendChild(a);
+        });
 
-    savePageBtn.addEventListener('click', async () => {
-      try{
-        requireAdmin();
-        const payload = {
-          pageTitle: editPageTitle.value.trim(),
-          pageSubtitle: editPageSubtitle.value.trim(),
-          introText: editIntroText.value.trim(),
-          alertTitle: editAlertTitle.value.trim(),
-          alertPrefix: editAlertPrefix.value.trim(),
-          alertService: editAlertService.value.trim(),
-          alertSuffix: editAlertSuffix.value.trim(),
-          alertPhone: editAlertPhone.value.trim(),
-          previewBtnText: editPreviewBtnText.value.trim(),
-          sendBtnText: editSendBtnText.value.trim(),
-          updatedAt: Date.now()
-        };
-        await setDoc(issuePageRef, payload, { merge:true });
-        pageData = { ...pageData, ...payload };
-        renderPageContent();
-        setOverlayOpen(pageOverlay, false);
-        alert('Sidan är uppdaterad.');
-      }catch(err){
-        alert(err?.message || 'Kunde inte spara sidan.');
-      }
-    });
-
-    document.querySelectorAll('.edit-overlay').forEach(overlay => {
-      overlay.addEventListener('click', (e) => {
-        if(e.target === overlay) overlay.style.display = 'none';
-      });
-    });
-
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape'){
-        setNavOpen(false);
-        setOverlayOpen(pageOverlay, false);
-        hidePopup();
-      }
-    });
-
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-      if(!user){
-        isAdmin = false;
-        updateAdminVisibility();
-        renderNav();
+        li.appendChild(parent);
+        li.appendChild(submenu);
+        desktopNav.appendChild(li);
         return;
       }
 
-      try{
-        const snap = await getDoc(doc(db, 'users', user.uid));
-        const role = snap.exists() ? snap.data().role : null;
-        isAdmin = role === 'admin' || role === 'ordforande';
-      }catch{
-        isAdmin = false;
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = item.url || '#';
+      a.textContent = item.label || '';
+      li.appendChild(a);
+      desktopNav.appendChild(li);
+    });
+  }
+
+  function buildMobileNav(items){
+    mobileNav.innerHTML = '';
+
+    items.forEach(item => {
+      if(item.adminOnly && !isAdmin) return;
+      if(item.restricted && !currentUser) return;
+      if(item.label === 'Logga in' && currentUser) return;
+      if(item.label === 'Konto' && isAdmin) return;
+
+      if(item.type === 'dropdown'){
+        const li = document.createElement('li');
+        li.className = 'mobile-item';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'mobile-parent';
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = `
+          <span>${item.label || ''}</span>
+          <span class="mobile-chevron" aria-hidden="true">▾</span>
+        `;
+
+        const submenu = document.createElement('div');
+        submenu.className = 'mobile-submenu';
+
+        const children = (Array.isArray(item.children) ? item.children : [])
+          .slice()
+          .sort((a,b)=>(a.order ?? 0)-(b.order ?? 0));
+
+        children.forEach(child => {
+          const a = document.createElement('a');
+          a.href = child.url || '#';
+          a.textContent = child.label || '';
+          a.addEventListener('click', () => setMobileMenuOpen(false));
+          submenu.appendChild(a);
+        });
+
+        btn.addEventListener('click', () => {
+          const isOpen = li.classList.contains('open');
+          closeOtherMobileItems(li);
+
+          if(isOpen){
+            li.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+          }else{
+            li.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+
+        li.appendChild(btn);
+        li.appendChild(submenu);
+        mobileNav.appendChild(li);
+        return;
       }
 
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = item.url || '#';
+      a.textContent = item.label || '';
+      a.addEventListener('click', () => setMobileMenuOpen(false));
+      li.appendChild(a);
+      mobileNav.appendChild(li);
+    });
+  }
+
+  function renderNav(){
+    const data = navData || fallbackNav;
+    const items = (Array.isArray(data.items) && data.items.length ? data.items : fallbackNav.items)
+      .slice()
+      .sort((a,b)=>(a.order ?? 0) - (b.order ?? 0));
+
+    buildDesktopNav(items);
+    buildMobileNav(items);
+  }
+
+  function setOverlayOpen(overlay, open){
+    overlay.style.display = open ? 'flex' : 'none';
+  }
+
+  editPageBtn.addEventListener('click', () => {
+    if(!isAdmin) return;
+    editPageTitle.value = pageData.pageTitle || '';
+    editPageSubtitle.value = pageData.pageSubtitle || '';
+    editIntroText.value = pageData.introText || '';
+    editAlertTitle.value = pageData.alertTitle || '';
+    editAlertPrefix.value = pageData.alertPrefix || '';
+    editAlertService.value = pageData.alertService || '';
+    editAlertSuffix.value = pageData.alertSuffix || '';
+    editAlertPhone.value = pageData.alertPhone || '';
+    editPreviewBtnText.value = pageData.previewBtnText || '';
+    editSendBtnText.value = pageData.sendBtnText || '';
+    setOverlayOpen(pageOverlay, true);
+  });
+
+  cancelPageBtn.addEventListener('click', ()=>setOverlayOpen(pageOverlay, false));
+
+  savePageBtn.addEventListener('click', async () => {
+    try{
+      requireAdmin();
+      const payload = {
+        pageTitle: editPageTitle.value.trim(),
+        pageSubtitle: editPageSubtitle.value.trim(),
+        introText: editIntroText.value.trim(),
+        alertTitle: editAlertTitle.value.trim(),
+        alertPrefix: editAlertPrefix.value.trim(),
+        alertService: editAlertService.value.trim(),
+        alertSuffix: editAlertSuffix.value.trim(),
+        alertPhone: editAlertPhone.value.trim(),
+        previewBtnText: editPreviewBtnText.value.trim(),
+        sendBtnText: editSendBtnText.value.trim(),
+        updatedAt: Date.now()
+      };
+      await setDoc(issuePageRef, payload, { merge:true });
+      pageData = { ...pageData, ...payload };
+      renderPageContent();
+      setOverlayOpen(pageOverlay, false);
+      alert('Sidan är uppdaterad.');
+    }catch(err){
+      alert(err?.message || 'Kunde inte spara sidan.');
+    }
+  });
+
+  document.querySelectorAll('.edit-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if(e.target === overlay) overlay.style.display = 'none';
+    });
+  });
+
+  hamburger.addEventListener('click', () => {
+    setMobileMenuOpen(!mobileDrawer.classList.contains('is-open'));
+  });
+
+  mobileCloseBtn.addEventListener('click', () => {
+    setMobileMenuOpen(false);
+  });
+
+  mobileDrawer.addEventListener('click', (e) => {
+    if(e.target === mobileDrawer){
+      setMobileMenuOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      setMobileMenuOpen(false);
+      setOverlayOpen(pageOverlay, false);
+      hidePopup();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if(window.matchMedia('(min-width: 769px)').matches){
+      setMobileMenuOpen(false);
+    }
+    updateHeaderState();
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if(!user){
+      isAdmin = false;
       updateAdminVisibility();
       renderNav();
-    });
-
-    onSnapshot(pageHomeRef, snap => {
-      if(snap.exists()) homePageData = { ...homePageData, ...snap.data() };
-      renderHomeBranding();
-    });
-
-    onSnapshot(navRef, snap => {
-      navData = snap.exists() ? snap.data() : fallbackNav;
-      renderNav();
-    });
-
-    onSnapshot(issuePageRef, snap => {
-      if(snap.exists()) pageData = { ...pageData, ...snap.data() };
-      renderPageContent();
-    });
-
-    function uid(){
-      return Math.random().toString(36).slice(2,9);
+      return;
     }
 
-    function renderAttachments(){
-      attachmentsPreview.innerHTML = '';
-      attachments.forEach(att => {
-        const el = document.createElement('div');
-        el.className = 'att';
-
-        const img = document.createElement('img');
-        img.src = att.data;
-        img.alt = att.name || 'Bilaga';
-        el.appendChild(img);
-
-        const rem = document.createElement('div');
-        rem.className = 'remove';
-        rem.textContent = '✕';
-        rem.onclick = () => {
-          attachments = attachments.filter(a => a.id !== att.id);
-          renderAttachments();
-        };
-        el.appendChild(rem);
-
-        attachmentsPreview.appendChild(el);
-      });
+    try{
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      const role = snap.exists() ? snap.data().role : null;
+      isAdmin = role === 'admin' || role === 'ordforande';
+    }catch{
+      isAdmin = false;
     }
 
-    attachmentsInput.addEventListener('change', (e) => {
-      const files = Array.from(e.target.files || []);
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          attachments.push({
-            id: uid(),
-            data: ev.target.result,
-            name: file.name
-          });
-          renderAttachments();
-        };
-        reader.readAsDataURL(file);
-      });
-      attachmentsInput.value = '';
+    updateAdminVisibility();
+    renderNav();
+  });
+
+  onSnapshot(pageHomeRef, snap => {
+    if(snap.exists()) homePageData = { ...homePageData, ...snap.data() };
+    renderHomeBranding();
+  });
+
+  onSnapshot(navRef, snap => {
+    navData = snap.exists() ? snap.data() : fallbackNav;
+    renderNav();
+  });
+
+  onSnapshot(issuePageRef, snap => {
+    if(snap.exists()) pageData = { ...pageData, ...snap.data() };
+    renderPageContent();
+  });
+
+  function uid(){
+    return Math.random().toString(36).slice(2,9);
+  }
+
+  function renderAttachments(){
+    attachmentsPreview.innerHTML = '';
+    attachments.forEach(att => {
+      const el = document.createElement('div');
+      el.className = 'att';
+
+      const img = document.createElement('img');
+      img.src = att.data;
+      img.alt = att.name || 'Bilaga';
+      el.appendChild(img);
+
+      const rem = document.createElement('div');
+      rem.className = 'remove';
+      rem.textContent = '✕';
+      rem.onclick = () => {
+        attachments = attachments.filter(a => a.id !== att.id);
+        renderAttachments();
+      };
+      el.appendChild(rem);
+
+      attachmentsPreview.appendChild(el);
     });
+  }
 
-    function validateForm(){
-      formError.style.display = 'none';
-
-      if(!fullName.value.trim()){
-        formError.textContent = 'Ange namn och efternamn.';
-        formError.style.display = 'block';
-        return false;
-      }
-      if(!apt.value.trim()){
-        formError.textContent = 'Ange lägenhetsnummer och trapphus.';
-        formError.style.display = 'block';
-        return false;
-      }
-      if(!emailIn.value.trim() || !/^\S+@\S+\.\S+$/.test(emailIn.value.trim())){
-        formError.textContent = 'Ange giltig e-postadress.';
-        formError.style.display = 'block';
-        return false;
-      }
-      if(!description.value.trim()){
-        formError.textContent = 'Beskriv ärendet.';
-        formError.style.display = 'block';
-        return false;
-      }
-      return true;
-    }
-
-    function showPopup(msg){
-      popupMessage.textContent = msg;
-      popupBackdrop.style.display = 'flex';
-      setTimeout(() => popupBackdrop.style.opacity = '1', 10);
-    }
-
-    function hidePopup(){
-      popupBackdrop.style.opacity = '0';
-      setTimeout(() => popupBackdrop.style.display = 'none', 200);
-    }
-
-    popupOk.addEventListener('click', hidePopup);
-    popupBackdrop.addEventListener('click', (e) => {
-      if(e.target === popupBackdrop) hidePopup();
+  attachmentsInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        attachments.push({
+          id: uid(),
+          data: ev.target.result,
+          name: file.name
+        });
+        renderAttachments();
+      };
+      reader.readAsDataURL(file);
     });
+    attachmentsInput.value = '';
+  });
 
-    previewBtn.addEventListener('click', () => {
-      if(!validateForm()) return;
-      const summary =
+  function validateForm(){
+    formError.style.display = 'none';
+
+    if(!fullName.value.trim()){
+      formError.textContent = 'Ange namn och efternamn.';
+      formError.style.display = 'block';
+      return false;
+    }
+    if(!apt.value.trim()){
+      formError.textContent = 'Ange lägenhetsnummer och trapphus.';
+      formError.style.display = 'block';
+      return false;
+    }
+    if(!emailIn.value.trim() || !/^\S+@\S+\.\S+$/.test(emailIn.value.trim())){
+      formError.textContent = 'Ange giltig e-postadress.';
+      formError.style.display = 'block';
+      return false;
+    }
+    if(!description.value.trim()){
+      formError.textContent = 'Beskriv ärendet.';
+      formError.style.display = 'block';
+      return false;
+    }
+    return true;
+  }
+
+  function showPopup(msg){
+    popupMessage.textContent = msg;
+    popupBackdrop.style.display = 'flex';
+    setTimeout(() => popupBackdrop.style.opacity = '1', 10);
+  }
+
+  function hidePopup(){
+    popupBackdrop.style.opacity = '0';
+    setTimeout(() => popupBackdrop.style.display = 'none', 200);
+  }
+
+  popupOk.addEventListener('click', hidePopup);
+  popupBackdrop.addEventListener('click', (e) => {
+    if(e.target === popupBackdrop) hidePopup();
+  });
+
+  previewBtn.addEventListener('click', () => {
+    if(!validateForm()) return;
+    const summary =
 `Namn: ${fullName.value}
 Lgh: ${apt.value}
 E-post: ${emailIn.value}
 Tel: ${phone.value || 'Ej angivet'}
 
 ${description.value}`;
-      showPopup(summary);
-    });
+    showPopup(summary);
+  });
 
-    felForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if(!validateForm()) return;
+  felForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if(!validateForm()) return;
 
-      const payload = {
-        from_name: fullName.value.trim(),
-        apartment: apt.value.trim(),
-        sender_email: emailIn.value.trim(),
-        phone: phone.value.trim() || "Ej angivet",
-        message: description.value.trim(),
-        to_email: "styrelsen@vasthaganr4.se"
-      };
+    const payload = {
+      from_name: fullName.value.trim(),
+      apartment: apt.value.trim(),
+      sender_email: emailIn.value.trim(),
+      phone: phone.value.trim() || "Ej angivet",
+      message: description.value.trim(),
+      to_email: "styrelsen@vasthaganr4.se"
+    };
 
-      try{
-        await emailjs.send("service_tg8g49c", "template_pvu8q4j", payload);
-        showPopup("Tack! Ditt ärende har skickats till styrelsen.");
-        felForm.reset();
-        attachments = [];
-        renderAttachments();
-      }catch(err){
-        console.error(err);
-        showPopup("Kunde inte skicka e-post. Försök igen senare.");
-      }
-    });
+    try{
+      await emailjs.send("service_tg8g49c", "template_pvu8q4j", payload);
+      showPopup("Tack! Ditt ärende har skickats till styrelsen.");
+      felForm.reset();
+      attachments = [];
+      renderAttachments();
+    }catch(err){
+      console.error(err);
+      showPopup("Kunde inte skicka e-post. Försök igen senare.");
+    }
+  });
 
-    renderHomeBranding();
-    renderPageContent();
-    renderNav();
-    renderAttachments();
-  </script>
+  updateHeaderState();
+  window.addEventListener('scroll', updateHeaderState, { passive:true });
+
+  renderHomeBranding();
+  renderPageContent();
+  renderNav();
+  renderAttachments();
+</script>
 </body>
 </html>
