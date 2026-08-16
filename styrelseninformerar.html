@@ -327,6 +327,43 @@
     .save-publish .btn-primary{background:var(--accent)}
     .save-publish .btn-cancel{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.22)}
 
+    .push-notification-box{
+      margin-top:18px;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 10px 24px rgba(11,18,32,0.06);
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .push-notification-text{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .push-notification-icon{font-size:1.35rem;flex:0 0 auto}
+    .push-notification-copy{display:flex;flex-direction:column;gap:2px}
+    .push-notification-copy strong{font-size:.98rem}
+    .push-notification-copy span{color:var(--muted);font-size:.9rem;font-weight:650;line-height:1.35}
+    .push-notification-btn{
+      padding:10px 13px;
+      border-radius:12px;
+      border:0;
+      background:var(--accent);
+      color:#fff;
+      cursor:pointer;
+      font-weight:900;
+      white-space:nowrap;
+      box-shadow:0 8px 18px rgba(11,18,32,0.08);
+    }
+    .push-notification-btn:disabled{opacity:.65;cursor:wait}
+    .push-notification-box.is-enabled{background:#f3faf5}
+    .push-notification-box.is-disabled{background:#fafafa}
+    .push-notification-box.is-hidden{display:none}
     footer{margin-top:28px;text-align:center;color:var(--muted);font-size:.98rem;padding:20px 14px 30px 14px;font-weight:800}
 
     @media (max-width: 900px){
@@ -550,6 +587,17 @@
       <button class="btn btn-primary" id="addNewsBtn" type="button">＋ Ny nyhet</button>
     </div>
 
+    <div class="push-notification-box" id="pushNotificationBox">
+      <div class="push-notification-text">
+        <div class="push-notification-icon" aria-hidden="true">🔔</div>
+        <div class="push-notification-copy">
+          <strong id="pushNotificationTitle">Få notiser från styrelsen</strong>
+          <span id="pushNotificationStatus">Få en notis när styrelsen publicerar ny information.</span>
+        </div>
+      </div>
+      <button class="push-notification-btn" id="enablePushNotificationsBtn" type="button">Aktivera notiser</button>
+    </div>
+
     <div class="news-grid" id="newsGrid" aria-live="polite"></div>
   </div>
 
@@ -671,6 +719,11 @@
       uploadBytesResumable,
       getDownloadURL
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+    import {
+      getMessaging,
+      getToken,
+      onMessage
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-messaging.js";
 
     const app = initializeApp({
       apiKey:"AIzaSyBQHkQql41jioZ1LbF8MdxBFoKmUifqWlo",
@@ -692,6 +745,9 @@
     const NAV_DOC_REF = doc(db, 'site', 'navigation');
     const FEED_COL = collection(db, 'latestFeed');
     const DRAFT_STORAGE_KEY = 'vasthaga_styrelseninformerar_drafts_v3';
+    const FCM_VAPID_KEY = 'BBg_L2sybdqxeeQYjqvf2pBN5TsNOSF9eYhllGx2_AJJSj8fMKC-tO02tYzYlNS95Qp1qGbHT7CipeBH1pzWOl0';
+    const PUSH_SUBSCRIPTIONS_COL = collection(db, 'pushSubscriptions');
+    const PUSH_SERVICE_WORKER_PATH = '/firebase-messaging-sw.js';
 
     const body = document.body;
     const header = document.getElementById('siteHeader');
@@ -728,6 +784,10 @@
     const newsImageProgressBar = document.getElementById('newsImageProgressBar');
     const saveNewsDraftBtn = document.getElementById('saveNewsDraftBtn');
     const cancelNewsEditBtn = document.getElementById('cancelNewsEditBtn');
+    const pushNotificationBox = document.getElementById('pushNotificationBox');
+    const pushNotificationTitle = document.getElementById('pushNotificationTitle');
+    const pushNotificationStatus = document.getElementById('pushNotificationStatus');
+    const enablePushNotificationsBtn = document.getElementById('enablePushNotificationsBtn');
 
     const pageOverlay = document.getElementById('pageOverlay');
     const pageTitleInput = document.getElementById('pageTitleInput');
@@ -743,6 +803,9 @@
     let editingItemId = null;
     let navData = null;
     let newsUploadInProgress = false;
+    let messaging = null;
+    let pushServiceWorkerRegistration = null;
+    let pushToken = null;
 
     let pageData = {
       title: 'Styrelsen informerar',
@@ -1206,6 +1269,131 @@
       });
     }
 
+    function setPushNotificationUi(state, message){
+      if(!pushNotificationBox || !enablePushNotificationsBtn) return;
+      pushNotificationBox.classList.remove('is-enabled','is-disabled','is-hidden');
+
+      if(state === 'enabled'){
+        pushNotificationBox.classList.add('is-enabled');
+        pushNotificationTitle.textContent = 'Notiser är aktiverade';
+        pushNotificationStatus.textContent = message || 'Du får en notis när styrelsen publicerar ny information.';
+        enablePushNotificationsBtn.textContent = 'Notiser aktiverade';
+        enablePushNotificationsBtn.disabled = true;
+        return;
+      }
+
+      if(state === 'denied'){
+        pushNotificationBox.classList.add('is-disabled');
+        pushNotificationTitle.textContent = 'Notiser är blockerade';
+        pushNotificationStatus.textContent = message || 'Tillåt notiser i webbläsarens webbplatsinställningar om du vill aktivera dem.';
+        enablePushNotificationsBtn.textContent = 'Notiser blockerade';
+        enablePushNotificationsBtn.disabled = true;
+        return;
+      }
+
+      if(state === 'unsupported'){
+        pushNotificationBox.classList.add('is-hidden');
+        return;
+      }
+
+      pushNotificationTitle.textContent = 'Få notiser från styrelsen';
+      pushNotificationStatus.textContent = message || 'Få en notis när styrelsen publicerar ny information.';
+      enablePushNotificationsBtn.textContent = 'Aktivera notiser';
+      enablePushNotificationsBtn.disabled = false;
+    }
+
+    async function initPushNotifications(){
+      try{
+        if(!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)){
+          setPushNotificationUi('unsupported');
+          return;
+        }
+
+        if(location.protocol !== 'https:' && location.hostname !== 'localhost'){
+          setPushNotificationUi('unsupported');
+          return;
+        }
+
+        pushServiceWorkerRegistration = await navigator.serviceWorker.register(PUSH_SERVICE_WORKER_PATH, { scope: '/' });
+        messaging = getMessaging(app);
+
+        if(Notification.permission === 'granted'){
+          await enablePushNotifications({ requestPermission:false });
+        }else if(Notification.permission === 'denied'){
+          setPushNotificationUi('denied');
+        }else{
+          setPushNotificationUi('idle');
+        }
+
+        onMessage(messaging, payload => {
+          console.log('Pushnotis mottagen i förgrunden:', payload);
+          const notification = payload?.notification || {};
+          if(notification.title && Notification.permission === 'granted'){
+            const link = payload?.fcmOptions?.link || payload?.data?.url || SOURCE_URL;
+            new Notification(notification.title, {
+              body: notification.body || '',
+              icon: '/logga.png',
+              data: { url: link }
+            });
+          }
+        });
+      }catch(err){
+        console.error('Kunde inte initiera pushnotiser:', err);
+        setPushNotificationUi('idle', 'Notiser kunde inte förberedas ännu. Försök igen.');
+      }
+    }
+
+    async function savePushToken(token){
+      if(!token) throw new Error('Firebase returnerade ingen push-token.');
+      const safeId = encodeURIComponent(token);
+      await setDoc(doc(PUSH_SUBSCRIPTIONS_COL, safeId), {
+        token,
+        source: 'styrelseninformerar',
+        active: true,
+        userAgent: navigator.userAgent.slice(0, 500),
+        updatedAt: Date.now(),
+        createdAt: Date.now()
+      }, { merge:true });
+    }
+
+    async function enablePushNotifications({ requestPermission = true } = {}){
+      if(!messaging || !pushServiceWorkerRegistration){
+        throw new Error('Pushnotiser är inte tillgängliga i den här webbläsaren.');
+      }
+
+      enablePushNotificationsBtn.disabled = true;
+      enablePushNotificationsBtn.textContent = 'Aktiverar…';
+
+      try{
+        let permission = Notification.permission;
+        if(requestPermission && permission !== 'granted'){
+          permission = await Notification.requestPermission();
+        }
+
+        if(permission !== 'granted'){
+          if(permission === 'denied') setPushNotificationUi('denied');
+          else setPushNotificationUi('idle', 'Du valde att inte aktivera notiser.');
+          return;
+        }
+
+        pushToken = await getToken(messaging, {
+          vapidKey: FCM_VAPID_KEY,
+          serviceWorkerRegistration: pushServiceWorkerRegistration
+        });
+
+        if(!pushToken) throw new Error('Ingen push-token kunde skapas.');
+        await savePushToken(pushToken);
+        setPushNotificationUi('enabled');
+      }catch(err){
+        console.error('Kunde inte aktivera pushnotiser:', err);
+        setPushNotificationUi('idle', err?.message || 'Det gick inte att aktivera notiser.');
+      }finally{
+        if(Notification.permission !== 'granted') enablePushNotificationsBtn.disabled = false;
+      }
+    }
+
+    enablePushNotificationsBtn?.addEventListener('click', () => enablePushNotifications({ requestPermission:true }));
+
     async function publishPendingDrafts(){
       requireAdmin();
       const jobs = [];
@@ -1413,6 +1601,7 @@
     renderNav();
     renderNews();
     renderSavePublishBar();
+    initPushNotifications();
   </script>
 </body>
 </html>
