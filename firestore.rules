@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /pushSubscriptions/{subscriptionId} {
+      allow read: if false;
+      allow create, update: if
+        request.resource.data.token is string &&
+        request.resource.data.token.size() >= 50 &&
+        request.resource.data.token.size() <= 2000 &&
+        request.resource.data.active is bool &&
+        request.resource.data.source == 'styrelseninformerar';
+      allow delete: if false;
+    }
+  }
+}
