@@ -782,11 +782,15 @@ function hideOverlay(overlay){
   overlay.classList.remove('show');
 }
 
-document.getElementById('createBtn').addEventListener('click', () => {
-  signupForm.reset();
-  signupError.style.display = 'none';
-  showOverlay(signupOverlay);
-});
+const createBtn = document.getElementById('createBtn');
+
+if (createBtn) {
+  createBtn.addEventListener('click', () => {
+    signupForm.reset();
+    signupError.style.display = 'none';
+    showOverlay(signupOverlay);
+  });
+}
 
 document.getElementById('forgotBtn').addEventListener('click', () => {
   resetForm.reset();
